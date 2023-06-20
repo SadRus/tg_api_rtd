@@ -1,0 +1,10 @@
+Клиент: !concept
+  Синхронный: !example
+  Асинхронный: !example
+
+Метод API Tg: !concept
+  sendMessage: !example
+  Бинарная картинка: !example
+
+
+Тип данных API Tg: !concept
