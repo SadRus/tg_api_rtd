@@ -1,4 +1,4 @@
-from ..tg_types import Update
+from tg_api.tg_types import Update
 
 
 def test_update_parsing():

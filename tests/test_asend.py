@@ -2,8 +2,8 @@ import pytest
 import json
 
 from pytest_httpx import HTTPXMock
-from ..tg_types import Message, Chat, User
-from .. import SendMessageResponse, AsyncTgClient, SendMessageRequest
+from tg_api.tg_types import Message, Chat, User
+from tg_api import SendMessageResponse, AsyncTgClient, SendMessageRequest
 
 
 @pytest.fixture
