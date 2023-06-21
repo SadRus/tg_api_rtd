@@ -4,9 +4,11 @@ from .tg_methods import (  # noqa F401
     SendMessageResponse,
     SendMessageRequest,
     SendPhotoResponse,
-    SendPhotoRequest,
+    SendUrlPhotoRequest,
+    SendBytesPhotoRequest,
     SendDocumentResponse,
-    SendDocumentRequest,
+    SendUrlDocumentRequest,
+    SendBytesDocumentRequest,
 )
 from .tg_types import (  # noqa F401
     ParseMode,

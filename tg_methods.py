@@ -136,7 +136,7 @@ class SendPhotoResponse(BaseTgResponse):
     result: tg_types.Message
 
 
-class SendPhotoRequest(BaseTgRequest):
+class SendBytesPhotoRequest(BaseTgRequest):
     """Object encapsulates data for calling web API endpoint `sendPhoto`.
 
     Telegram web API docs:
@@ -145,7 +145,6 @@ class SendPhotoRequest(BaseTgRequest):
 
     chat_id: int
     photo: Union[
-        str,
         bytes,
         Iterable[bytes],
         # TODO: httx supports AsyncIterable[bytes], but pydantic doesnt
@@ -169,27 +168,60 @@ class SendPhotoRequest(BaseTgRequest):
 
     async def asend(self) -> SendPhotoResponse:
         """Shortcut method to call sendPhoto Tg web API endpoint."""
-        if type(self.photo) == str:
-            json_payload = await self.apost_as_json('sendPhoto')
-        else:
-            content = self.dict(exclude_none=True, exclude={'photo'})
-            photo_bytes = io.BytesIO(self.photo)
-            photo_bytes.name = self.filename
-            files = {'photo': photo_bytes}
-            json_payload = await self.apost_multipart_form_data('sendPhoto', content, files)
+        content = self.dict(exclude_none=True, exclude={'photo'})
+        photo_bytes = io.BytesIO(self.photo)
+        photo_bytes.name = self.filename
+        files = {'photo': photo_bytes}
+        json_payload = await self.apost_multipart_form_data('sendPhoto', content, files)
         response = SendPhotoResponse.parse_raw(json_payload)
         return response
 
     def send(self) -> SendPhotoResponse:
         """Shortcut method to call sendPhoto Tg web API endpoint."""
-        if type(self.photo) == str:
-            json_payload = self.post_as_json('sendPhoto')
-        else:
-            content = self.dict(exclude_none=True, exclude={'photo'})
-            photo_bytes = io.BytesIO(self.photo)
-            photo_bytes.name = self.filename
-            files = {'photo': photo_bytes}
-            json_payload = self.post_multipart_form_data('sendPhoto', content, files)
+        content = self.dict(exclude_none=True, exclude={'photo'})
+        photo_bytes = io.BytesIO(self.photo)
+        photo_bytes.name = self.filename
+        files = {'photo': photo_bytes}
+        json_payload = self.post_multipart_form_data('sendPhoto', content, files)
+        response = SendPhotoResponse.parse_raw(json_payload)
+        return response
+
+
+class SendUrlPhotoRequest(BaseTgRequest):
+    """Object encapsulates data for calling web API endpoint `sendPhoto`.
+
+    Telegram web API docs:
+        See here https://core.telegram.org/bots/api#sendphoto
+    """
+
+    chat_id: int
+    photo: str
+    filename: str | None
+    # TODO: message_thread_id: int | None
+    # TODO: caption: str | None
+    # TODO: parse_mode: str | None
+    # TODO: caption_entities: list[tg_types.MessageEntity] | None
+    # TODO: has_spoiler: bool | None
+    # TODO: disable_notification: bool | None
+    # TODO: protect_content: bool | None
+    # TODO: reply_to_message_id: int | None
+    # TODO: allow_sending_without_reply: bool | None
+    # TODO: reply_markup: Union[
+    #     tg_types.InlineKeyboardMarkup,
+    #     tg_types.ReplyKeyboardMarkup,
+    #     tg_types.ReplyKeyboardRemove,
+    #     tg_types.ForceReply,
+    # ] | None = None
+
+    async def asend(self) -> SendPhotoResponse:
+        """Shortcut method to call sendPhoto Tg web API endpoint."""
+        json_payload = await self.apost_as_json('sendPhoto')
+        response = SendPhotoResponse.parse_raw(json_payload)
+        return response
+
+    def send(self) -> SendPhotoResponse:
+        """Shortcut method to call sendPhoto Tg web API endpoint."""
+        json_payload = self.post_as_json('sendPhoto')
         response = SendPhotoResponse.parse_raw(json_payload)
         return response
 
@@ -198,7 +230,7 @@ class SendDocumentResponse(BaseTgResponse):
     result: tg_types.Message
 
 
-class SendDocumentRequest(BaseTgRequest):
+class SendBytesDocumentRequest(BaseTgRequest):
     """Object encapsulates data for calling web API endpoint `sendPhoto`.
 
     Telegram web API docs:
@@ -207,7 +239,6 @@ class SendDocumentRequest(BaseTgRequest):
 
     chat_id: int
     document: Union[
-        str,
         bytes,
         Iterable[bytes],
         # TODO: httx supports AsyncIterable[bytes], but pydantic doesnt
@@ -232,26 +263,60 @@ class SendDocumentRequest(BaseTgRequest):
 
     async def asend(self) -> SendDocumentResponse:
         """Shortcut method to call sendDocument Tg web API endpoint."""
-        if type(self.document) == str:
-            json_payload = await self.apost_as_json('sendDocument')
-        else:
-            content = self.dict(exclude_none=True, exclude={'document'})
-            document_bytes = io.BytesIO(self.document)
-            document_bytes.name = self.filename
-            files = {'document': document_bytes}
-            json_payload = await self.apost_multipart_form_data('sendDocument', content, files)
+        content = self.dict(exclude_none=True, exclude={'document'})
+        document_bytes = io.BytesIO(self.document)
+        document_bytes.name = self.filename
+        files = {'document': document_bytes}
+        json_payload = await self.apost_multipart_form_data('sendDocument', content, files)
         response = SendDocumentResponse.parse_raw(json_payload)
         return response
 
     def send(self) -> SendDocumentResponse:
         """Shortcut method to call sendDocument Tg web API endpoint."""
-        if type(self.document) == str:
-            json_payload = self.post_as_json('sendDocument')
-        else:
-            content = self.dict(exclude_none=True, exclude={'document'})
-            document_bytes = io.BytesIO(self.document)
-            document_bytes.name = self.filename
-            files = {'document': document_bytes}
-            json_payload = self.post_multipart_form_data('sendDocument', content, files)
+        content = self.dict(exclude_none=True, exclude={'document'})
+        document_bytes = io.BytesIO(self.document)
+        document_bytes.name = self.filename
+        files = {'document': document_bytes}
+        json_payload = self.post_multipart_form_data('sendDocument', content, files)
+        response = SendDocumentResponse.parse_raw(json_payload)
+        return response
+
+
+class SendUrlDocumentRequest(BaseTgRequest):
+    """Object encapsulates data for calling web API endpoint `sendPhoto`.
+
+    Telegram web API docs:
+        See here https://core.telegram.org/bots/api#sendphoto
+    """
+
+    chat_id: int
+    document: str
+    filename: str | None
+    # TODO: message_thread_id: int | None
+    # TODO: thumbnail: tg_types.InputFile | str | None
+    # TODO: caption: str | None
+    # TODO: parse_mode: str | None
+    # TODO: caption_entities: list[tg_types.MessageEntity] | None
+    # TODO: disable_content_type_detection: bool | None
+    # TODO: disable_notification: bool | None
+    # TODO: protect_content: bool | None
+    # TODO: reply_to_message_id: int | None
+    # TODO: allow_sending_without_reply: bool | None
+    # TODO: reply_markup: Union[
+    #     tg_types.InlineKeyboardMarkup,
+    #     tg_types.ReplyKeyboardMarkup,
+    #     tg_types.ReplyKeyboardRemove,
+    #     tg_types.ForceReply,
+    # ] | None = None
+
+    async def asend(self) -> SendDocumentResponse:
+        """Shortcut method to call sendDocument Tg web API endpoint."""
+        json_payload = await self.apost_as_json('sendDocument')
+        response = SendDocumentResponse.parse_raw(json_payload)
+        return response
+
+    def send(self) -> SendDocumentResponse:
+        """Shortcut method to call sendDocument Tg web API endpoint."""
+        json_payload = self.post_as_json('sendDocument')
         response = SendDocumentResponse.parse_raw(json_payload)
         return response
