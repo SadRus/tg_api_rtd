@@ -18,6 +18,9 @@ trio = "^0.22.0"
 [tool.pytest.ini_options]
 python_files = "tests.py test_*.py *_tests.py"
 cache_dir = "/pytest_cache_dir"
+filterwarnings = [
+    "ignore::trio.TrioDeprecationWarning",
+]
 
 
 [build-system]
