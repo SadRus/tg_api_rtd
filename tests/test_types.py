@@ -1,6 +1,48 @@
 from tg_api import tg_types
 
 
+def test_inline_query_parsing():
+    raw_payload = b'''
+        {
+            "id":"unique",
+            "from": {
+                "id":43434343,
+                "is_bot":false,
+                "first_name":"\\u0415\\u0432\\u0433\\u0435\\u043d\\u0438\\u0439",
+                "last_name":"",
+                "username":"anonymous",
+                "language_code":"en"
+            },
+            "query":"query",
+            "offset":"offset",
+            "chat_type":"chat_type",
+            "location": {
+                "longitude":1.234,
+                "latitude":1.345,
+                "horizontal_accuracy":1.456,
+                "live_period":1,
+                "heading":2,
+                "proximity_alert_radius":3
+            }
+        }
+        '''
+    inline_query = tg_types.InlineQuery.parse_raw(raw_payload)
+
+    assert inline_query.id == 'unique'
+    assert isinstance(inline_query.from_, tg_types.User)
+    assert inline_query.from_.username == 'anonymous'
+    assert inline_query.query == 'query'
+    assert inline_query.offset == 'offset'
+    assert inline_query.chat_type == 'chat_type'
+    assert isinstance(inline_query.location, tg_types.Location)
+    assert inline_query.location.longitude == 1.234
+    assert inline_query.location.latitude == 1.345
+    assert inline_query.location.horizontal_accuracy == 1.456
+    assert inline_query.location.live_period == 1
+    assert inline_query.location.heading == 2
+    assert inline_query.location.proximity_alert_radius == 3
+
+
 def test_update_parsing():
     raw_payload = b'''
         {
