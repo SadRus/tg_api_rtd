@@ -194,3 +194,122 @@ class TestMessageParsing:
         assert isinstance(message.reply_markup, tg_types.InlineKeyboardMarkup)
         assert len(message.reply_markup.inline_keyboard) == 1
         assert len(message.reply_markup.inline_keyboard[0]) == 2
+
+
+def test_update_message():
+    raw_payload = {
+        "update_id": 815922528,
+        "message": {
+            "message_id": 194,
+            "from": {
+                "id": 305151544,
+                "is_bot": False,
+                "first_name":"\\u041d\\u0438\\u043a\\u0438\\u0442\\u0430",
+                "username": "UsernameTest",
+                "language_code": "ru"
+            },
+            "chat":{
+                "id": 305151544,
+                "first_name": "\\u041d\\u0438\\u043a\\u0438\\u0442\\u0430",
+                "username": "UsernameTest",
+                "type": "private"
+            },
+            "date": 1687434741,
+            "text": "test text"
+        }
+    }
+    update_obj = tg_types.Update.parse_obj(raw_payload)
+    assert isinstance(update_obj, tg_types.Update)
+    assert update_obj.message.message_id == 194
+    assert isinstance(update_obj.message.from_, tg_types.User)
+    assert isinstance(update_obj.message.chat, tg_types.Chat)
+    assert update_obj.message.chat.id == 305151544
+    assert update_obj.message.text == "test text"
+
+
+def test_update_file():
+    raw_payload = {
+            "update_id": 815922511,
+            "message": {
+                "message_id": 150,
+                "from": {
+                    "id": 305151544,
+                    "is_bot": False,
+                    "first_name": "\\u041d\\u0438\\u043a\\u0438\\u0442\\u0430",
+                    "username": "UsernameTest",
+                    "language_code": "ru"
+                    },
+                "chat": {
+                    "id": 305151544,
+                    "first_name": "\\u041d\\u0438\\u043a\\u0438\\u0442\\u0430",
+                    "username": "UsernameTest",
+                    "type": "private"
+                    },
+                "date": 1687382943,
+                "document": {
+                    "file_name": "\\u043d\\u044b\\u0439 \\u0434\\u043e\\u043a\\u0443\\u043c\\u0435\\u043d\\u0442 1",
+                    "mime_type": "text/plain",
+                    "file_id": "BQACAgIAAxkBAAOWZJNrn6fnltGx65eSxok3r3Q2qGMAAoo4AAISLJlILYF9HWhc_aMvBA",
+                    "file_unique_id": "AgADijgAAhIsmUg",
+                    "file_size": 63
+                    }
+            }
+          }
+    update_obj = tg_types.Update.parse_obj(raw_payload)
+    assert isinstance(update_obj, tg_types.Update)
+    assert update_obj.message.message_id == 150
+    assert isinstance(update_obj.message.chat, tg_types.Chat)
+    assert update_obj.message.chat.id == 305151544
+    assert update_obj.message.document['file_id'] == "BQACAgIAAxkBAAOWZJNrn6fnltGx65eSxok3r3Q2qGMAAoo4AAISLJlI" \
+                                                     "LYF9HWhc_aMvBA"
+    assert update_obj.message.document['file_name'] == "\\u043d\\u044b\\u0439 " \
+                                                 "\\u0434\\u043e\\u043a\\u0443\\u043c\\u0435\\u043d\\u0442 1"
+
+
+def test_update_btn():
+    raw_payload = {
+        "update_id": 815922533,
+        "callback_query": {
+            "id": "1310616028335436612",
+            "from": {
+                "id": 305151544,
+                "is_bot": False,
+                "first_name": "\\u041d\\u0438\\u043a\\u0438\\u0442\\u0430",
+                "username": "UsernameTest",
+                "language_code": "ru"
+            },
+            "message": {
+                "message_id": 202,
+                "from": {
+                    "id": 6235267584,
+                    "is_bot": True,
+                    "first_name": "tgapi zusmanone",
+                    "username": "tgapizusman_bot"
+                },
+                "chat": {
+                    "id": 305151544,
+                    "first_name": "\\u041d\\u0438\\u043a\\u0438\\u0442\\u0430",
+                     "username": "UsernameTest",
+                    "type": "private"
+                },
+                "date": 1687437107,
+                "text": "Message proofs keyboard support.",
+                "reply_markup": {
+                    "inline_keyboard":[
+                        [
+                            {"text": "button_1", "callback_data": "test"},
+                            {"text": "button_2", "callback_data": "test"}
+                        ]
+                    ]
+                }
+            },
+            "chat_instance": "-9009133691020524056",
+            "data": "test"
+        }
+    }
+    update_obj = tg_types.Update.parse_obj(raw_payload)
+    assert isinstance(update_obj, tg_types.Update)
+    assert isinstance(update_obj.callback_query.message.chat, tg_types.Chat)
+    assert update_obj.callback_query.message.chat.id == 305151544
+    assert isinstance(update_obj.callback_query.message.reply_markup, tg_types.InlineKeyboardMarkup)
+    assert update_obj.callback_query.message.reply_markup.inline_keyboard[0][0].text == 'button_1'

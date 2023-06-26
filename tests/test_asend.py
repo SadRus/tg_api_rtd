@@ -59,6 +59,7 @@ async def test_httpx_mocking(
         response = await tg_request.asend()
         assert get_response == json.loads(json_payload)
         assert get_response == response.dict()
+        assert isinstance(response, SendMessageResponse)
 
 
 @pytest.mark.anyio()
