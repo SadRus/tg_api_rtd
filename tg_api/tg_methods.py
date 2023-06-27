@@ -238,11 +238,7 @@ class SendBytesDocumentRequest(BaseTgRequest):
     """
 
     chat_id: int
-    document: Union[
-        bytes,
-        Iterable[bytes],
-        # TODO: httx supports AsyncIterable[bytes], but pydantic doesnt
-    ]
+    document: bytes  # TODO: httx supports AsyncIterable[bytes], but pydantic doesnt
     filename: str | None
     # TODO: message_thread_id: int | None
     # TODO: thumbnail: tg_types.InputFile | str | None
