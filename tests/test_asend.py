@@ -3,43 +3,14 @@ import pytest
 import json
 
 from pytest_httpx import HTTPXMock
-from tg_api.tg_types import Message, Chat, User
+from tg_api.tg_types import Message, Chat
 from tg_api import SendMessageResponse, AsyncTgClient, SendMessageRequest, SendBytesPhotoRequest
 
 
-@pytest.fixture
-async def get_response():
-    return SendMessageResponse.parse_obj(
-        {
-            'ok': True,
-            'result': Message.parse_obj({
-                'chat': Chat.parse_obj({
-                    'first_name': 'TestFirstName',
-                    'id': 1234567890,
-                    'last_name': 'TestLastName',
-                    'type': 'private',
-                    'username': 'TestUserName',
-                }),
-                'date': 1686840262,
-                'from_': User.parse_obj({
-                    'first_name': 'TestFirstName',
-                    'id': 1234567890,
-                    'is_bot': False,
-                    'language_code': 'ru',
-                    'last_name': 'TestLastName',
-                    'username': 'TestUserName',
-                }),
-                'message_id': 12345,
-                'text': 'Hello World!',
-            }),
-        },
-    ).dict()
-
-
-@pytest.mark.anyio()
+@pytest.mark.anyio
 async def test_httpx_mocking(
     httpx_mock: HTTPXMock,
-    get_response,
+    get_message_response: SendMessageResponse,
 ):
     Chat.update_forward_refs()
     Message.update_forward_refs()
@@ -50,22 +21,22 @@ async def test_httpx_mocking(
             'content-type': 'application/json',
             'accept': 'application/json',
         },
-        json=get_response,
+        json=get_message_response,
     )
 
     async with AsyncTgClient.setup('token'):
         tg_request = SendMessageRequest(chat_id=1234567890, text='Hello World!')
         json_payload = await tg_request.apost_as_json('sendMessage')
         response = await tg_request.asend()
-        assert get_response == json.loads(json_payload)
-        assert get_response == response.dict()
+        assert get_message_response == json.loads(json_payload)
+        assert get_message_response == response.dict()
         assert isinstance(response, SendMessageResponse)
 
 
-@pytest.mark.anyio()
+@pytest.mark.anyio
 async def test_photo_request(
     httpx_mock: HTTPXMock,
-    get_response,
+    get_message_response: SendMessageResponse,
 ):
     Chat.update_forward_refs()
     Message.update_forward_refs()
@@ -76,7 +47,7 @@ async def test_photo_request(
             'content-type': 'application/json',
             'accept': 'application/json',
         },
-        json=get_response,
+        json=get_message_response,
     )
 
     photo_url = 'https://memepedia.ru/wp-content/uploads/2018/06/kto-prochital-tot-sdohnet.jpg'
@@ -89,5 +60,5 @@ async def test_photo_request(
         )
         json_payload = await tg_request.apost_as_json('sendPhoto')
         response = await tg_request.asend()
-        assert get_response == json.loads(json_payload)
-        assert get_response == response.dict()
+        assert get_message_response == json.loads(json_payload)
+        assert get_message_response == response.dict()
