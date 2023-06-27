@@ -4,7 +4,7 @@ import json
 
 from pytest_httpx import HTTPXMock
 from tg_api.tg_types import Message, Chat, User
-from tg_api import SendMessageResponse, SyncTgClient, SendMessageRequest, SendBytesPhotoRequest, SendPhotoResponse
+from tg_api import SendMessageResponse, SyncTgClient, SendMessageRequest, SendBytesPhotoRequest
 
 
 @pytest.fixture
@@ -59,41 +59,12 @@ def test_photo_request(
     with SyncTgClient.setup('token'):
         tg_request = SendBytesPhotoRequest(
             chat_id=1234567890,
-            photo=str(response.content)
+            photo=str(response.content),
         )
         json_payload = tg_request.post_as_json('sendPhoto')
         response = tg_request.send()
         assert get_response == json.loads(json_payload)
         assert get_response == response.dict()
-
-
-@pytest.fixture
-def get_response():
-    return SendMessageResponse.parse_obj(
-        {
-            'ok': True,
-            'result': Message.parse_obj({
-                'chat': Chat.parse_obj({
-                    'first_name': 'TestFirstName',
-                    'id': 1234567890,
-                    'last_name': 'TestLastName',
-                    'type': 'private',
-                    'username': 'TestUserName',
-                }),
-                'date': 1686840262,
-                'from_': User.parse_obj({
-                    'first_name': 'TestFirstName',
-                    'id': 1234567890,
-                    'is_bot': False,
-                    'language_code': 'ru',
-                    'last_name': 'TestLastName',
-                    'username': 'TestUserName',
-                }),
-                'message_id': 12345,
-                'text': 'Hello World!',
-            }),
-        },
-    ).dict()
 
 
 def test_message_request(

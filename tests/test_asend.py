@@ -4,7 +4,7 @@ import json
 
 from pytest_httpx import HTTPXMock
 from tg_api.tg_types import Message, Chat, User
-from tg_api import SendMessageResponse, AsyncTgClient, SendMessageRequest, SendBytesPhotoRequest, SendPhotoResponse
+from tg_api import SendMessageResponse, AsyncTgClient, SendMessageRequest, SendBytesPhotoRequest
 
 
 @pytest.fixture
@@ -85,7 +85,7 @@ async def test_photo_request(
     async with AsyncTgClient.setup('token'):
         tg_request = SendBytesPhotoRequest(
             chat_id=1234567890,
-            photo=str(response.content)
+            photo=str(response.content),
         )
         json_payload = await tg_request.apost_as_json('sendPhoto')
         response = await tg_request.asend()
