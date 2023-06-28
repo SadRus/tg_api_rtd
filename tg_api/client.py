@@ -37,6 +37,10 @@ class AsyncTgClient:
         session: httpx.AsyncClient | None = None,
         **client_kwargs,
     ) -> AsyncGenerator[AsyncTgClientType, None]:
+        if not token:
+            # Safety check for empty string or None to avoid confusing HTTP 404 error
+            raise ValueError(f'Telegram token is empty: {token!r}')
+
         async with AsyncExitStack() as stack:
             if not session:
                 session = await stack.enter_async_context(httpx.AsyncClient())
@@ -78,6 +82,10 @@ class SyncTgClient:
         session: httpx.Client = None,
         **client_kwargs,
     ) -> Generator[SyncTgClientType, None, None]:
+        if not token:
+            # Safety check for empty string or None to avoid confusing HTTP 404 error
+            raise ValueError(f'Telegram token is empty: {token!r}')
+
         if not session:
             session = httpx.Client()
 
