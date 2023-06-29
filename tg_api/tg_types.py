@@ -473,6 +473,21 @@ class ChatJoinRequest(BaseModel):
     invite_link: ChatInviteLink | None = None
 
 
+class ChatMemberUpdated(BaseModel):
+    """This object represents changes in the status of a chat member.
+
+    See here: https://core.telegram.org/bots/api#chatmemberupdated
+    """
+
+    chat: Chat
+    from_: User
+    date: int
+    old_chat_member: dict[str, Any] | None = None
+    new_chat_member: dict[str, Any] | None = None
+    invite_link: ChatInviteLink | None = None
+    via_chat_folder_invite_link: bool
+
+
 class Update(BaseModel):
     """This object represents an incoming update.
 
@@ -497,8 +512,8 @@ class Update(BaseModel):
     pre_checkout_query: PreCheckoutQuery | None = None
     poll: Poll | None = None
     poll_answer: PollAnswer | None = None
-    # TODO my_chat_member: ChatMemberUpdated | None = None
-    # TODO chat_member: ChatMemberUpdated | None = None
+    my_chat_member: ChatMemberUpdated | None = None
+    chat_member: ChatMemberUpdated | None = None
     chat_join_request: ChatJoinRequest | None = None
 
     # TODO At most one of the optional parameters can be present in any given update.
