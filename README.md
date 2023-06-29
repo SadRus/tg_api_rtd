@@ -113,6 +113,52 @@ def main(token: str, chat_id: int) -> None:
         tg_request.send()
 ```
 
+Пример отправки пользователю фото из файловой системы:
+```py
+from tg_api import SyncTgClient, SendBytesPhotoRequest
+
+def main():
+    with SyncTgClient.setup(token):
+        with open(photo_filename, 'rb') as f:
+            photo_content = f.read()
+        tg_request = SendBytesPhotoRequest(chat_id=chat_id, photo=photo_content, filename=photo_filename)
+        tg_request.send()
+```
+
+
+Пример отправки пользователю фото по URL:
+```py
+from tg_api import SyncTgClient, SendUrlPhotoRequest
+
+def main():
+    with SyncTgClient.setup(token):
+        tg_request = SendUrlPhotoRequest(chat_id=chat_id, photo=photo_url, filename=photo_filename)
+        tg_request.send()
+```
+
+Пример отправки пользователю документа из файловой системы:
+```py
+from tg_api import SyncTgClient, SendBytesDocumentRequest
+
+def main():
+    with SyncTgClient.setup(token):
+        with open(document_filename, 'rb') as f:
+            document_content = f.read()
+        tg_request = SendBytesDocumentRequest(chat_id=chat_id, document=document_content, filename=document_filename)
+        tg_request.send()
+```
+
+
+Пример отправки пользователю документа по URL:
+```py
+from tg_api import SyncTgClient, SendUrlDocumentRequest
+
+def main():
+    with SyncTgClient.setup(token):
+        tg_request = SendUrlDocumentRequest(chat_id=chat_id, document=document_url, filename=document_filename)
+        tg_request.send()
+```
+
 <a name="usage-examples-async"></a>
 ### Асинхронное API
 
@@ -154,6 +200,61 @@ async def main(token: str, chat_id: int) -> None:
             text='Message proofs keyboard support.',
             reply_markup=keyboard,
         )
+        await tg_request.asend()
+```
+
+
+Пример отправки пользователю фото из файловой системы:
+```py
+import aiofiles
+
+import tg_api
+
+
+async def main(token: str, chat_id: int, photo_filename: str) -> None:
+    async with tg_api.AsyncTgClient.setup(token):
+        async with aiofiles.open(photo_filename, 'rb') as f:
+            photo_content = await f.read()
+        tg_request = tg_api.SendBytesPhotoRequest(chat_id=chat_id, photo=photo_content, filename=photo_filename)
+        await tg_request.asend()
+```
+
+
+Пример отправки пользователю фото по URL:
+```py
+import tg_api
+
+
+async def main(token: str, chat_id: int, photo_filename: str, photo_url: str) -> None:
+    async with tg_api.AsyncTgClient.setup(token):
+        tg_request = tg_api.SendUrlPhotoRequest(chat_id=chat_id, photo=photo_url, filename=photo_filename)
+        await tg_request.asend()
+```
+
+Пример отправки пользователю документа из файловой системы:
+```py
+import aiofiles
+
+import tg_api
+
+
+async def main(token: str, chat_id: int, document_filename: str) -> None:
+    async with tg_api.AsyncTgClient.setup(token):
+        async with aiofiles.open(document_filename, 'rb') as f:
+            document_content = await f.read()
+        tg_request = tg_api.SendBytesDocumentRequest(chat_id=chat_id, document=document_content, filename=document_filename)
+        await tg_request.asend()
+```
+
+
+Пример отправки пользователю документа по URL:
+```py
+import tg_api
+
+
+async def main(token: str, chat_id: int, document_filename: str, document_url: str) -> None:
+    async with tg_api.AsyncTgClient.setup(token):
+        tg_request = tg_api.SendUrlDocumentRequest(chat_id=chat_id, document=document_url, filename=document_filename)
         await tg_request.asend()
 ```
 
