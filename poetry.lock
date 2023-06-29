@@ -21,21 +21,6 @@ test = ["anyio[trio]", "coverage[toml] (>=4.5)", "hypothesis (>=4.0)", "mock (>=
 trio = ["trio (<0.22)"]
 
 [[package]]
-name = "asks"
-version = "3.0.0"
-description = "asks - async http"
-optional = false
-python-versions = ">= 3.6.2"
-files = [
-    {file = "asks-3.0.0.tar.gz", hash = "sha256:e4d61dc8362594c81cfe0198eee9f3a208eef1c0023355d711566a6dcf65e986"},
-]
-
-[package.dependencies]
-anyio = ">=3.0,<4.0"
-async_generator = "*"
-h11 = "*"
-
-[[package]]
 name = "async-generator"
 version = "1.10"
 description = "Async generators and context managers for Python 3.5+"
@@ -558,4 +543,4 @@ zstd = ["zstandard (>=0.18.0)"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "b7e5a2519ce318abdf9beaf521bb35f4f25667ab1b673fdbac180f46cc270de7"
+content-hash = "6588372113dfad33e3abab23e0eca1dc94ea57ecfeb3832292e6cdac9ebcccc4"

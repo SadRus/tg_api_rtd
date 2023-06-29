@@ -1,4 +1,4 @@
-import asks
+import requests
 import pytest
 import json
 
@@ -50,7 +50,8 @@ async def test_photo_request_mocking(
     )
 
     photo_url = 'https://memepedia.ru/wp-content/uploads/2018/06/kto-prochital-tot-sdohnet.jpg'
-    response = await asks.get(photo_url)
+    response = requests.get(photo_url)
+    response.raise_for_status()
 
     async with tg_methods.AsyncTgClient.setup('token'):
         tg_request = tg_methods.SendBytesPhotoRequest(
