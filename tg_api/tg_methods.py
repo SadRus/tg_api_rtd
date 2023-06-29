@@ -1,4 +1,5 @@
 import io
+import json
 from typing import Any, Union, Iterable
 
 from pydantic import BaseModel
@@ -53,6 +54,12 @@ class BaseTgRequest(BaseModel):
         if not client:
             raise TgRuntimeError('Requires AsyncTgClient to be specified before call.')
 
+        if content.get('caption_entities'):
+            content['caption_entities'] = json.dumps(content['caption_entities'])
+
+        if content.get('reply_markup'):
+            content['reply_markup'] = json.dumps(content['reply_markup'])
+
         http_response = await client.session.post(
             f'{client.api_root}{api_method}',
             files=files,
@@ -66,6 +73,12 @@ class BaseTgRequest(BaseModel):
 
         if not client:
             raise TgRuntimeError('Requires SyncTgClient to be specified before call.')
+
+        if content.get('caption_entities'):
+            content['caption_entities'] = json.dumps(content['caption_entities'])
+
+        if content.get('reply_markup'):
+            content['reply_markup'] = json.dumps(content['reply_markup'])
 
         http_response = client.session.post(
             f'{client.api_root}{api_method}',
@@ -150,21 +163,21 @@ class SendBytesPhotoRequest(BaseTgRequest):
         # TODO: httx supports AsyncIterable[bytes], but pydantic doesnt
     ]
     filename: str | None
-    # TODO: message_thread_id: int | None
-    # TODO: caption: str | None
-    # TODO: parse_mode: str | None
-    # TODO: caption_entities: list[tg_types.MessageEntity] | None
-    # TODO: has_spoiler: bool | None
-    # TODO: disable_notification: bool | None
-    # TODO: protect_content: bool | None
-    # TODO: reply_to_message_id: int | None
-    # TODO: allow_sending_without_reply: bool | None
-    # TODO: reply_markup: Union[
-    #     tg_types.InlineKeyboardMarkup,
-    #     tg_types.ReplyKeyboardMarkup,
-    #     tg_types.ReplyKeyboardRemove,
-    #     tg_types.ForceReply,
-    # ] | None = None
+    message_thread_id: int | None
+    caption: str | None
+    parse_mode: str | None
+    caption_entities: list[tg_types.MessageEntity] | None
+    has_spoiler: bool | None
+    disable_notification: bool | None
+    protect_content: bool | None
+    reply_to_message_id: int | None
+    allow_sending_without_reply: bool | None
+    reply_markup: Union[
+        tg_types.InlineKeyboardMarkup,
+        tg_types.ReplyKeyboardMarkup,
+        tg_types.ReplyKeyboardRemove,
+        tg_types.ForceReply,
+    ] | None = None
 
     async def asend(self) -> SendPhotoResponse:
         """Shortcut method to call sendPhoto Tg web API endpoint."""
@@ -197,21 +210,21 @@ class SendUrlPhotoRequest(BaseTgRequest):
     chat_id: int
     photo: str
     filename: str | None
-    # TODO: message_thread_id: int | None
-    # TODO: caption: str | None
-    # TODO: parse_mode: str | None
-    # TODO: caption_entities: list[tg_types.MessageEntity] | None
-    # TODO: has_spoiler: bool | None
-    # TODO: disable_notification: bool | None
-    # TODO: protect_content: bool | None
-    # TODO: reply_to_message_id: int | None
-    # TODO: allow_sending_without_reply: bool | None
-    # TODO: reply_markup: Union[
-    #     tg_types.InlineKeyboardMarkup,
-    #     tg_types.ReplyKeyboardMarkup,
-    #     tg_types.ReplyKeyboardRemove,
-    #     tg_types.ForceReply,
-    # ] | None = None
+    message_thread_id: int | None
+    caption: str | None
+    parse_mode: str | None
+    caption_entities: list[tg_types.MessageEntity] | None
+    has_spoiler: bool | None
+    disable_notification: bool | None
+    protect_content: bool | None
+    reply_to_message_id: int | None
+    allow_sending_without_reply: bool | None
+    reply_markup: Union[
+        tg_types.InlineKeyboardMarkup,
+        tg_types.ReplyKeyboardMarkup,
+        tg_types.ReplyKeyboardRemove,
+        tg_types.ForceReply,
+    ] | None = None
 
     async def asend(self) -> SendPhotoResponse:
         """Shortcut method to call sendPhoto Tg web API endpoint."""
@@ -231,31 +244,31 @@ class SendDocumentResponse(BaseTgResponse):
 
 
 class SendBytesDocumentRequest(BaseTgRequest):
-    """Object encapsulates data for calling web API endpoint `sendPhoto`.
+    """Object encapsulates data for calling web API endpoint `sendDocument`.
 
     Telegram web API docs:
-        See here https://core.telegram.org/bots/api#sendphoto
+        See here https://core.telegram.org/bots/api#senddocument
     """
 
     chat_id: int
     document: bytes  # TODO: httx supports AsyncIterable[bytes], but pydantic doesnt
     filename: str | None
-    # TODO: message_thread_id: int | None
-    # TODO: thumbnail: tg_types.InputFile | str | None
-    # TODO: caption: str | None
-    # TODO: parse_mode: str | None
-    # TODO: caption_entities: list[tg_types.MessageEntity] | None
-    # TODO: disable_content_type_detection: bool | None
-    # TODO: disable_notification: bool | None
-    # TODO: protect_content: bool | None
-    # TODO: reply_to_message_id: int | None
-    # TODO: allow_sending_without_reply: bool | None
-    # TODO: reply_markup: Union[
-    #     tg_types.InlineKeyboardMarkup,
-    #     tg_types.ReplyKeyboardMarkup,
-    #     tg_types.ReplyKeyboardRemove,
-    #     tg_types.ForceReply,
-    # ] | None = None
+    message_thread_id: int | None
+    # thumbnail: tg_types.InputFile | str | None
+    caption: str | None
+    parse_mode: str | None
+    caption_entities: list[tg_types.MessageEntity] | None
+    disable_content_type_detection: bool | None
+    disable_notification: bool | None
+    protect_content: bool | None
+    reply_to_message_id: int | None
+    allow_sending_without_reply: bool | None
+    reply_markup: Union[
+        tg_types.InlineKeyboardMarkup,
+        tg_types.ReplyKeyboardMarkup,
+        tg_types.ReplyKeyboardRemove,
+        tg_types.ForceReply,
+    ] | None = None
 
     async def asend(self) -> SendDocumentResponse:
         """Shortcut method to call sendDocument Tg web API endpoint."""
@@ -279,31 +292,31 @@ class SendBytesDocumentRequest(BaseTgRequest):
 
 
 class SendUrlDocumentRequest(BaseTgRequest):
-    """Object encapsulates data for calling web API endpoint `sendPhoto`.
+    """Object encapsulates data for calling web API endpoint `sendDocument`.
 
     Telegram web API docs:
-        See here https://core.telegram.org/bots/api#sendphoto
+        See here https://core.telegram.org/bots/api#senddocument
     """
 
     chat_id: int
     document: str
     filename: str | None
-    # TODO: message_thread_id: int | None
-    # TODO: thumbnail: tg_types.InputFile | str | None
-    # TODO: caption: str | None
-    # TODO: parse_mode: str | None
-    # TODO: caption_entities: list[tg_types.MessageEntity] | None
-    # TODO: disable_content_type_detection: bool | None
-    # TODO: disable_notification: bool | None
-    # TODO: protect_content: bool | None
-    # TODO: reply_to_message_id: int | None
-    # TODO: allow_sending_without_reply: bool | None
-    # TODO: reply_markup: Union[
-    #     tg_types.InlineKeyboardMarkup,
-    #     tg_types.ReplyKeyboardMarkup,
-    #     tg_types.ReplyKeyboardRemove,
-    #     tg_types.ForceReply,
-    # ] | None = None
+    message_thread_id: int | None
+    # thumbnail: tg_types.InputFile | str | None
+    caption: str | None
+    parse_mode: str | None
+    caption_entities: list[tg_types.MessageEntity] | None
+    disable_content_type_detection: bool | None
+    disable_notification: bool | None
+    protect_content: bool | None
+    reply_to_message_id: int | None
+    allow_sending_without_reply: bool | None
+    reply_markup: Union[
+        tg_types.InlineKeyboardMarkup,
+        tg_types.ReplyKeyboardMarkup,
+        tg_types.ReplyKeyboardRemove,
+        tg_types.ForceReply,
+    ] | None = None
 
     async def asend(self) -> SendDocumentResponse:
         """Shortcut method to call sendDocument Tg web API endpoint."""
