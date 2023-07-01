@@ -5,7 +5,7 @@ description = "Linters for python code"
 authors = ["LLC \"Proxys.io\""]
 
 [tool.poetry.dependencies]
-python = "^3.11"
+python = "^3.10"
 flake8 = "6.0.*"
 flake8-cognitive-complexity = "0.1.*"
 flake8-commas = "2.1.*"

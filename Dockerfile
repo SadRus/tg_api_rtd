@@ -1,4 +1,4 @@
-FROM docker.io/python:3.11.4
+FROM docker.io/python:3.10.12
 
 ARG BASE_DIR=/opt/app
 

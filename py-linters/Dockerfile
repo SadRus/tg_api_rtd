@@ -1,4 +1,4 @@
-FROM docker.io/python:3.11.4-alpine
+FROM docker.io/python:3.10.12-alpine
 
 ARG BASE_DIR=/opt/linters
 

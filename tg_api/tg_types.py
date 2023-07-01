@@ -1,12 +1,12 @@
 from __future__ import annotations
 
-from enum import StrEnum
+from enum import Enum
 from typing import Any, Union, Optional
 
 from pydantic import BaseModel, AnyHttpUrl, Field
 
 
-class ParseMode(StrEnum):
+class ParseMode(str, Enum):
     MarkdownV2 = 'MarkdownV2'  # https://core.telegram.org/bots/api#markdownv2-style
     HTML = 'HTML'  # https://core.telegram.org/bots/api#html-style
     Markdown = 'Markdown'  # legacy mode https://core.telegram.org/bots/api#markdown-style
@@ -473,6 +473,99 @@ class ChatJoinRequest(BaseModel):
     invite_link: ChatInviteLink | None = None
 
 
+class ChatMemberOwner(BaseModel):
+    """Represents a join request sent to a chat.
+
+    See here: https://core.telegram.org/bots/api#chatmemberowner
+    """
+
+    status: str
+    user: User
+    is_anonymous: bool
+    custom_title: str
+
+
+class ChatMemberAdministrator(BaseModel):
+    """Represents a join request sent to a chat.
+
+    See here: https://core.telegram.org/bots/api#chatmemberadministrator
+    """
+
+    status: str
+    user: User
+    can_be_edited: bool
+    is_anonymous: bool
+    can_manage_chat: bool
+    can_delete_messages: bool
+    can_manage_video_chats: bool
+    can_restrict_members: bool
+    can_promote_members: bool
+    can_change_info: bool
+    can_invite_users: bool
+    can_post_messages: bool
+    can_edit_messages: bool
+    can_pin_messages: bool
+    can_manage_topics: bool
+    custom_title: bool
+
+
+class ChatMemberMember(BaseModel):
+    """Represents a join request sent to a chat.
+
+    See here: https://core.telegram.org/bots/api#chatmembermember
+    """
+
+    status: str
+    user: User
+
+
+class ChatMemberRestricted(BaseModel):
+    """Represents a join request sent to a chat.
+
+    See here: https://core.telegram.org/bots/api#chatmemberrestricted
+    """
+
+    status: str
+    user: User
+    is_member: bool
+    can_send_messages: bool
+    can_send_audios: bool
+    can_send_documents: bool
+    can_send_photos: bool
+    can_send_videos: bool
+    can_send_video_notes: bool
+    can_send_voice_notes: bool
+    can_send_polls: bool
+    can_send_other_messages: bool
+    can_add_web_page_previews: bool
+    can_change_info: bool
+    can_invite_users: bool
+    can_pin_messages: bool
+    can_manage_topics: bool
+    until_date: bool
+
+
+class ChatMemberLeft(BaseModel):
+    """Represents a join request sent to a chat.
+
+    See here: https://core.telegram.org/bots/api#chatmemberleft
+    """
+
+    status: str
+    user: User
+
+
+class ChatMemberBanned(BaseModel):
+    """Represents a join request sent to a chat.
+
+    See here: https://core.telegram.org/bots/api#chatmemberbanned
+    """
+
+    status: str
+    user: User
+    until_date: int
+
+
 class ChatMemberUpdated(BaseModel):
     """This object represents changes in the status of a chat member.
 
@@ -482,8 +575,22 @@ class ChatMemberUpdated(BaseModel):
     chat: Chat
     from_: User
     date: int
-    old_chat_member: dict[str, Any] | None = None
-    new_chat_member: dict[str, Any] | None = None
+    old_chat_member: Union[
+        ChatMemberOwner,
+        ChatMemberAdministrator,
+        ChatMemberMember,
+        ChatMemberRestricted,
+        ChatMemberLeft,
+        ChatMemberBanned,
+    ]
+    new_chat_member: Union[
+        ChatMemberOwner,
+        ChatMemberAdministrator,
+        ChatMemberMember,
+        ChatMemberRestricted,
+        ChatMemberLeft,
+        ChatMemberBanned,
+    ]
     invite_link: ChatInviteLink | None = None
     via_chat_folder_invite_link: bool
 
