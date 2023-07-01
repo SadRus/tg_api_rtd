@@ -9,6 +9,8 @@ from .tg_methods import (  # noqa F401
     SendDocumentResponse,
     SendUrlDocumentRequest,
     SendBytesDocumentRequest,
+    DeleteMessageResponse,
+    DeleteMessageRequest,
 )
 from .tg_types import (  # noqa F401
     ParseMode,

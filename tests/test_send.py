@@ -1,12 +1,15 @@
 import json
+import typing
+
 import requests
 import pytest_httpx
+
 from tg_api import tg_methods, tg_types
 
 
 def test_photo_request_mocking(
     httpx_mock: pytest_httpx.HTTPXMock,
-    get_photo_response: tg_methods.SendPhotoResponse,
+    get_photo_response: dict[str, typing.Any],
 ):
     tg_types.Chat.update_forward_refs()
     tg_types.Message.update_forward_refs()
@@ -59,7 +62,7 @@ def test_photo_request_mocking(
 
 def test_message_request(
     httpx_mock: pytest_httpx.HTTPXMock,
-    get_message_response: tg_methods.SendMessageResponse,
+    get_message_response: dict[str, typing.Any],
 ):
     httpx_mock.add_response(
         url='https://api.telegram.org/bottoken/sendMessage',
@@ -82,7 +85,7 @@ def test_message_request(
 
 def test_document_request_mocking(
     httpx_mock: pytest_httpx.HTTPXMock,
-    get_document_response: tg_methods.SendDocumentResponse,
+    get_document_response: dict[str, typing.Any],
 ):
     tg_types.Chat.update_forward_refs()
     tg_types.Message.update_forward_refs()
@@ -144,3 +147,27 @@ def test_document_request_mocking(
             response = tg_request.send()
             assert get_document_response == json.loads(json_payload)
             assert get_document_response == response.dict()
+
+
+def test_delete_message_request_mocking(
+    httpx_mock: pytest_httpx.HTTPXMock,
+    delete_message_response: dict[str, typing.Any],
+):
+
+    httpx_mock.add_response(
+        url='https://api.telegram.org/bottoken/deleteMessage',
+        method='POST',
+        headers={
+            'content-type': 'application/json',
+            'accept': 'application/json',
+        },
+        json=delete_message_response,
+    )
+
+    with tg_methods.SyncTgClient.setup('token'):
+        tg_request = tg_methods.DeleteMessageRequest(chat_id=1234567890, message_id=12345)
+        json_payload = tg_request.post_as_json('deleteMessage')
+        response = tg_request.send()
+        assert isinstance(response, tg_methods.DeleteMessageResponse)
+        assert delete_message_response == json.loads(json_payload)
+        assert delete_message_response == response.dict()

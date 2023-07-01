@@ -1,10 +1,12 @@
+import typing
+
 import pytest
 
 from tg_api import tg_types, tg_methods
 
 
 @pytest.fixture
-def get_message_response() -> tg_methods.SendMessageResponse:
+def get_message_response() -> dict[str, typing.Any]:
     return tg_methods.SendMessageResponse.parse_obj(
         {
             'ok': True,
@@ -33,7 +35,7 @@ def get_message_response() -> tg_methods.SendMessageResponse:
 
 
 @pytest.fixture
-def get_document_response() -> tg_methods.SendDocumentResponse:
+def get_document_response() -> dict[str, typing.Any]:
     return tg_methods.SendDocumentResponse.parse_obj(
         {
             'ok': True,
@@ -69,7 +71,7 @@ def get_document_response() -> tg_methods.SendDocumentResponse:
 
 
 @pytest.fixture
-def get_photo_response() -> tg_methods.SendPhotoResponse:
+def get_photo_response() -> dict[str, typing.Any]:
     return tg_methods.SendPhotoResponse.parse_obj(
         {
             'ok': True,
@@ -102,3 +104,8 @@ def get_photo_response() -> tg_methods.SendPhotoResponse:
             }),
         },
     ).dict()
+
+
+@pytest.fixture
+def delete_message_response() -> dict[str, typing.Any]:
+    return tg_methods.DeleteMessageResponse.parse_obj({'ok': True, 'result': True}).dict()

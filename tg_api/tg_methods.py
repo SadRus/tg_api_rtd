@@ -329,3 +329,30 @@ class SendUrlDocumentRequest(BaseTgRequest):
         json_payload = self.post_as_json('sendDocument')
         response = SendDocumentResponse.parse_raw(json_payload)
         return response
+
+
+class DeleteMessageResponse(BaseTgResponse):
+    result: bool
+
+
+class DeleteMessageRequest(BaseTgRequest):
+    """Object encapsulates data for calling web API endpoint `deleteMessage`.
+
+    Telegram web API docs:
+        See here https://core.telegram.org/bots/api#deletemessage
+    """
+
+    chat_id: int
+    message_id: int
+
+    async def asend(self) -> DeleteMessageResponse:
+        """Shortcut method to call deleteMessage Tg web API endpoint."""
+        json_payload = await self.apost_as_json('deleteMessage')
+        response = DeleteMessageResponse.parse_raw(json_payload)
+        return response
+
+    def send(self) -> DeleteMessageResponse:
+        """Shortcut method to call deleteMessage Tg web API endpoint."""
+        json_payload = self.post_as_json('deleteMessage')
+        response = DeleteMessageResponse.parse_raw(json_payload)
+        return response

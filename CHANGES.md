@@ -13,6 +13,7 @@
 Не в релизе
 ------------------------
 
+- Добавлены методы DeleteMessageResponse и DeleteMessageRequest для удаления сообщений
 - Добавлены поля my_chat_member и chat_member в tg_types.Update, добавлен новый тип ChatMemberUpdated
 - Добавлены тесты для tg_methods.SendUrlPhotoRequest.send, asend и tg_methods.SendBytesPhotoRequest.send, asend
 - В README добавлены примеры для отправки фото и документа

@@ -85,6 +85,17 @@ with SyncTgClient.setup(token):
     tg_request.send()
 ```
 
+Пример удаления у пользователя любого сообщения по идентификатору сообщения:
+
+```py
+from tg_api import SyncTgClient, DeleteMessageRequest
+
+
+with SyncTgClient.setup(token):
+    tg_request = DeleteMessageRequest(chat_id=tg_chat_id, message_id=message_id)
+    tg_request.send()
+```
+
 Пример отправки пользователю сообщения с клавиатурой:
 ```py
 from tg_api import (
@@ -170,6 +181,18 @@ from tg_api import AsyncTgClient, SendMessageRequest
 
 async with AsyncTgClient.setup(token):
     tg_request = SendMessageRequest(chat_id=chat_id, text='Message proofs high level API usage.')
+    # вызов метода поднимет исключение TgRuntimeError если сервере Telegram ответит HTTP статусом != 2xx
+    await tg_request.asend()
+```
+
+Пример удаления у пользователя любого сообщения по идентификатору сообщения:
+
+```py
+from tg_api import SyncTgClient, DeleteMessageRequest
+
+
+async with AsyncTgClient.setup(token):
+    tg_request = DeleteMessageRequest(chat_id=chat_id, message_id=message_id)
     # вызов метода поднимет исключение TgRuntimeError если сервере Telegram ответит HTTP статусом != 2xx
     await tg_request.asend()
 ```
