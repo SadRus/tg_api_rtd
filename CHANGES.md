@@ -12,6 +12,7 @@
 
 Не в релизе
 ------------------------
+- Создан AUTHORS.md
 - Увеличено количество поддерживаемых версий phyton(>=3.10), добавлены типы в tg_types для дочерних классов ChatMember
 - Добавлены методы DeleteMessageResponse и DeleteMessageRequest для удаления сообщений
 - Добавлены поля my_chat_member и chat_member в tg_types.Update, добавлен новый тип ChatMemberUpdated
