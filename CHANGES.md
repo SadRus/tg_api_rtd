@@ -12,7 +12,7 @@
 
 Не в релизе
 ------------------------
-
+- Увеличено количество поддерживаемых версий phyton(>=3.10), добавлены типы в tg_types для дочерних классов ChatMember
 - Добавлены методы DeleteMessageResponse и DeleteMessageRequest для удаления сообщений
 - Добавлены поля my_chat_member и chat_member в tg_types.Update, добавлен новый тип ChatMemberUpdated
 - Добавлены тесты для tg_methods.SendUrlPhotoRequest.send, asend и tg_methods.SendBytesPhotoRequest.send, asend
