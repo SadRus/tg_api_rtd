@@ -13,6 +13,8 @@ from .tg_methods import (  # noqa F401
     DeleteMessageRequest,
     EditMessageTextResponse,
     EditMessageTextRequest,
+    EditMessageReplyMarkupResponse,
+    EditMessageReplyMarkupRequest,
 )
 from .tg_types import (  # noqa F401
     ParseMode,

@@ -12,6 +12,9 @@
 
 Не в релизе
 ------------------------
+
+- Добавлены методы EditMessageReplyMarkupResponse и EditMessageReplyMarkupRequest для изменения клавиатуры сообщения
+- Добавлены методы EditMessageTextResponse и EditMessageTextRequest для изменения текста (и клавиатуры опционально) сообщения
 - Создан AUTHORS.md
 - Увеличено количество поддерживаемых версий phyton(>=3.10), добавлены типы в tg_types для дочерних классов ChatMember
 - Добавлены методы DeleteMessageResponse и DeleteMessageRequest для удаления сообщений

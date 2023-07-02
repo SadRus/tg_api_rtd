@@ -395,3 +395,32 @@ class EditMessageTextRequest(BaseTgRequest):
         json_payload = self.post_as_json('editmessagetext')
         response = EditMessageTextResponse.parse_raw(json_payload)
         return response
+
+
+class EditMessageReplyMarkupResponse(BaseTgResponse):
+    result: tg_types.Message | bool
+
+
+class EditMessageReplyMarkupRequest(BaseTgRequest):
+    """Object encapsulates data for calling web API endpoint `editMessageReplyMarkup`.
+
+    Telegram web API docs:
+        See here https://core.telegram.org/bots/api#editmessagereplymarkup
+    """
+
+    chat_id: int | None
+    message_id: int | None
+    inline_message_id: str | None
+    reply_markup: tg_types.InlineKeyboardMarkup | None
+
+    async def asend(self) -> EditMessageReplyMarkupResponse:
+        """Shortcut method to call editMessageText Tg web API endpoint."""
+        json_payload = await self.apost_as_json('editmessagereplymarkup')
+        response = EditMessageReplyMarkupResponse.parse_raw(json_payload)
+        return response
+
+    def send(self) -> EditMessageReplyMarkupResponse:
+        """Shortcut method to call editMessageText Tg web API endpoint."""
+        json_payload = self.post_as_json('editmessagereplymarkup')
+        response = EditMessageReplyMarkupResponse.parse_raw(json_payload)
+        return response

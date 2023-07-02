@@ -108,6 +108,26 @@ with SyncTgClient.setup(token):
     tg_request.send()
 ```
 
+Пример изменения у пользователя клавиатуры любого сообщения по идентификатору сообщения:
+
+```py
+from tg_api import SyncTgClient, EditMessageTextRequest, InlineKeyboardButton, InlineKeyboardMarkup
+
+
+keyboard = InlineKeyboardMarkup(
+    inline_keyboard=[
+        [
+            InlineKeyboardButton(text='button_1', callback_data='test'),
+            InlineKeyboardButton(text='button_2', callback_data='test'),
+        ],
+    ],
+)
+
+with SyncTgClient.setup(token):
+    tg_request = EditMessageReplyMarkupRequest(chat_id=tg_chat_id, message_id=message_id, reply_markup=keyboard)
+    tg_request.send()
+```
+
 Пример отправки пользователю сообщения с клавиатурой:
 ```py
 from tg_api import (
@@ -200,24 +220,43 @@ async with AsyncTgClient.setup(token):
 Пример удаления у пользователя любого сообщения по идентификатору сообщения:
 
 ```py
-from tg_api import SyncTgClient, DeleteMessageRequest
+from tg_api import AsyncTgClient, DeleteMessageRequest
 
 
 async with AsyncTgClient.setup(token):
     tg_request = DeleteMessageRequest(chat_id=chat_id, message_id=message_id)
-    # вызов метода поднимет исключение TgRuntimeError если сервере Telegram ответит HTTP статусом != 2xx
     await tg_request.asend()
 ```
 
 Пример изменения у пользователя текста любого сообщения по идентификатору сообщения:
 
 ```py
-from tg_api import SyncTgClient, EditMessageTextRequest
+from tg_api import AsyncTgClient, EditMessageTextRequest
 
 
 async with AsyncTgClient.setup(token):
     tg_request = EditMessageTextRequest(chat_id=chat_id, message_id=message_id, text='edited text')
-    # вызов метода поднимет исключение TgRuntimeError если сервере Telegram ответит HTTP статусом != 2xx
+    await tg_request.asend()
+```
+
+
+Пример изменения у пользователя клавиатуры любого сообщения по идентификатору сообщения:
+
+```py
+from tg_api import AsyncTgClient, EditMessageTextRequest, InlineKeyboardButton, InlineKeyboardMarkup
+
+
+keyboard = InlineKeyboardMarkup(
+    inline_keyboard=[
+        [
+            InlineKeyboardButton(text='button_1', callback_data='test'),
+            InlineKeyboardButton(text='button_2', callback_data='test'),
+        ],
+    ],
+)
+
+async with AsyncTgClient.setup(token):
+    tg_request = EditMessageReplyMarkupRequest(chat_id=chat_id, message_id=message_id, reply_markup=keyboard)
     await tg_request.asend()
 ```
 

@@ -124,7 +124,7 @@ def keyboard() -> tg_types.InlineKeyboardMarkup:
 
 
 @pytest.fixture
-def edit_message_text_response(keyboard: tg_types.InlineKeyboardMarkup):
+def edit_message_text_response(keyboard: tg_types.InlineKeyboardMarkup) -> dict[str, typing.Any]:
     return tg_methods.EditMessageTextResponse.parse_obj(
         {
             'ok': True,
@@ -151,3 +151,9 @@ def edit_message_text_response(keyboard: tg_types.InlineKeyboardMarkup):
             }),
         },
     ).dict()
+
+
+@pytest.fixture
+def edit_message_reply_markup_response(edit_message_text_response: dict[str, typing.Any]) -> dict[str, typing.Any]:
+    # unique fixture for test, but really similar to :edit_message_text_response:
+    return edit_message_text_response
