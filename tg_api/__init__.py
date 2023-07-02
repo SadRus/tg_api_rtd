@@ -15,6 +15,8 @@ from .tg_methods import (  # noqa F401
     EditMessageTextRequest,
     EditMessageReplyMarkupResponse,
     EditMessageReplyMarkupRequest,
+    EditMessageCaptionResponse,
+    EditMessageCaptionRequest,
 )
 from .tg_types import (  # noqa F401
     ParseMode,

@@ -13,6 +13,7 @@
 Не в релизе
 ------------------------
 
+- Добавлены методы EditMessageCaptionResponse и EditMessageCaptionRequest для изменения клавиатуры сообщения
 - Добавлены методы EditMessageReplyMarkupResponse и EditMessageReplyMarkupRequest для изменения клавиатуры сообщения
 - Добавлены методы EditMessageTextResponse и EditMessageTextRequest для изменения текста (и клавиатуры опционально) сообщения
 - Создан AUTHORS.md

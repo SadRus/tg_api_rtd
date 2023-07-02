@@ -108,6 +108,18 @@ with SyncTgClient.setup(token):
     tg_request.send()
 ```
 
+Пример изменения у пользователя заголовка сообщения по идентификатору сообщения:
+
+```py
+from tg_api import SyncTgClient, EditMessageCaptionRequest
+
+
+with SyncTgClient.setup(token):
+    tg_request = EditMessageCaptionRequest(chat_id=chat_id, message_id=message_id, caption='edited caption')
+    tg_request.asend()
+```
+
+
 Пример изменения у пользователя клавиатуры любого сообщения по идентификатору сообщения:
 
 ```py
@@ -257,6 +269,17 @@ keyboard = InlineKeyboardMarkup(
 
 async with AsyncTgClient.setup(token):
     tg_request = EditMessageReplyMarkupRequest(chat_id=chat_id, message_id=message_id, reply_markup=keyboard)
+    await tg_request.asend()
+```
+
+Пример изменения у пользователя заголовка сообщения по идентификатору сообщения:
+
+```py
+from tg_api import AsyncTgClient, EditMessageCaptionRequest
+
+
+async with AsyncTgClient.setup(token):
+    tg_request = EditMessageCaptionRequest(chat_id=chat_id, message_id=message_id, caption='edited caption')
     await tg_request.asend()
 ```
 

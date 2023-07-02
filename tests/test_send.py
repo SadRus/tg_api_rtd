@@ -230,3 +230,31 @@ def test_edit_message_reply_markup_request_mocking(
         assert isinstance(response, tg_methods.EditMessageReplyMarkupResponse)
         assert edit_message_reply_markup_response == json.loads(json_payload)
         assert edit_message_reply_markup_response == response.dict()
+
+
+def test_edit_message_caption_request_mocking(
+    httpx_mock: pytest_httpx.HTTPXMock,
+    edit_message_caption_response: dict[str, typing.Any],
+):
+
+    httpx_mock.add_response(
+        url='https://api.telegram.org/bottoken/editmessagecaption',
+        method='POST',
+        headers={
+            'content-type': 'application/json',
+            'accept': 'application/json',
+        },
+        json=edit_message_caption_response,
+    )
+
+    with tg_methods.SyncTgClient.setup('token'):
+        tg_request = tg_methods.EditMessageCaptionRequest(
+            chat_id=1234567890,
+            message_id=12345,
+            caption='edited caption',
+        )
+        json_payload = tg_request.post_as_json('editmessagecaption')
+        response = tg_request.send()
+        assert isinstance(response, tg_methods.EditMessageCaptionResponse)
+        assert edit_message_caption_response == json.loads(json_payload)
+        assert edit_message_caption_response == response.dict()

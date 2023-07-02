@@ -242,3 +242,33 @@ async def test_edit_message_reply_markup_request_mocking(
         assert isinstance(response, tg_methods.EditMessageReplyMarkupResponse)
         assert edit_message_reply_markup_response == json.loads(json_payload)
         assert edit_message_reply_markup_response == response.dict()
+
+
+@pytest.mark.anyio
+async def test_edit_message_caption_request_mocking(
+    httpx_mock: pytest_httpx.HTTPXMock,
+    edit_message_caption_response: dict[str, typing.Any],
+):
+    tg_types.Chat.update_forward_refs()
+    tg_types.Message.update_forward_refs()
+    httpx_mock.add_response(
+        url='https://api.telegram.org/bottoken/editmessagecaption',
+        method='POST',
+        headers={
+            'content-type': 'application/json',
+            'accept': 'application/json',
+        },
+        json=edit_message_caption_response,
+    )
+
+    async with tg_methods.AsyncTgClient.setup('token'):
+        tg_request = tg_methods.EditMessageCaptionRequest(
+            chat_id=1234567890,
+            message_id=12345,
+            caption='edited caption',
+        )
+        json_payload = await tg_request.apost_as_json('editmessagecaption')
+        response = await tg_request.asend()
+        assert isinstance(response, tg_methods.EditMessageCaptionResponse)
+        assert edit_message_caption_response == json.loads(json_payload)
+        assert edit_message_caption_response == response.dict()
