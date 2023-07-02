@@ -96,6 +96,18 @@ with SyncTgClient.setup(token):
     tg_request.send()
 ```
 
+
+Пример изменения у пользователя текста любого сообщения по идентификатору сообщения:
+
+```py
+from tg_api import SyncTgClient, EditMessageTextRequest
+
+
+with SyncTgClient.setup(token):
+    tg_request = EditMessageTextRequest(chat_id=tg_chat_id, message_id=message_id, text='edited text')
+    tg_request.send()
+```
+
 Пример отправки пользователю сообщения с клавиатурой:
 ```py
 from tg_api import (
@@ -193,6 +205,18 @@ from tg_api import SyncTgClient, DeleteMessageRequest
 
 async with AsyncTgClient.setup(token):
     tg_request = DeleteMessageRequest(chat_id=chat_id, message_id=message_id)
+    # вызов метода поднимет исключение TgRuntimeError если сервере Telegram ответит HTTP статусом != 2xx
+    await tg_request.asend()
+```
+
+Пример изменения у пользователя текста любого сообщения по идентификатору сообщения:
+
+```py
+from tg_api import SyncTgClient, EditMessageTextRequest
+
+
+async with AsyncTgClient.setup(token):
+    tg_request = EditMessageTextRequest(chat_id=chat_id, message_id=message_id, text='edited text')
     # вызов метода поднимет исключение TgRuntimeError если сервере Telegram ответит HTTP статусом != 2xx
     await tg_request.asend()
 ```

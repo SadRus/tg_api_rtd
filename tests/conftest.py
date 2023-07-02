@@ -109,3 +109,45 @@ def get_photo_response() -> dict[str, typing.Any]:
 @pytest.fixture
 def delete_message_response() -> dict[str, typing.Any]:
     return tg_methods.DeleteMessageResponse.parse_obj({'ok': True, 'result': True}).dict()
+
+
+@pytest.fixture
+def keyboard() -> tg_types.InlineKeyboardMarkup:
+    return tg_types.InlineKeyboardMarkup(
+        inline_keyboard=[
+            [
+                tg_types.InlineKeyboardButton(text='button_1', callback_data='test'),
+                tg_types.InlineKeyboardButton(text='button_2', callback_data='test'),
+            ],
+        ],
+    )
+
+
+@pytest.fixture
+def edit_message_text_response(keyboard: tg_types.InlineKeyboardMarkup):
+    return tg_methods.EditMessageTextResponse.parse_obj(
+        {
+            'ok': True,
+            'result': tg_types.Message.parse_obj({
+                'chat': tg_types.Chat.parse_obj({
+                    'first_name': 'TestFirstName',
+                    'id': 1234567890,
+                    'last_name': 'TestLastName',
+                    'type': 'private',
+                    'username': 'TestUserName',
+                }),
+                'date': 1686840262,
+                'from_': tg_types.User.parse_obj({
+                    'first_name': 'TestFirstName',
+                    'id': 1234567890,
+                    'is_bot': False,
+                    'language_code': 'ru',
+                    'last_name': 'TestLastName',
+                    'username': 'TestUserName',
+                }),
+                'message_id': 12345,
+                'text': 'Edited text',
+                'reply_markup': keyboard.dict(),
+            }),
+        },
+    ).dict()

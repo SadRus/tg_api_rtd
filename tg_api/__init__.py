@@ -11,6 +11,8 @@ from .tg_methods import (  # noqa F401
     SendBytesDocumentRequest,
     DeleteMessageResponse,
     DeleteMessageRequest,
+    EditMessageTextResponse,
+    EditMessageTextRequest,
 )
 from .tg_types import (  # noqa F401
     ParseMode,

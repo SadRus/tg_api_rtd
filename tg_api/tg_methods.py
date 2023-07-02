@@ -57,6 +57,9 @@ class BaseTgRequest(BaseModel):
         if content.get('caption_entities'):
             content['caption_entities'] = json.dumps(content['caption_entities'])
 
+        if content.get('entities'):
+            content['entities'] = json.dumps(content['entities'])
+
         if content.get('reply_markup'):
             content['reply_markup'] = json.dumps(content['reply_markup'])
 
@@ -76,6 +79,9 @@ class BaseTgRequest(BaseModel):
 
         if content.get('caption_entities'):
             content['caption_entities'] = json.dumps(content['caption_entities'])
+
+        if content.get('entities'):
+            content['entities'] = json.dumps(content['entities'])
 
         if content.get('reply_markup'):
             content['reply_markup'] = json.dumps(content['reply_markup'])
@@ -355,4 +361,37 @@ class DeleteMessageRequest(BaseTgRequest):
         """Shortcut method to call deleteMessage Tg web API endpoint."""
         json_payload = self.post_as_json('deleteMessage')
         response = DeleteMessageResponse.parse_raw(json_payload)
+        return response
+
+
+class EditMessageTextResponse(BaseTgResponse):
+    result: tg_types.Message | bool
+
+
+class EditMessageTextRequest(BaseTgRequest):
+    """Object encapsulates data for calling web API endpoint `editMessageText`.
+
+    Telegram web API docs:
+        See here https://core.telegram.org/bots/api#editmessagetext
+    """
+
+    chat_id: int | None
+    message_id: int | None
+    inline_message_id: str | None
+    text: str
+    parse_mode: str | None
+    entities: list[tg_types.MessageEntity] | None
+    disable_web_page_preview: bool | None
+    reply_markup: tg_types.InlineKeyboardMarkup | None
+
+    async def asend(self) -> EditMessageTextResponse:
+        """Shortcut method to call editMessageText Tg web API endpoint."""
+        json_payload = await self.apost_as_json('editmessagetext')
+        response = EditMessageTextResponse.parse_raw(json_payload)
+        return response
+
+    def send(self) -> EditMessageTextResponse:
+        """Shortcut method to call editMessageText Tg web API endpoint."""
+        json_payload = self.post_as_json('editmessagetext')
+        response = EditMessageTextResponse.parse_raw(json_payload)
         return response
