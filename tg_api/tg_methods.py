@@ -166,7 +166,6 @@ class SendBytesPhotoRequest(BaseTgRequest):
     photo: Union[
         bytes,
         Iterable[bytes],
-        # TODO: httx supports AsyncIterable[bytes], but pydantic doesnt
     ]
     filename: str | None
     message_thread_id: int | None
@@ -257,10 +256,10 @@ class SendBytesDocumentRequest(BaseTgRequest):
     """
 
     chat_id: int
-    document: bytes  # TODO: httx supports AsyncIterable[bytes], but pydantic doesnt
+    document: bytes
     filename: str | None
     message_thread_id: int | None
-    # thumbnail: tg_types.InputFile | str | None
+    thumbnail: bytes | str | None
     caption: str | None
     parse_mode: str | None
     caption_entities: list[tg_types.MessageEntity] | None
@@ -308,7 +307,7 @@ class SendUrlDocumentRequest(BaseTgRequest):
     document: str
     filename: str | None
     message_thread_id: int | None
-    # thumbnail: tg_types.InputFile | str | None
+    thumbnail: bytes | str | None
     caption: str | None
     parse_mode: str | None
     caption_entities: list[tg_types.MessageEntity] | None
