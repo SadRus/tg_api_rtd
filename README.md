@@ -1,5 +1,8 @@
 # Tg API
 
+![PyPI - Downloads](https://img.shields.io/pypi/dm/tg_api)
+![PyPI - License](https://img.shields.io/pypi/l/tg_api)
+
 Библиотека tg_api упрощает работу с веб-API Telegram. Она предоставляет тонкую обёртку над веб API Telegram и библиотекой [HTTPX](https://www.python-httpx.org/). Библиотека tg_api добавляет к HTTPX схемы данных и удобные часто используемые функции, но не мешает, при необходимости, спускаться ниже на уровень HTTP-запросов.
 
 Ключевые возможности библиотеки tg_api:
@@ -412,7 +415,7 @@ async def main(token: str, chat_id: int) -> None:
 - [Install Docker Desktop](https://www.docker.com/get-started/)
 - [Install Docker Compose](https://docs.docker.com/compose/install/)
 
-Склонируйте репозиторий. 
+Склонируйте репозиторий.
 
 В репозитории используются хуки pre-commit, чтобы автоматически запускать линтеры и автотесты. Перед началом разработки установите [pre-commit package manager](https://pre-commit.com/).
 
