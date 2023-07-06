@@ -141,7 +141,6 @@ class SendMessageRequest(BaseTgRequest):
         """Shortcut method to call sendMessage Tg web API endpoint."""
         json_payload = await self.apost_as_json('sendMessage')
         response = SendMessageResponse.parse_raw(json_payload)
-        # TODO check for response.ok ?
         return response
 
     def send(self) -> SendMessageResponse:
