@@ -12,6 +12,8 @@
 
 Не в релизе
 ------------------------
+
+- Удален AUTHORS.md ввиду ранней стадии проекта как open-source
 - Создан Makefile для основных команд проекта
 - Добавлены методы EditMessageCaptionResponse и EditMessageCaptionRequest для изменения клавиатуры сообщения
 - Добавлены методы EditMessageReplyMarkupResponse и EditMessageReplyMarkupRequest для изменения клавиатуры сообщения
