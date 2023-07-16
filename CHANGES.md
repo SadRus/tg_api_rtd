@@ -13,6 +13,7 @@
 Не в релизе
 ------------------------
 
+- Добавлены методы EditBytesMessageMediaRequest, EditUrlMessageMediaRequest, типы InputMediaUrlPhoto, InputMediaBytesPhoto, InputMediaUrlDocument, InputMediaBytesDocument для изменения медиа в сообщении
 - Удален AUTHORS.md ввиду ранней стадии проекта как open-source
 - Создан Makefile для основных команд проекта
 - Добавлены методы EditMessageCaptionResponse и EditMessageCaptionRequest для изменения клавиатуры сообщения
