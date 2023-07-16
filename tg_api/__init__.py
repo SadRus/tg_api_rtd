@@ -17,6 +17,9 @@ from .tg_methods import (  # noqa F401
     EditMessageReplyMarkupRequest,
     EditMessageCaptionResponse,
     EditMessageCaptionRequest,
+    EditMessageMediaResponse,
+    EditUrlMessageMediaRequest,
+    EditBytesMessageMediaRequest,
 )
 from .tg_types import (  # noqa F401
     ParseMode,
@@ -36,4 +39,8 @@ from .tg_types import (  # noqa F401
     MessageEntity,
     MessageReplyMarkup,
     Update,
+    InputMediaBytesDocument,
+    InputMediaBytesPhoto,
+    InputMediaUrlDocument,
+    InputMediaUrlPhoto,
 )
