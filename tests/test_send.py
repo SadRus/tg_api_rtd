@@ -258,3 +258,129 @@ def test_edit_message_caption_request_mocking(
         assert isinstance(response, tg_methods.EditMessageCaptionResponse)
         assert edit_message_caption_response == json.loads(json_payload)
         assert edit_message_caption_response == response.dict()
+
+
+def test_edit_message_media_url_photo_request_mocking(
+    httpx_mock: pytest_httpx.HTTPXMock,
+    edit_message_media_photo_response: dict[str, typing.Any],
+):
+    httpx_mock.add_response(
+        url='https://api.telegram.org/bottoken/editmessagemedia',
+        method='POST',
+        headers={
+            'content-type': 'application/json',
+            'accept': 'application/json',
+        },
+        json=edit_message_media_photo_response,
+    )
+
+    with tg_methods.SyncTgClient.setup('token'):
+        media = tg_types.InputMediaUrlPhoto(
+            media='https://link_to_photo.jpg',
+            caption='edited caption',
+        )
+        tg_request = tg_methods.EditUrlMessageMediaRequest(
+            chat_id=1234567890,
+            message_id=12345,
+            media=media,
+        )
+        json_payload = tg_request.post_as_json('editmessagemedia')
+        response = tg_request.send()
+        assert isinstance(response, tg_methods.EditMessageMediaResponse)
+        assert edit_message_media_photo_response == json.loads(json_payload)
+        assert edit_message_media_photo_response == response.dict()
+
+
+def test_edit_message_media_url_document_request_mocking(
+    httpx_mock: pytest_httpx.HTTPXMock,
+    edit_message_media_document_response: dict[str, typing.Any],
+):
+    httpx_mock.add_response(
+        url='https://api.telegram.org/bottoken/editmessagemedia',
+        method='POST',
+        headers={
+            'content-type': 'application/json',
+            'accept': 'application/json',
+        },
+        json=edit_message_media_document_response,
+    )
+
+    with tg_methods.SyncTgClient.setup('token'):
+        media = tg_types.InputMediaUrlDocument(
+            media='https://link_to_document.pdf',
+            caption='edited caption',
+        )
+        tg_request = tg_methods.EditUrlMessageMediaRequest(
+            chat_id=1234567890,
+            message_id=12345,
+            media=media,
+        )
+        json_payload = tg_request.post_as_json('editmessagemedia')
+        response = tg_request.send()
+        assert isinstance(response, tg_methods.EditMessageMediaResponse)
+        assert edit_message_media_document_response == json.loads(json_payload)
+        assert edit_message_media_document_response == response.dict()
+
+
+def test_edit_message_media_bytes_photo_request_mocking(
+    httpx_mock: pytest_httpx.HTTPXMock,
+    edit_message_media_photo_response: dict[str, typing.Any],
+):
+    httpx_mock.add_response(
+        url='https://api.telegram.org/bottoken/editmessagemedia',
+        method='POST',
+        headers={
+            'content-type': 'application/json',
+            'accept': 'application/json',
+        },
+        json=edit_message_media_photo_response,
+    )
+
+    with tg_methods.SyncTgClient.setup('token'):
+        media = tg_types.InputMediaBytesPhoto(
+            media='attach://attachement.jpg',
+            media_content=b'photo content',
+            caption='edited caption',
+        )
+        tg_request = tg_methods.EditBytesMessageMediaRequest(
+            chat_id=1234567890,
+            message_id=12345,
+            media=media,
+        )
+        json_payload = tg_request.post_as_json('editmessagemedia')
+        response = tg_request.send()
+        assert isinstance(response, tg_methods.EditMessageMediaResponse)
+        assert edit_message_media_photo_response == json.loads(json_payload)
+        assert edit_message_media_photo_response == response.dict()
+
+
+def test_edit_message_media_bytes_document_request_mocking(
+    httpx_mock: pytest_httpx.HTTPXMock,
+    edit_message_media_document_response: dict[str, typing.Any],
+):
+    httpx_mock.add_response(
+        url='https://api.telegram.org/bottoken/editmessagemedia',
+        method='POST',
+        headers={
+            'content-type': 'application/json',
+            'accept': 'application/json',
+        },
+        json=edit_message_media_document_response,
+    )
+
+    with tg_methods.SyncTgClient.setup('token'):
+        media = tg_types.InputMediaBytesDocument(
+            media='attach://attachement.pdf',
+            media_content=b'document content',
+            caption='edited caption',
+        )
+        tg_request = tg_methods.EditBytesMessageMediaRequest(
+            chat_id=1234567890,
+            message_id=12345,
+            media=media,
+        )
+        json_payload = tg_request.post_as_json('editmessagemedia')
+        response = tg_request.send()
+        assert isinstance(response, tg_methods.EditMessageMediaResponse)
+        assert edit_message_media_document_response == json.loads(json_payload)
+        assert edit_message_media_document_response == response.dict()
