@@ -309,18 +309,66 @@ class MessageReplyMarkup(BaseModel):
     message_reply_markup: Union[Message, bool]
 
 
-class InputMediaPhoto(BaseModel):
-    """This model represents a photo.
+class InputMediaUrlPhoto(BaseModel):
+    """This model represents a photo with url or file id.
 
     See here: https://core.telegram.org/bots/api#inputmediaphoto
     """
 
-    type: str # noqa A003
+    type: str = 'photo' # noqa A003
     media: str
     caption: str | None = None
     parse_mode: str | None = None
     caption_entities: list[MessageEntity] | None = None
     has_spoiler: bool | None = None
+
+
+class InputMediaBytesPhoto(BaseModel):
+    """This model represents a photo with file.
+
+    See here: https://core.telegram.org/bots/api#inputmediaphoto
+    """
+
+    type: str = 'photo' # noqa A003
+    media: str
+    media_content: bytes
+    caption: str | None = None
+    parse_mode: str | None = None
+    caption_entities: list[MessageEntity] | None = None
+    has_spoiler: bool | None = None
+
+
+class InputMediaUrlDocument(BaseModel):
+    """This model represents a document with url or file id.
+
+    See here: https://core.telegram.org/bots/api#inputmediadocument
+    """
+
+    type: str = 'document' # noqa A003
+    media: str
+    thumbnail: str | None = None
+    thumbnail_content: bytes | None = None
+    caption: str | None = None
+    parse_mode: str | None = None
+    caption_entities: list[MessageEntity] | None = None
+    disable_content_type_detection: bool | None = None
+
+
+class InputMediaBytesDocument(BaseModel):
+    """This model represents a document with file.
+
+    See here: https://core.telegram.org/bots/api#inputmediadocument
+    """
+
+    type: str = 'document' # noqa A003
+    media: str
+    media_content: bytes
+    thumbnail: str | None = None
+    thumbnail_content: bytes | None = None
+    caption: str | None = None
+    parse_mode: str | None = None
+    caption_entities: list[MessageEntity] | None = None
+    disable_content_type_detection: bool | None = None
 
 
 class CallbackQuery(BaseModel):

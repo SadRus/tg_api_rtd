@@ -194,3 +194,60 @@ def edit_message_caption_response() -> dict[str, typing.Any]:
             }),
         },
     ).dict()
+
+
+@pytest.fixture
+def edit_message_media_photo_response(edit_message_caption_response: dict[str, typing.Any]) -> dict[str, typing.Any]:
+    # unique fixture for test, but really similar to :edit_message_caption_response:
+    return edit_message_caption_response
+
+
+@pytest.fixture
+def edit_message_media_document_response() -> dict[str, typing.Any]:
+    return tg_methods.EditMessageMediaResponse.parse_obj(
+        {
+            'ok': True,
+            'result': tg_types.Message.parse_obj({
+                'chat': tg_types.Chat.parse_obj({
+                    'first_name': 'TestFirstName',
+                    'id': 1234567890,
+                    'last_name': 'TestLastName',
+                    'type': 'private',
+                    'username': 'TestUserName',
+                }),
+                'date': 1686840262,
+                'edit_date': 1686841234,
+                'from_': tg_types.User.parse_obj({
+                    'first_name': 'TestFirstName',
+                    'id': 1234567890,
+                    'is_bot': False,
+                    'language_code': 'ru',
+                    'last_name': 'TestLastName',
+                    'username': 'TestUserName',
+                }),
+                'message_id': 12345,
+                'document': {
+                    'file_id': 'BQACAgQAAxkDAANuZLQESjNOZ-RZ5JBrJZw0h5OzrT8AAkgEAAIYP6RROubOGc4TLMQvBA',
+                    'file_name': '9169def3939d8670d5252a89818cb14f.pdf',
+                    'file_size': 149023,
+                    'file_unique_id': 'AgADSAQAAhg_pFE',
+                    'mime_type': 'application/pdf',
+                    'thumb': {
+                        'file_id': 'AAMCBAADGQMAA25ktARKM05n5FnkkGslnDSHk7OtPwACSAQAAhg_pFE65s4ZzhMsxAEAB20AAy8E',
+                        'file_size': 8502,
+                        'file_unique_id': 'AQADSAQAAhg_pFFy',
+                        'height': 320,
+                        'width': 226,
+                    },
+                    'thumbnail': {
+                        'file_id': 'AAMCBAADGQMAA25ktARKM05n5FnkkGslnDSHk7OtPwACSAQAAhg_pFE65s4ZzhMsxAEAB20AAy8E',
+                        'file_size': 8502,
+                        'file_unique_id': 'AQADSAQAAhg_pFFy',
+                        'height': 320,
+                        'width': 226,
+                    },
+                },
+                "caption": "edited caption",
+            }),
+        },
+    ).dict()

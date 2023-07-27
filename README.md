@@ -119,7 +119,41 @@ from tg_api import SyncTgClient, EditMessageCaptionRequest
 
 with SyncTgClient.setup(token):
     tg_request = EditMessageCaptionRequest(chat_id=chat_id, message_id=message_id, caption='edited caption')
-    tg_request.asend()
+    tg_request.send()
+```
+
+Пример изменения у пользователя фото в сообщении по URL по идентификатору сообщения:
+
+```py
+from tg_api import SyncTgClient, EditUrlMessageMediaRequest, InputMediaUrlPhoto
+
+
+with SyncTgClient.setup(token):
+    media = InputMediaUrlDocument(
+        media='https://link_to_photo.jpg',
+        caption='caption'
+    )
+    tg_request = EditUrlMessageMediaRequest(chat_id=chat_id, message_id=message_id, media=media)
+    tg_request.send()
+```
+
+
+Пример изменения у пользователя документа в сообщении чтением документента из файла по идентификатору сообщения:
+
+```py
+from tg_api import SyncTgClient, EditBytesMessageMediaRequest, InputMediaBytesDocument
+
+
+with SyncTgClient.setup(token):
+    with open('path_to_document.pdf', 'rb') as f:
+        media_content = f.read()
+    media = InputMediaBytesDocument(
+        media='attach://attachement.pdf',
+        media_content=media_content,
+        caption='caption'
+    )
+    tg_request = EditBytesMessageMediaRequest(chat_id=chat_id, message_id=message_id, media=media)
+    tg_request.send()
 ```
 
 
@@ -251,6 +285,41 @@ from tg_api import AsyncTgClient, EditMessageTextRequest
 
 async with AsyncTgClient.setup(token):
     tg_request = EditMessageTextRequest(chat_id=chat_id, message_id=message_id, text='edited text')
+    await tg_request.asend()
+```
+
+
+Пример изменения у пользователя фото в сообщении по URL по идентификатору сообщения:
+
+```py
+from tg_api import AsyncTgClient, EditUrlMessageMediaRequest, InputMediaUrlPhoto
+
+
+async with AsyncTgClient.setup(token):
+    media = InputMediaUrlDocument(
+        media='https://link_to_photo.jpg',
+        caption='caption'
+    )
+    tg_request = EditUrlMessageMediaRequest(chat_id=chat_id, message_id=message_id, media=media)
+    await tg_request.asend()
+```
+
+
+Пример изменения у пользователя документа в сообщении чтением документента из файла по идентификатору сообщения:
+
+```py
+from tg_api import AsyncTgClient, EditBytesMessageMediaRequest, InputMediaBytesDocument
+
+
+async with AsyncTgClient.setup(token):
+    with open('path_to_document.pdf', 'rb') as f:
+        media_content = f.read()
+    media = InputMediaBytesDocument(
+        media='attach://attachement.pdf',
+        media_content=media_content,
+        caption='caption'
+    )
+    tg_request = EditBytesMessageMediaRequest(chat_id=chat_id, message_id=message_id, media=media)
     await tg_request.asend()
 ```
 

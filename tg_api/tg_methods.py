@@ -63,6 +63,9 @@ class BaseTgRequest(BaseModel):
         if content.get('reply_markup'):
             content['reply_markup'] = json.dumps(content['reply_markup'])
 
+        if content.get('media'):
+            content['media'] = json.dumps(content['media'])
+
         http_response = await client.session.post(
             f'{client.api_root}{api_method}',
             files=files,
@@ -85,6 +88,9 @@ class BaseTgRequest(BaseModel):
 
         if content.get('reply_markup'):
             content['reply_markup'] = json.dumps(content['reply_markup'])
+
+        if content.get('media'):
+            content['media'] = json.dumps(content['media'])
 
         http_response = client.session.post(
             f'{client.api_root}{api_method}',
@@ -453,4 +459,94 @@ class EditMessageCaptionRequest(BaseTgRequest):
         """Shortcut method to call editMessageText Tg web API endpoint."""
         json_payload = self.post_as_json('editmessagecaption')
         response = EditMessageCaptionResponse.parse_raw(json_payload)
+        return response
+
+
+class EditMessageMediaResponse(BaseTgResponse):
+    result: tg_types.Message | bool
+
+
+class EditBytesMessageMediaRequest(BaseTgRequest):
+    """Object encapsulates data for calling web API endpoint `editmessagemedia`.
+
+    Telegram web API docs:
+        See here https://core.telegram.org/bots/api#editmessagemedia
+    """
+
+    chat_id: int | None
+    message_id: int | None
+    inline_message_id: str | None
+    media: Union[tg_types.InputMediaBytesDocument, tg_types.InputMediaBytesPhoto]
+    reply_markup: tg_types.InlineKeyboardMarkup | None
+
+    async def asend(self) -> EditMessageMediaResponse:
+        """Shortcut method to call editmessagemedia Tg web API endpoint."""
+        content = self.dict(exclude_none=True)
+
+        content['media'].pop('media_content')
+        media_bytes = io.BytesIO(self.media.media_content)
+        files = {self.media.media: media_bytes}
+
+        if not self.media.media.startswith('attach://'):
+            content['media']['media'] = f"attach://{content['media']['media']}"
+
+        if 'thumbnail' in content['media'] and 'thumbnail_content' in content['media']:
+            content['media'].pop('thumbnail_content')
+            thumbnail_bytes = io.BytesIO(self.media.thumbnail_content)
+            files[self.media.thumbnail] = thumbnail_bytes
+
+            if not self.media.thumbnail.startswith('attach://'):
+                content['media']['thumbnail'] = f"attach://{content['media']['thumbnail']}"
+
+        json_payload = await self.apost_multipart_form_data('editmessagemedia', content, files)
+        response = EditMessageMediaResponse.parse_raw(json_payload)
+        return response
+
+    def send(self) -> EditMessageMediaResponse:
+        """Shortcut method to call editmessagemedia Tg web API endpoint."""
+        content = self.dict(exclude_none=True)
+
+        content['media'].pop('media_content')
+        media_bytes = io.BytesIO(self.media.media_content)
+        files = {self.media.media: media_bytes}
+
+        if not self.media.media.startswith('attach://'):
+            content['media']['media'] = f"attach://{content['media']['media']}"
+
+        if 'thumbnail' in content['media'] and 'thumbnail_content' in content['media']:
+            content['media'].pop('thumbnail_content')
+            thumbnail_bytes = io.BytesIO(self.media.thumbnail_content)
+            files[self.media.thumbnail] = thumbnail_bytes
+
+            if not self.media.thumbnail.startswith('attach://'):
+                content['media']['thumbnail'] = f"attach://{content['media']['thumbnail']}"
+
+        json_payload = self.post_multipart_form_data('editmessagemedia', content, files)
+        response = EditMessageMediaResponse.parse_raw(json_payload)
+        return response
+
+
+class EditUrlMessageMediaRequest(BaseTgRequest):
+    """Object encapsulates data for calling web API endpoint `editmessagemedia`.
+
+    Telegram web API docs:
+        See here https://core.telegram.org/bots/api#editmessagemedia
+    """
+
+    chat_id: int | None
+    message_id: int | None
+    inline_message_id: str | None
+    media: Union[tg_types.InputMediaUrlDocument, tg_types.InputMediaUrlPhoto]
+    reply_markup: tg_types.InlineKeyboardMarkup | None
+
+    async def asend(self) -> EditMessageMediaResponse:
+        """Shortcut method to call editmessagemedia Tg web API endpoint."""
+        json_payload = await self.apost_as_json('editmessagemedia')
+        response = EditMessageMediaResponse.parse_raw(json_payload)
+        return response
+
+    def send(self) -> EditMessageMediaResponse:
+        """Shortcut method to call editmessagemedia Tg web API endpoint."""
+        json_payload = self.post_as_json('editmessagemedia')
+        response = EditMessageMediaResponse.parse_raw(json_payload)
         return response
