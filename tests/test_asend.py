@@ -5,7 +5,7 @@ import requests
 import pytest
 import pytest_httpx
 
-from tg_bot_api import tg_methods, tg_types
+from tg_api import tg_methods, tg_types
 
 
 @pytest.mark.anyio

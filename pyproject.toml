@@ -1,6 +1,6 @@
 [tool.poetry]
-name = "tg-bot-api"
-version = "0.2.0"
+name = "tg-api"
+version = "1.0.0"
 description = "Thin wrapper around Telegram Bot API"
 authors = ["Evgeny Evseev <pelid80@gmail.com>"]
 license = "GNU GPLv3"

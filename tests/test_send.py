@@ -4,7 +4,7 @@ import typing
 import requests
 import pytest_httpx
 
-from tg_bot_api import tg_methods, tg_types
+from tg_api import tg_methods, tg_types
 
 
 def test_photo_request_mocking(

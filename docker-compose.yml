@@ -2,12 +2,12 @@ version: '3'
 
 services:
 
-  tg-bot-api:
+  tg-api:
     build:
       context: .
-    image: tg-bot-api:latest
+    image: tg-api:latest
     volumes:
-      - ./tg_bot_api:/opt/app/tg_bot_api/
+      - ./tg_api:/opt/app/tg_api/
       - ./tests:/opt/app/tests/
       - ./pyproject.toml:/opt/app/pyproject.toml
       - ./poetry.lock:/opt/app/poetry.lock
@@ -17,11 +17,11 @@ services:
   py-linters:
     build:
       context: ./py-linters/
-    image: tg-bot-api-py-linters:latest
+    image: tg-api-py-linters:latest
     volumes:
       - ./py-linters/pyproject.toml:/opt/linters/pyproject.toml
       - ./py-linters/poetry.lock:/opt/linters/poetry.lock
       # mount source code to check a code with linter running inside a container
-      - ./tg_bot_api:/tg_bot_api
+      - ./tg_api:/tg_api
       - ./tests:/tests
     command: 'echo Skipped'

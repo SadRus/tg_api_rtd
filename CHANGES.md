@@ -13,10 +13,6 @@
 Не в релизе
 ------------------------
 
-
-0.2.0 (2023-09-26)
-------------------------
-
 - Добавлены методы EditBytesMessageMediaRequest, EditUrlMessageMediaRequest, типы InputMediaUrlPhoto, InputMediaBytesPhoto, InputMediaUrlDocument, InputMediaBytesDocument для изменения медиа в сообщении
 - Удален AUTHORS.md ввиду ранней стадии проекта как open-source
 - Создан Makefile для основных команд проекта
@@ -38,8 +34,7 @@
 - Библиотека докерезирована для разработки
 - Добавлены тесты для tg_types.Message
 
-
-0.1.0 (2023-06-22)
+1.0.0 (2023-06-22)
 ------------------------
 
 - Первый релиз
