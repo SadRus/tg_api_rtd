@@ -10,12 +10,12 @@ repos:
     hooks:
       - id: py-linters
         name: py-linters
-        entry: docker compose run -T --rm py-linters flake8 /tg_api/ /tests/
+        entry: docker compose run -T --rm py-linters flake8 /tg_bot_api/ /tests/
         language: system
         pass_filenames: no
 
-      - id: test-tg_api
-        name: test-tg_api
-        entry: docker compose run -T --rm tg-api pytest
+      - id: test-tg-bot-api
+        name: test-tg-bot-api
+        entry: docker compose run -T --rm tg-bot-api pytest
         language: system
         pass_filenames: no

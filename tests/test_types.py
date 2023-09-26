@@ -1,4 +1,4 @@
-from tg_api import tg_types
+from tg_bot_api import tg_types
 
 
 def test_inline_query_parsing():

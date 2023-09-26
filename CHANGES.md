@@ -13,6 +13,10 @@
 Не в релизе
 ------------------------
 
+
+0.2.0 (2023-09-26)
+------------------------
+
 - Добавлены методы EditBytesMessageMediaRequest, EditUrlMessageMediaRequest, типы InputMediaUrlPhoto, InputMediaBytesPhoto, InputMediaUrlDocument, InputMediaBytesDocument для изменения медиа в сообщении
 - Удален AUTHORS.md ввиду ранней стадии проекта как open-source
 - Создан Makefile для основных команд проекта
@@ -20,7 +24,7 @@
 - Добавлены методы EditMessageReplyMarkupResponse и EditMessageReplyMarkupRequest для изменения клавиатуры сообщения
 - Добавлены методы EditMessageTextResponse и EditMessageTextRequest для изменения текста (и клавиатуры опционально) сообщения
 - Создан AUTHORS.md
-- Увеличено количество поддерживаемых версий phyton(>=3.10), добавлены типы в tg_types для дочерних классов ChatMember
+- Увеличено количество поддерживаемых версий python(>=3.10), добавлены типы в tg_types для дочерних классов ChatMember
 - Добавлены методы DeleteMessageResponse и DeleteMessageRequest для удаления сообщений
 - Добавлены поля my_chat_member и chat_member в tg_types.Update, добавлен новый тип ChatMemberUpdated
 - Добавлены тесты для tg_methods.SendUrlPhotoRequest.send, asend и tg_methods.SendBytesPhotoRequest.send, asend
@@ -34,7 +38,8 @@
 - Библиотека докерезирована для разработки
 - Добавлены тесты для tg_types.Message
 
-1.0.0 (2023-06-22)
+
+0.1.0 (2023-06-22)
 ------------------------
 
 - Первый релиз

@@ -12,12 +12,12 @@ clean: ## Очищает все volume в соответствии с docker-com
 
 
 linter: ## Запускает python линтеры
-	docker compose run --rm py-linters flake8 /tg_api/ /tests/
+	docker compose run --rm py-linters flake8 /tg_bot_api/ /tests/
 
 
 
 test: ## Запускает python-тесты
-	docker compose run --rm tg-api pytest
+	docker compose run --rm tg-bot-api pytest
 
 
 help: ## Отображает список доступных целей и их описания

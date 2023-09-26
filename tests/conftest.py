@@ -2,7 +2,7 @@ import typing
 
 import pytest
 
-from tg_api import tg_types, tg_methods
+from tg_bot_api import tg_types, tg_methods
 
 
 @pytest.fixture
