@@ -15,6 +15,8 @@
 - Простое низкоуровневое API для кастомизации запросов к API
 - Набор инструментов для удобной работы с исключениями
 
+Документация: [https://tg-api.readthedocs.io/ru/latest/](https://tg-api.readthedocs.io/ru/latest/)
+
 ## Содержимое
 
 1. [Ключевые концепции](#key-conceptions)
