@@ -12,7 +12,7 @@
 
 Не в релизе
 ------------------------
-
+- Добавлен конфиг `.readthedocs.yaml` и директория `sphinx_docs` с кофигурационными файлами для генерации API Reference
 - Добавлены методы EditBytesMessageMediaRequest, EditUrlMessageMediaRequest, типы InputMediaUrlPhoto, InputMediaBytesPhoto, InputMediaUrlDocument, InputMediaBytesDocument для изменения медиа в сообщении
 - Удален AUTHORS.md ввиду ранней стадии проекта как open-source
 - Создан Makefile для основных команд проекта
