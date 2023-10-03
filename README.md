@@ -20,10 +20,10 @@
 ## Содержимое
 
 1. [Ключевые концепции](#key-conceptions)
-1. [Примеры использования](#usage-example)
-    1. [Синхронное API](#usage-example-sync)
-    1. [Асинхронное API](#usage-example-async)
-    1. [Низкоуровневое API](#usage-example-low-level)
+1. [Примеры использования](#usage-examples)
+    1. [Синхронное API](#usage-examples-sync)
+    1. [Асинхронное API](#usage-examples-async)
+    1. [Низкоуровневое API](#usage-examples-low-level)
 1. [Документация по API](#docs)
 1. [Как развернуть local-окружение](#local-setup)
 1. [Как вести разработку](#development)
