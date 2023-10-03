@@ -6,6 +6,7 @@ sys.path.insert(0, os.path.abspath('../..'))
 
 project = 'Tg Bot Api'
 author = 'Elnar Mengelbaev'
+copyright = '2023, Devman'
 release = '1.1.0'
 
 extensions = [
@@ -13,6 +14,7 @@ extensions = [
     'sphinxcontrib.autodoc_pydantic',
     'sphinx.ext.viewcode',
     'sphinx.ext.autodoc.typehints',
+    'myst_parser',
 ]
 
 autodoc_pydantic_model_show_json = False

@@ -7,6 +7,7 @@
 
    tg_methods
    tg_types
+   README<README>
    examples
 
 
