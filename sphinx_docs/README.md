@@ -11,4 +11,4 @@ poetry export -f requirements.txt -o sphinx_docs/requirements.txt
 * Импортируйте ваш проект.
 * Щелкните на опцию "Собрать версию" для начала процесса сборки.
 
-Документация будет доступна по адресу: https://tg-api.readthedocs.io/ru/latest/
+<b>Документация будет доступна по адресу:</b> https://tg-api.readthedocs.io/en/latest/
