@@ -3,7 +3,7 @@
 ![PyPI - Downloads](https://img.shields.io/pypi/dm/tg_api)
 ![PyPI - License](https://img.shields.io/pypi/l/tg_api)
 
-Библиотека tg_api упрощает работу с веб-API Telegram. Она предоставляет тонкую обёртку над веб API Telegram и библиотекой [HTTPX](https://www.python-httpx.org/). Библиотека tg_api добавляет к HTTPX схемы данных и удобные часто используемые функции, но не мешает, при необходимости, спускаться ниже на уровень HTTP-запросов.
+Библиотека tg_api упрощает работу с [Telegram Bot API](https://core.telegram.org/bots/api). Она предоставляет тонкую обёртку над веб API Telegram и библиотекой [HTTPX](https://www.python-httpx.org/). Библиотека tg_api добавляет к HTTPX схемы данных и удобные часто используемые функции, но не мешает, при необходимости, спускаться ниже на уровень HTTP-запросов.
 
 Ключевые возможности библиотеки tg_api:
 
@@ -46,7 +46,7 @@ bot.send_message(text='Hello world!', chat_id=43)
 
 Такой подход прекрасно выглядит в туториалах, он кажется простым и естественным, но ему сильно не хватает гибкости. При интенсивном использовании и кастомизации вы неизбежно столкнётесь с нехваткой документации, неожиданными ограничениями ПО и вам придётся лезть в код библиотеки, чтобы решить свою проблему. Подробно типичные проблемы такого подхода описаны в антипаттерне [God object](https://ru.wikipedia.org/wiki/%D0%91%D0%BE%D0%B6%D0%B5%D1%81%D1%82%D0%B2%D0%B5%D0%BD%D0%BD%D1%8B%D0%B9_%D0%BE%D0%B1%D1%8A%D0%B5%D0%BA%D1%82).
 
-В библиотеке tg_api нет и не будет аналога объекта `Bot`. Вместо него для отправки запросов используются объекты `SendMessageRequest`, `SendPhotoRequest` и подобные Request-объекты, по одному для каждому API endpoint из [документации Telegram](here https://core.telegram.org/bots/api). Сначала вы готовите запрос к API, затем отправляете и обрабатываете результат. Пример:
+В библиотеке tg_api нет и не будет аналога объекта `Bot`. Вместо него для отправки запросов используются объекты `SendMessageRequest`, `SendPhotoRequest` и подобные Request-объекты, по одному для каждому API endpoint из [документации Telegram Bot API](here https://core.telegram.org/bots/api). Сначала вы готовите запрос к API, затем отправляете и обрабатываете результат. Пример:
 
 ```py
 # создаём объект запроса, но ещё не отправляем
@@ -127,7 +127,7 @@ with SyncTgClient.setup(token):
 Пример изменения у пользователя фото в сообщении по URL по идентификатору сообщения:
 
 ```py
-from tg_api import SyncTgClient, EditUrlMessageMediaRequest, InputMediaUrlPhoto
+from tg_api import SyncTgClient, EditUrlMessageMediaRequest
 
 
 with SyncTgClient.setup(token):
@@ -162,7 +162,7 @@ with SyncTgClient.setup(token):
 Пример изменения у пользователя клавиатуры любого сообщения по идентификатору сообщения:
 
 ```py
-from tg_api import SyncTgClient, EditMessageTextRequest, InlineKeyboardButton, InlineKeyboardMarkup
+from tg_api import SyncTgClient, InlineKeyboardButton, InlineKeyboardMarkup
 
 
 keyboard = InlineKeyboardMarkup(
@@ -294,7 +294,7 @@ async with AsyncTgClient.setup(token):
 Пример изменения у пользователя фото в сообщении по URL по идентификатору сообщения:
 
 ```py
-from tg_api import AsyncTgClient, EditUrlMessageMediaRequest, InputMediaUrlPhoto
+from tg_api import AsyncTgClient, EditUrlMessageMediaRequest
 
 
 async with AsyncTgClient.setup(token):
@@ -329,7 +329,7 @@ async with AsyncTgClient.setup(token):
 Пример изменения у пользователя клавиатуры любого сообщения по идентификатору сообщения:
 
 ```py
-from tg_api import AsyncTgClient, EditMessageTextRequest, InlineKeyboardButton, InlineKeyboardMarkup
+from tg_api import AsyncTgClient, InlineKeyboardButton, InlineKeyboardMarkup
 
 
 keyboard = InlineKeyboardMarkup(
@@ -444,7 +444,7 @@ async def main(token: str, chat_id: int, document_filename: str, document_url: s
 <a name="usage-examples-low-level"></a>
 ### Низкоуровневое API
 
-Низкоуровневое API позволяет использовать все самые свежие возможности веб API Telegram, даже если их поддежку ещё не успели завезти
+Низкоуровневое API позволяет использовать все самые свежие возможности [Telegram Bot API](https://core.telegram.org/bots/api), даже если их поддежку ещё не успели завезти
 в библиотеку tg_api. Можно добавлять свои типы запросов и ответов API, менять способ отправки HTTP-запросов и реакции на ответ.
 
 Пример использования низкоуровневого асинхронного API:
@@ -475,7 +475,7 @@ async def main(token: str, chat_id: int) -> None:
 ## Документация по API
 
 - [tg_methods.py](./tg_methods.py) -- схемы запросов к API и ответов
-- [tg_types.py](./tg_methods.py) -- библиотека типов данных, с которыми работает Telegram API
+- [tg_types.py](./tg_methods.py) -- библиотека типов данных, с которыми работает Tg API
 
 
 <a name="local-setup"></a>
@@ -614,7 +614,7 @@ test_types.py ....                                                              
 Если вы чините поломанный тест, часто его запускаете и не хотите ждать когда отработают остальные, то можно запускать их по-отдельности. При этом полезно включать опцию `-s`, чтобы pytest не перехватывал вывод в консоль и выводил все сообщения. Пример для теста `test_update_parsing` из файла `tests/test_types.py`:
 
 ```shell
-$ docker compose run --rm django pytest -s tests/test_types.py::test_update_parsing
+$ docker compose run --rm tg-api pytest -s test_asend.py::test_httpx_mocking
 ```
 
 Подробнее про [Pytest usage](https://docs.pytest.org/en/6.2.x/usage.html).

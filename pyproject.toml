@@ -1,8 +1,8 @@
 [tool.poetry]
 name = "tg-api"
-version = "1.0.0"
-description = "Thin wrapper around Telegram API"
-authors = ["Ilya Osipov <070809010@mail.ru>", "Evgeny Evseev <pelid80@gmail.com>"]
+version = "1.1.0"
+description = "Thin wrapper around Telegram Bot API"
+authors = ["Evgeny Evseev <pelid80@gmail.com>"]
 license = "GNU GPLv3"
 readme = "README.md"
 
