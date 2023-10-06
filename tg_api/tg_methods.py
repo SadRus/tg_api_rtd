@@ -10,12 +10,12 @@ from . import tg_types
 
 class BaseTgRequest(BaseModel):
     """
-    Base class representing a request to the Telegram API.
+    Base class representing a request to the Telegram Bot API.
 
-    Provides utility methods for making both asynchronous and synchronous requests to the API
+    Provides utility methods for making both asynchronous and synchronous requests to the API.
 
     Typically used as a parent class for specific request types which include their data fields and
-    possibly override or supplement the base methods to customize behavior.
+    possibly override or extend the base methods to customize behavior.
     """
 
     class Config:
@@ -24,12 +24,10 @@ class BaseTgRequest(BaseModel):
 
     async def apost_as_json(self, api_method: str) -> bytes:
         """
-        Asynchronously send a request to the Telegram API using a JSON payload.
+        Asynchronously send a request to the Telegram Bot API using a JSON payload.
 
-        :param api_method: The Telegram API method to call.
-        :type api_method: str
-        :return: The response from the Telegram API as a byte string.
-        :rtype: bytes
+        :param api_method: The Telegram Bot API method to call.
+        :return: The response from the Telegram Bot API as a byte string.
         """
 
         client = AsyncTgClient.default_client.get(None)
@@ -52,10 +50,8 @@ class BaseTgRequest(BaseModel):
         """
         Synchronously send a request to the Telegram Bot API using a JSON payload.
 
-        :param api_method: The Telegram API method to call.
-        :type api_method: str
-        :return: The response from the Telegram API as a byte string.
-        :rtype: bytes
+        :param api_method: The Telegram Bot API method to call.
+        :return: The response from the Telegram Bot API as a byte string.
         """
 
         client = SyncTgClient.default_client.get(None)
@@ -78,14 +74,10 @@ class BaseTgRequest(BaseModel):
         """
         Asynchronously send a request to the Telegram Bot API using the "multipart/form-data" format.
 
-        :param api_method: The Telegram API method to call.
-        :type api_method: str
+        :param api_method: The Telegram Bot API method to call.
         :param content: A dictionary containing the content to be sent.
-        :type content: dict
         :param files: A dictionary containing files to be sent.
-        :type files: dict
-        :return: The response from the Telegram API as a byte string.
-        :rtype: bytes
+        :return: The response from the Telegram Bot API as a byte string.
         """
 
         client = AsyncTgClient.default_client.get(None)
@@ -117,14 +109,10 @@ class BaseTgRequest(BaseModel):
         """
         Synchronously send a request to the Telegram Bot API using the "multipart/form-data" format.
 
-        :param api_method: The Telegram API method name.
-        :type api_method: str
+        :param api_method: The Telegram Bot API method name.
         :param content: A dictionary containing the content to be sent.
-        :type content: dict
         :param files: A dictionary containing files to be sent.
-        :type files: dict
-        :return: The response from the Telegram API as a byte string.
-        :rtype: bytes
+        :return: The response from the Telegram Bot API as a byte string.
         """
 
         client = SyncTgClient.default_client.get(None)
@@ -155,9 +143,9 @@ class BaseTgRequest(BaseModel):
 
 class BaseTgResponse(BaseModel):
     """
-    Represents the base structure of a response from the Telegram API.
+    Represents the base structure of a response from the Telegram Bot API.
 
-    Every response from the Telegram API contains certain common attributes, which are captured
+    Every response from the Telegram Bot API contains certain common attributes, which are captured
     in this base model. Specific response types might extend this base structure.
     """
 
@@ -180,7 +168,7 @@ class SendMessageResponse(BaseTgResponse):
 
 
 class SendMessageRequest(BaseTgRequest):
-    """Object encapsulates data for calling Telegram API endpoint `sendMessage`.
+    """Object encapsulates data for calling Telegram Bot API endpoint `sendMessage`.
 
      See here https://core.telegram.org/bots/api#sendmessage
     """
@@ -202,13 +190,13 @@ class SendMessageRequest(BaseTgRequest):
     ] | None = None
 
     async def asend(self) -> SendMessageResponse:
-        """Asynchronously shortcut method to call sendMessage Telegram API endpoint."""
+        """Asynchronously shortcut method to call sendMessage Telegram Bot API endpoint."""
         json_payload = await self.apost_as_json('sendMessage')
         response = SendMessageResponse.parse_raw(json_payload)
         return response
 
     def send(self) -> SendMessageResponse:
-        """Synchronously shortcut method to call sendMessage Telegram API endpoint."""
+        """Synchronously shortcut method to call sendMessage Telegram Bot API endpoint."""
         json_payload = self.post_as_json('sendMessage')
         response = SendMessageResponse.parse_raw(json_payload)
         return response
@@ -219,7 +207,7 @@ class SendPhotoResponse(BaseTgResponse):
 
 
 class SendBytesPhotoRequest(BaseTgRequest):
-    """Object encapsulates data for calling Telegram API endpoint `sendPhoto`.
+    """Object encapsulates data for calling Telegram Bot API endpoint `sendPhoto`.
 
     See here https://core.telegram.org/bots/api#sendphoto
     """
@@ -247,7 +235,7 @@ class SendBytesPhotoRequest(BaseTgRequest):
     ] | None = None
 
     async def asend(self) -> SendPhotoResponse:
-        """Asynchronously shortcut method to call sendPhoto Telegram API endpoint."""
+        """Asynchronously shortcut method to call sendPhoto Telegram Bot API endpoint."""
         content = self.dict(exclude_none=True, exclude={'photo'})
         photo_bytes = io.BytesIO(self.photo)
         photo_bytes.name = self.filename
@@ -257,7 +245,7 @@ class SendBytesPhotoRequest(BaseTgRequest):
         return response
 
     def send(self) -> SendPhotoResponse:
-        """Synchronously shortcut method to call sendPhoto Telegram API endpoint."""
+        """Synchronously shortcut method to call sendPhoto Telegram Bot API endpoint."""
         content = self.dict(exclude_none=True, exclude={'photo'})
         photo_bytes = io.BytesIO(self.photo)
         photo_bytes.name = self.filename
@@ -268,7 +256,7 @@ class SendBytesPhotoRequest(BaseTgRequest):
 
 
 class SendUrlPhotoRequest(BaseTgRequest):
-    """Object encapsulates data for calling Telegram API endpoint `sendPhoto`.
+    """Object encapsulates data for calling Telegram Bot API endpoint `sendPhoto`.
 
     See here https://core.telegram.org/bots/api#sendphoto
     """
@@ -293,13 +281,13 @@ class SendUrlPhotoRequest(BaseTgRequest):
     ] | None = None
 
     async def asend(self) -> SendPhotoResponse:
-        """Asynchronously shortcut method to call sendPhoto Telegram API endpoint."""
+        """Asynchronously shortcut method to call sendPhoto Telegram Bot API endpoint."""
         json_payload = await self.apost_as_json('sendPhoto')
         response = SendPhotoResponse.parse_raw(json_payload)
         return response
 
     def send(self) -> SendPhotoResponse:
-        """Synchronously shortcut method to call sendPhoto Telegram API endpoint."""
+        """Synchronously shortcut method to call sendPhoto Telegram Bot API endpoint."""
         json_payload = self.post_as_json('sendPhoto')
         response = SendPhotoResponse.parse_raw(json_payload)
         return response
@@ -310,7 +298,7 @@ class SendDocumentResponse(BaseTgResponse):
 
 
 class SendBytesDocumentRequest(BaseTgRequest):
-    """Object encapsulates data for calling Telegram API endpoint `sendDocument`.
+    """Object encapsulates data for calling Telegram Bot API endpoint `sendDocument`.
 
     See here https://core.telegram.org/bots/api#senddocument
     """
@@ -336,7 +324,7 @@ class SendBytesDocumentRequest(BaseTgRequest):
     ] | None = None
 
     async def asend(self) -> SendDocumentResponse:
-        """Asynchronously shortcut method to call sendDocument Telegram API endpoint."""
+        """Asynchronously shortcut method to call sendDocument Telegram Bot API endpoint."""
         content = self.dict(exclude_none=True, exclude={'document'})
         document_bytes = io.BytesIO(self.document)
         document_bytes.name = self.filename
@@ -346,7 +334,7 @@ class SendBytesDocumentRequest(BaseTgRequest):
         return response
 
     def send(self) -> SendDocumentResponse:
-        """Synchronously shortcut method to call sendDocument Telegram API endpoint."""
+        """Synchronously shortcut method to call sendDocument Telegram Bot API endpoint."""
         content = self.dict(exclude_none=True, exclude={'document'})
         document_bytes = io.BytesIO(self.document)
         document_bytes.name = self.filename
@@ -357,7 +345,7 @@ class SendBytesDocumentRequest(BaseTgRequest):
 
 
 class SendUrlDocumentRequest(BaseTgRequest):
-    """Object encapsulates data for calling Telegram API endpoint `sendDocument`.
+    """Object encapsulates data for calling Telegram Bot API endpoint `sendDocument`.
 
     See here https://core.telegram.org/bots/api#senddocument
     """
@@ -383,13 +371,13 @@ class SendUrlDocumentRequest(BaseTgRequest):
     ] | None = None
 
     async def asend(self) -> SendDocumentResponse:
-        """Asynchronously shortcut method to call sendDocument Telegram API endpoint."""
+        """Asynchronously shortcut method to call sendDocument Telegram Bot API endpoint."""
         json_payload = await self.apost_as_json('sendDocument')
         response = SendDocumentResponse.parse_raw(json_payload)
         return response
 
     def send(self) -> SendDocumentResponse:
-        """Synchronously shortcut method to call sendDocument Telegram API endpoint."""
+        """Synchronously shortcut method to call sendDocument Telegram Bot API endpoint."""
         json_payload = self.post_as_json('sendDocument')
         response = SendDocumentResponse.parse_raw(json_payload)
         return response
@@ -400,7 +388,7 @@ class DeleteMessageResponse(BaseTgResponse):
 
 
 class DeleteMessageRequest(BaseTgRequest):
-    """Object encapsulates data for calling Telegram API endpoint `deleteMessage`.
+    """Object encapsulates data for calling Telegram Bot API endpoint `deleteMessage`.
 
     See here https://core.telegram.org/bots/api#deletemessage
     """
@@ -409,13 +397,13 @@ class DeleteMessageRequest(BaseTgRequest):
     message_id: int
 
     async def asend(self) -> DeleteMessageResponse:
-        """Asynchronously shortcut method to call deleteMessage Telegram API endpoint."""
+        """Asynchronously shortcut method to call deleteMessage Telegram Bot API endpoint."""
         json_payload = await self.apost_as_json('deleteMessage')
         response = DeleteMessageResponse.parse_raw(json_payload)
         return response
 
     def send(self) -> DeleteMessageResponse:
-        """Synchronously shortcut method to call deleteMessage Telegram API endpoint."""
+        """Synchronously shortcut method to call deleteMessage Telegram Bot API endpoint."""
         json_payload = self.post_as_json('deleteMessage')
         response = DeleteMessageResponse.parse_raw(json_payload)
         return response
@@ -426,7 +414,7 @@ class EditMessageTextResponse(BaseTgResponse):
 
 
 class EditMessageTextRequest(BaseTgRequest):
-    """Object encapsulates data for calling Telegram API endpoint `editMessageText`.
+    """Object encapsulates data for calling Telegram Bot API endpoint `editMessageText`.
 
     See here https://core.telegram.org/bots/api#editmessagetext
     """
@@ -441,13 +429,13 @@ class EditMessageTextRequest(BaseTgRequest):
     reply_markup: tg_types.InlineKeyboardMarkup | None
 
     async def asend(self) -> EditMessageTextResponse:
-        """Asynchronously shortcut method to call editMessageText Telegram API endpoint."""
+        """Asynchronously shortcut method to call editMessageText Telegram Bot API endpoint."""
         json_payload = await self.apost_as_json('editmessagetext')
         response = EditMessageTextResponse.parse_raw(json_payload)
         return response
 
     def send(self) -> EditMessageTextResponse:
-        """Synchronously shortcut method to call editMessageText Telegram API endpoint."""
+        """Synchronously shortcut method to call editMessageText Telegram Bot API endpoint."""
         json_payload = self.post_as_json('editmessagetext')
         response = EditMessageTextResponse.parse_raw(json_payload)
         return response
@@ -458,7 +446,7 @@ class EditMessageReplyMarkupResponse(BaseTgResponse):
 
 
 class EditMessageReplyMarkupRequest(BaseTgRequest):
-    """Object encapsulates data for calling Telegram API endpoint `editMessageReplyMarkup`.
+    """Object encapsulates data for calling Telegram Bot API endpoint `editMessageReplyMarkup`.
 
     See here https://core.telegram.org/bots/api#editmessagereplymarkup
     """
@@ -469,13 +457,13 @@ class EditMessageReplyMarkupRequest(BaseTgRequest):
     reply_markup: tg_types.InlineKeyboardMarkup | None
 
     async def asend(self) -> EditMessageReplyMarkupResponse:
-        """Asynchronously shortcut method to call editMessageText Telegram API endpoint."""
+        """Asynchronously shortcut method to call editMessageText Telegram Bot API endpoint."""
         json_payload = await self.apost_as_json('editmessagereplymarkup')
         response = EditMessageReplyMarkupResponse.parse_raw(json_payload)
         return response
 
     def send(self) -> EditMessageReplyMarkupResponse:
-        """Synchronously shortcut method to call editMessageText Telegram API endpoint."""
+        """Synchronously shortcut method to call editMessageText Telegram Bot API endpoint."""
         json_payload = self.post_as_json('editmessagereplymarkup')
         response = EditMessageReplyMarkupResponse.parse_raw(json_payload)
         return response
@@ -486,7 +474,7 @@ class EditMessageCaptionResponse(BaseTgResponse):
 
 
 class EditMessageCaptionRequest(BaseTgRequest):
-    """Object encapsulates data for calling Telegram API endpoint `editMessageCaption`.
+    """Object encapsulates data for calling Telegram Bot API endpoint `editMessageCaption`.
 
     See here https://core.telegram.org/bots/api#editmessagecaption
     """
@@ -500,13 +488,13 @@ class EditMessageCaptionRequest(BaseTgRequest):
     reply_markup: tg_types.InlineKeyboardMarkup | None
 
     async def asend(self) -> EditMessageCaptionResponse:
-        """Asynchronously shortcut method to call editMessageText Telegram API endpoint."""
+        """Asynchronously shortcut method to call editMessageText Telegram Bot API endpoint."""
         json_payload = await self.apost_as_json('editmessagecaption')
         response = EditMessageCaptionResponse.parse_raw(json_payload)
         return response
 
     def send(self) -> EditMessageCaptionResponse:
-        """Synchronously shortcut method to call editMessageText Telegram API endpoint."""
+        """Synchronously shortcut method to call editMessageText Telegram Bot API endpoint."""
         json_payload = self.post_as_json('editmessagecaption')
         response = EditMessageCaptionResponse.parse_raw(json_payload)
         return response
@@ -517,7 +505,7 @@ class EditMessageMediaResponse(BaseTgResponse):
 
 
 class EditBytesMessageMediaRequest(BaseTgRequest):
-    """Object encapsulates data for calling Telegram API endpoint `editmessagemedia`.
+    """Object encapsulates data for calling Telegram Bot API endpoint `editmessagemedia`.
 
     See here https://core.telegram.org/bots/api#editmessagemedia
     """
@@ -529,7 +517,7 @@ class EditBytesMessageMediaRequest(BaseTgRequest):
     reply_markup: tg_types.InlineKeyboardMarkup | None
 
     async def asend(self) -> EditMessageMediaResponse:
-        """Asynchronously shortcut method to call editmessagemedia Telegram API endpoint."""
+        """Asynchronously shortcut method to call editmessagemedia Telegram Bot API endpoint."""
         content = self.dict(exclude_none=True)
 
         content['media'].pop('media_content')
@@ -552,7 +540,7 @@ class EditBytesMessageMediaRequest(BaseTgRequest):
         return response
 
     def send(self) -> EditMessageMediaResponse:
-        """Synchronously shortcut method to call editmessagemedia Telegram API endpoint."""
+        """Synchronously shortcut method to call editmessagemedia Telegram Bot API endpoint."""
         content = self.dict(exclude_none=True)
 
         content['media'].pop('media_content')
@@ -576,7 +564,7 @@ class EditBytesMessageMediaRequest(BaseTgRequest):
 
 
 class EditUrlMessageMediaRequest(BaseTgRequest):
-    """Object encapsulates data for calling Telegram API endpoint `editmessagemedia`.
+    """Object encapsulates data for calling Telegram Bot API endpoint `editmessagemedia`.
 
     See here https://core.telegram.org/bots/api#editmessagemedia
     """
@@ -588,13 +576,13 @@ class EditUrlMessageMediaRequest(BaseTgRequest):
     reply_markup: tg_types.InlineKeyboardMarkup | None
 
     async def asend(self) -> EditMessageMediaResponse:
-        """Asynchronously shortcut method to call editmessagemedia Telegram API endpoint."""
+        """Asynchronously shortcut method to call editmessagemedia Telegram Bot API endpoint."""
         json_payload = await self.apost_as_json('editmessagemedia')
         response = EditMessageMediaResponse.parse_raw(json_payload)
         return response
 
     def send(self) -> EditMessageMediaResponse:
-        """Synchronously shortcut method to call editmessagemedia Telegram API endpoint."""
+        """Synchronously shortcut method to call editmessagemedia Telegram Bot API endpoint."""
         json_payload = self.post_as_json('editmessagemedia')
         response = EditMessageMediaResponse.parse_raw(json_payload)
         return response
