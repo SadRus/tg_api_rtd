@@ -4,8 +4,7 @@ import os
 
 sys.path.insert(0, os.path.abspath('../..'))
 
-project = 'Tg Bot Api'
-author = 'Elnar Mengelbaev'
+project = 'Tg API'
 copyright = '2023, Devman'
 release = '1.1.0'
 
