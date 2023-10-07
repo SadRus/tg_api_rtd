@@ -17,6 +17,7 @@
 1.1.0 (2023-09-26)
 ------------------------
 
+- Добавлен конфиг `.readthedocs.yaml` и директория `sphinx_docs` с кофигурационными файлами для генерации API Reference
 - Добавлены методы `EditBytesMessageMediaRequest`, `EditUrlMessageMediaRequest`, типы `InputMediaUrlPhoto`, `InputMediaBytesPhoto`, `InputMediaUrlDocument`, `InputMediaBytesDocument` для изменения медиа в сообщении
 - Создан Makefile для основных команд проекта
 - Добавлены методы `EditMessageCaptionResponse` и `EditMessageCaptionRequest` для изменения клавиатуры сообщения
