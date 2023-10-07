@@ -2,9 +2,21 @@
 name = "tg-api"
 version = "1.1.0"
 description = "Thin wrapper around Telegram Bot API"
-authors = ["Evgeny Evseev <pelid80@gmail.com>"]
+authors = [
+    "Evgeny Evseev <pelid80@gmail.com>",
+]
 license = "GNU GPLv3"
 readme = "README.md"
+repository = "https://gitlab.levelupdev.ru/dvmn-open-source-dev-tools/tg_api"
+documentation = "https://tg-api.readthedocs.io/en/latest/index.html"
+homepage = "https://pypi.org/project/tg-api/"
+keywords = [
+    "telegram",
+    "bot",
+    "api",
+    "wrapper",
+    "asyncio",
+]
 
 [tool.poetry.dependencies]
 python = "^3.10"
