@@ -32,6 +32,7 @@
     1. [Как запустить линтеры Python](#run-python-linters)
     1. [Как запустить тесты](#run-tests)
     1. [Как собрать документацию Sphinx](#build-docs)
+    1. [Как опубликовать свежую версию](#publish-on-pypi)
 
 <a name="key-conceptions"></a>
 ## Ключевые концепции
@@ -531,6 +532,7 @@ linter                         Запускает python линтеры
 test                           Запускает python-тесты
 help                           Отображает список доступных целей и их описания
 build-docs                     Запускает сборку документации Sphinx
+publish-on-pypi                Публикует библиотеку на PyPI
 ```
 
 <a name="development"></a>
@@ -666,3 +668,16 @@ $ make build-docs
 ```
 
 В результате сборки в репозиториии появится набор HTML-файлов в каталоге `sphinx_docs/build/index.html`. Индексный HTML лежит в файле `sphinx_docs/build/index.html` — откройте его в браузере.
+
+<a name="publish-on-pypi"></a>
+### Как опубликовать свежую версию
+
+Для публикации библиотеки на PyPI вам понадобится [Twine](https://twine.readthedocs.io/en/stable/index.html). Установите его на свою машину по [официальной инструкции](https://twine.readthedocs.io/en/stable/index.html).
+
+- Обновите информацию о релизе в файле [CHANGES.md](./CHANGES.md)
+- Обновите версию пакета в [pyproject.toml](./pyproject.toml)
+- Запустите финальное тестирование, сборку и публикацию:
+
+```shell
+$ make publish-on-pypi
+```
