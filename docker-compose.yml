@@ -7,10 +7,11 @@ services:
       context: .
     image: tg-api:latest
     volumes:
-      - ./tg_api:/opt/app/tg_api/
-      - ./tests:/opt/app/tests/
+      - ./tg_api:/opt/app/src/tg_api
+      - ./tests:/opt/app/src/tests
       - ./pyproject.toml:/opt/app/pyproject.toml
       - ./poetry.lock:/opt/app/poetry.lock
+      - ./README.md:/opt/app/README.md
     # need some forever process for using bash for install packages
     command: tail -f /dev/null
 

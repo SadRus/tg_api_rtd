@@ -21,11 +21,11 @@ RUN curl -sSL https://install.python-poetry.org | POETRY_VERSION=1.5.1 python3 -
 ENV PATH="/root/.local/bin:${PATH}"
 
 WORKDIR ${BASE_DIR}
-COPY ./pyproject.toml ./poetry.lock ./
+COPY ./pyproject.toml ./poetry.lock README.md ./
 RUN poetry install --no-ansi
 
 WORKDIR ${BASE_DIR}/src
 ENV PYTHONPATH "$PYTHONPATH:${BASE_DIR}/src/"
 
-COPY ./tg_api ./
-COPY ./tests ./
+COPY tg_api tg_api
+COPY tests tests
