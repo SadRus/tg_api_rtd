@@ -22,10 +22,11 @@ ENV PATH="/root/.local/bin:${PATH}"
 
 WORKDIR ${BASE_DIR}
 COPY ./pyproject.toml ./poetry.lock README.md ./
-RUN poetry install --no-ansi
+RUN poetry install --no-ansi --with docs
 
 WORKDIR ${BASE_DIR}/src
 ENV PYTHONPATH "$PYTHONPATH:${BASE_DIR}/src/"
 
 COPY tg_api tg_api
 COPY tests tests
+COPY sphinx_docs sphinx_docs

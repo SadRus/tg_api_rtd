@@ -9,11 +9,13 @@ services:
     volumes:
       - ./tg_api:/opt/app/src/tg_api
       - ./tests:/opt/app/src/tests
+      - ./sphinx_docs:/opt/app/src/sphinx_docs
       - ./pyproject.toml:/opt/app/pyproject.toml
       - ./poetry.lock:/opt/app/poetry.lock
       - ./README.md:/opt/app/README.md
     # need some forever process for using bash for install packages
     command: tail -f /dev/null
+    user: "${UID?error}:${GID?error}"
 
   py-linters:
     build:
