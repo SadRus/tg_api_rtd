@@ -7,12 +7,17 @@ services:
       context: .
     image: tg-api:latest
     volumes:
-      - ./tg_api:/opt/app/tg_api/
-      - ./tests:/opt/app/tests/
+      - ./tg_api:/opt/app/src/tg_api
+      - ./tests:/opt/app/src/tests
+      - ./sphinx_docs:/opt/app/src/sphinx_docs
       - ./pyproject.toml:/opt/app/pyproject.toml
       - ./poetry.lock:/opt/app/poetry.lock
+      - ./README.md:/opt/app/README.md
     # need some forever process for using bash for install packages
     command: tail -f /dev/null
+    # Sphinx will generate files inside mounted docker volume with source files. To work with those files without
+    # sudo permissions propper files owner should be specified instead of default root.
+    user: "${UID?error}:${GID?error}"
 
   py-linters:
     build:

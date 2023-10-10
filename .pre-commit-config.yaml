@@ -14,8 +14,8 @@ repos:
         language: system
         pass_filenames: no
 
-      - id: test-tg_api
-        name: test-tg_api
+      - id: test-tg-api
+        name: test-tg-api
         entry: docker compose run -T --rm tg-api pytest
         language: system
         pass_filenames: no

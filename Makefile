@@ -20,6 +20,18 @@ test: ## Запускает python-тесты
 	docker compose run --rm tg-api pytest
 
 
+build-docs: ## Запускает сборку документации Sphinx
+	docker compose run --rm tg-api bash -c "cd sphinx_docs; make html"
+
+
+publish-on-pypi: ## Публикует библиотеку на PyPI
+	docker compose build
+	make linter
+	make test
+	rm dist/*
+	python3 -m build
+	twine upload dist/*
+
 help: ## Отображает список доступных целей и их описания
 	@echo "Available targets:"
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
