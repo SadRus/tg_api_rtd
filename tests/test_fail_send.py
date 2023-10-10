@@ -1,8 +1,6 @@
-import json
 import typing
 
 import pytest
-import pytest_httpx
 import requests
 from pydantic import ValidationError
 
@@ -12,6 +10,15 @@ from tg_api import tg_methods, tg_types
 def test_photo_request_mocking_with_large_caption(
     get_photo_response: dict[str, typing.Any],
 ):
+    '''
+    Программист - Узнавать о длинных заголовках сообщений до отправки запроса к серверу Telegram
+    при отправке SendBytesPhotoRequest: !func
+        Проверить срабатывание ValidationError до отправки сообщений: !story
+            сделано: yes
+            старт: Отправка заголовка свыше 1024 символов
+            успех: Сработало исключение до отправки сообщения к серверу
+    '''
+
     tg_types.Chat.update_forward_refs()
     tg_types.Message.update_forward_refs()
 
@@ -49,9 +56,17 @@ def test_photo_request_mocking_with_large_caption(
 
 
 def test_message_request_with_large_text(
-    httpx_mock: pytest_httpx.HTTPXMock,
     get_message_response: dict[str, typing.Any],
 ):
+    '''
+    Программист - Узнавать о длинных сообщениях до отправки запроса к серверу Telegram
+    при отправке SendMessageRequest: !func
+        Проверить срабатывание ValidationError до отправки сообщений: !story
+            сделано: yes
+            старт: Отправка сообщения свыше 4096 символов
+            успех: Сработало исключение до отправки сообщения к серверу
+    '''
+
     with tg_methods.SyncTgClient.setup('token'):
         with pytest.raises(ValidationError):
             tg_methods.SendMessageRequest(
@@ -60,9 +75,44 @@ def test_message_request_with_large_text(
             )
 
 
+def test_message_request_with_empty_text(
+    get_message_response: dict[str, typing.Any],
+):
+    '''
+    Программист - Узнавать о пустых сообщениях до отправки запроса к серверу Telegram
+    при отправке SendMessageRequest: !func
+        Проверить срабатывание ValidationError до отправки сообщений: !story
+            сделано: yes
+            старт: Отправка пустого сообщения и сообщения из пробельных символов
+            успех: Сработало исключение до отправки сообщения к серверу
+    '''
+
+    with tg_methods.SyncTgClient.setup('token'):
+        with pytest.raises(ValidationError):
+            tg_methods.SendMessageRequest(
+                chat_id=1234567890,
+                text=''
+            )
+
+    with tg_methods.SyncTgClient.setup('token'):
+        with pytest.raises(ValidationError):
+            tg_methods.SendMessageRequest(
+                chat_id=1234567890,
+                text='   '
+            )
+
+
 def test_document_request_mocking_with_large_caption(
     get_document_response: dict[str, typing.Any],
 ):
+    '''
+    Программист - Узнавать о длинных заголовках сообщений до отправки запроса к серверу Telegram
+    при отправке SendBytesDocumentRequest: !func
+        Проверить срабатывание ValidationError до отправки сообщений: !story
+            сделано: yes
+            старт: Отправка заголовка свыше 1024 символов
+            успех: Сработало исключение до отправки сообщения к серверу
+    '''
     tg_types.Chat.update_forward_refs()
     tg_types.Message.update_forward_refs()
 
@@ -116,6 +166,15 @@ def test_edit_message_text_request_mocking_with_large_text(
     edit_message_text_response: dict[str, typing.Any],
     keyboard: tg_types.InlineKeyboardMarkup,
 ):
+    '''
+    Программист - Узнавать о длинных сообщениях до отправки запроса к серверу Telegram
+    при отправке EditMessageTextRequest: !func
+        Проверить срабатывание ValidationError до отправки сообщений: !story
+            сделано: yes
+            старт: Отправка сообщения свыше 4096 символов
+            успех: Сработало исключение до отправки сообщения к серверу
+    '''
+
     with tg_methods.SyncTgClient.setup('token'):
         with pytest.raises(ValidationError):
             tg_methods.EditMessageTextRequest(
@@ -124,10 +183,46 @@ def test_edit_message_text_request_mocking_with_large_text(
                 text='a' * 4097,
             )
 
+def test_edit_message_text_request_mocking_with_empty_text(
+    edit_message_text_response: dict[str, typing.Any],
+    keyboard: tg_types.InlineKeyboardMarkup,
+):
+    '''
+    Программист - Узнавать о пустых сообщениях до отправки запроса к серверу Telegram
+    при отправке EditMessageTextRequest: !func
+        Проверить срабатывание ValidationError до отправки сообщений: !story
+            сделано: yes
+            старт: Отправка пустого сообщения и сообщения из пробельных символов
+            успех: Сработало исключение до отправки сообщения к серверу
+    '''
 
+    with tg_methods.SyncTgClient.setup('token'):
+        with pytest.raises(ValidationError):
+            tg_methods.EditMessageTextRequest(
+                chat_id=1234567890,
+                message_id=12345,
+                text='',
+            )
+
+    with tg_methods.SyncTgClient.setup('token'):
+        with pytest.raises(ValidationError):
+            tg_methods.EditMessageTextRequest(
+                chat_id=1234567890,
+                message_id=12345,
+                text='  ',
+            )
 def test_edit_message_caption_request_mocking_with_large_caption(
     edit_message_caption_response: dict[str, typing.Any],
 ):
+    '''
+    Программист - Узнавать о длинных заголовках сообщений до отправки запроса к серверу Telegram
+    при отправке EditMessageCaptionRequest: !func
+        Проверить срабатывание ValidationError до отправки сообщений: !story
+            сделано: yes
+            старт: Отправка заголовка свыше 1024 символов
+            успех: Сработало исключение до отправки сообщения к серверу
+    '''
+
     with tg_methods.SyncTgClient.setup('token'):
         with pytest.raises(ValidationError):
             tg_methods.EditMessageCaptionRequest(
@@ -140,6 +235,15 @@ def test_edit_message_caption_request_mocking_with_large_caption(
 def test_edit_message_media_url_photo_request_mocking_with_large_caption(
     edit_message_media_photo_response: dict[str, typing.Any],
 ):
+    '''
+    Программист - Узнавать о длинных заголовках сообщений до отправки запроса к серверу Telegram
+    при отправке EditUrlMessageMediaRequest: !func
+        Проверить срабатывание ValidationError до отправки сообщений: !story
+            сделано: yes
+            старт: Отправка заголовка свыше 1024 символов
+            успех: Сработало исключение до отправки сообщения к серверу
+    '''
+
     with tg_methods.SyncTgClient.setup('token'):
         with pytest.raises(ValidationError):
             media = tg_types.InputMediaUrlPhoto(
@@ -156,6 +260,15 @@ def test_edit_message_media_url_photo_request_mocking_with_large_caption(
 def test_edit_message_media_url_document_request_mocking(
     edit_message_media_document_response: dict[str, typing.Any],
 ):
+    '''
+    Программист - Узнавать о длинных заголовках сообщений до отправки запроса к серверу Telegram
+    при отправке EditUrlMessageMediaRequest: !func
+        Проверить срабатывание ValidationError до отправки сообщений: !story
+            сделано: yes
+            старт: Отправка заголовка свыше 1024 символов
+            успех: Сработало исключение до отправки сообщения к серверу
+    '''
+
     with tg_methods.SyncTgClient.setup('token'):
         with pytest.raises(ValidationError):
             media = tg_types.InputMediaUrlDocument(
@@ -168,9 +281,19 @@ def test_edit_message_media_url_document_request_mocking(
                 media=media,
             )
 
+
 def test_edit_message_media_bytes_photo_request_mocking(
     edit_message_media_photo_response: dict[str, typing.Any],
 ):
+    '''
+    Программист - Узнавать о длинных заголовках сообщений до отправки запроса к серверу Telegram
+    при отправке EditBytesMessageMediaRequest: !func
+        Проверить срабатывание ValidationError до отправки сообщений: !story
+            сделано: yes
+            старт: Отправка заголовка свыше 1024 символов
+            успех: Сработало исключение до отправки сообщения к серверу
+    '''
+
     with tg_methods.SyncTgClient.setup('token'):
         with pytest.raises(ValidationError):
             media = tg_types.InputMediaBytesPhoto(
@@ -185,10 +308,18 @@ def test_edit_message_media_bytes_photo_request_mocking(
             )
 
 
-
 def test_edit_message_media_bytes_document_request_mocking(
     edit_message_media_document_response: dict[str, typing.Any],
 ):
+    '''
+    Программист - Узнавать о длинных заголовках сообщений до отправки запроса к серверу Telegram
+    при отправке EditBytesMessageMediaRequest: !func
+        Проверить срабатывание ValidationError до отправки сообщений: !story
+            сделано: yes
+            старт: Отправка заголовка свыше 1024 символов
+            успех: Сработало исключение до отправки сообщения к серверу
+    '''
+
     with tg_methods.SyncTgClient.setup('token'):
         with pytest.raises(ValidationError):
             media = tg_types.InputMediaBytesDocument(
