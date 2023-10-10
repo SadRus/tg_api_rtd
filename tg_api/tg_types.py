@@ -317,7 +317,7 @@ class InputMediaUrlPhoto(BaseModel):
 
     type: str = 'photo' # noqa A003
     media: str
-    caption: str | None = None
+    caption: str = Field(None, max_length=1024)
     parse_mode: str | None = None
     caption_entities: list[MessageEntity] | None = None
     has_spoiler: bool | None = None
@@ -332,7 +332,7 @@ class InputMediaBytesPhoto(BaseModel):
     type: str = 'photo' # noqa A003
     media: str
     media_content: bytes
-    caption: str | None = None
+    caption: str = Field(None, max_length=1024)
     parse_mode: str | None = None
     caption_entities: list[MessageEntity] | None = None
     has_spoiler: bool | None = None
@@ -348,7 +348,7 @@ class InputMediaUrlDocument(BaseModel):
     media: str
     thumbnail: str | None = None
     thumbnail_content: bytes | None = None
-    caption: str | None = None
+    caption: str = Field(None, max_length=1024)
     parse_mode: str | None = None
     caption_entities: list[MessageEntity] | None = None
     disable_content_type_detection: bool | None = None
@@ -365,7 +365,7 @@ class InputMediaBytesDocument(BaseModel):
     media_content: bytes
     thumbnail: str | None = None
     thumbnail_content: bytes | None = None
-    caption: str | None = None
+    caption: str = Field(None, max_length=1024)
     parse_mode: str | None = None
     caption_entities: list[MessageEntity] | None = None
     disable_content_type_detection: bool | None = None

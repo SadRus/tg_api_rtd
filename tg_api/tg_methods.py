@@ -2,7 +2,7 @@ import io
 import json
 from typing import Any, Union, Iterable
 
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 from .client import AsyncTgClient, SyncTgClient, TgRuntimeError, raise_for_tg_response_status
 from . import tg_types
@@ -20,6 +20,7 @@ class BaseTgRequest(BaseModel):
     class Config:
         extra = 'forbid'
         validate_assignment = True
+        anystr_strip_whitespace = True
 
     async def apost_as_json(self, api_method: str) -> bytes:
         """Send a request to the Telegram Bot API asynchronously using a JSON payload.
@@ -164,7 +165,7 @@ class SendMessageRequest(BaseTgRequest):
     """
 
     chat_id: int
-    text: str
+    text: str = Field(min_length=1, max_length=4096)
     parse_mode: tg_types.ParseMode | None
     entities: list[tg_types.MessageEntity] | None
     disable_web_page_preview: bool | None
@@ -178,6 +179,9 @@ class SendMessageRequest(BaseTgRequest):
         tg_types.ReplyKeyboardRemove,
         tg_types.ForceReply,
     ] | None = None
+
+    class Config:
+        anystr_strip_whitespace = True
 
     async def asend(self) -> SendMessageResponse:
         """Send HTTP request to `sendMessage` Telegram Bot API endpoint asynchronously and parse response."""
@@ -209,7 +213,7 @@ class SendBytesPhotoRequest(BaseTgRequest):
     ]
     filename: str | None
     message_thread_id: int | None
-    caption: str | None
+    caption: str | None = Field(None, max_length=1024)
     parse_mode: str | None
     caption_entities: list[tg_types.MessageEntity] | None
     has_spoiler: bool | None
@@ -255,7 +259,7 @@ class SendUrlPhotoRequest(BaseTgRequest):
     photo: str
     filename: str | None
     message_thread_id: int | None
-    caption: str | None
+    caption: str | None = Field(None, max_length=1024)
     parse_mode: str | None
     caption_entities: list[tg_types.MessageEntity] | None
     has_spoiler: bool | None
@@ -298,7 +302,7 @@ class SendBytesDocumentRequest(BaseTgRequest):
     filename: str | None
     message_thread_id: int | None
     thumbnail: bytes | str | None
-    caption: str | None
+    caption: str | None = Field(None, max_length=1024)
     parse_mode: str | None
     caption_entities: list[tg_types.MessageEntity] | None
     disable_content_type_detection: bool | None
@@ -345,7 +349,7 @@ class SendUrlDocumentRequest(BaseTgRequest):
     filename: str | None
     message_thread_id: int | None
     thumbnail: bytes | str | None
-    caption: str | None
+    caption: str | None = Field(None, max_length=1024)
     parse_mode: str | None
     caption_entities: list[tg_types.MessageEntity] | None
     disable_content_type_detection: bool | None
@@ -412,7 +416,7 @@ class EditMessageTextRequest(BaseTgRequest):
     chat_id: int | None
     message_id: int | None
     inline_message_id: str | None
-    text: str
+    text: str = Field(min_length=1, max_length=4096)
     parse_mode: str | None
     entities: list[tg_types.MessageEntity] | None
     disable_web_page_preview: bool | None
@@ -472,7 +476,7 @@ class EditMessageCaptionRequest(BaseTgRequest):
     chat_id: int | None
     message_id: int | None
     inline_message_id: str | None
-    caption: str
+    caption: str = Field(None, max_length=1024)
     parse_mode: str | None
     caption_entities: list[tg_types.MessageEntity] | None
     reply_markup: tg_types.InlineKeyboardMarkup | None
