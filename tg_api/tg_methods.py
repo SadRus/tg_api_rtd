@@ -21,6 +21,7 @@ class BaseTgRequest(BaseModel):
         extra = 'forbid'
         validate_assignment = True
         anystr_strip_whitespace = True
+        validate_all = True
 
     async def apost_as_json(self, api_method: str) -> bytes:
         """Send a request to the Telegram Bot API asynchronously using a JSON payload.
@@ -476,7 +477,7 @@ class EditMessageCaptionRequest(BaseTgRequest):
     chat_id: int | None
     message_id: int | None
     inline_message_id: str | None
-    caption: str = Field(None, max_length=1024)
+    caption: str | None = Field(None, max_length=1024)
     parse_mode: str | None
     caption_entities: list[tg_types.MessageEntity] | None
     reply_markup: tg_types.InlineKeyboardMarkup | None
