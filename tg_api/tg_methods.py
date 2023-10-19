@@ -8,7 +8,7 @@ from .client import AsyncTgClient, SyncTgClient, TgRuntimeError, raise_for_tg_re
 from . import tg_types
 
 
-class BaseTgRequest(BaseModel):
+class BaseTgRequest(BaseModel, tg_types.ValidableMixin):
     """Base class representing a request to the Telegram Bot API.
 
     Provides utility methods for making both asynchronous and synchronous requests to the API.
@@ -21,7 +21,6 @@ class BaseTgRequest(BaseModel):
         extra = 'forbid'
         validate_assignment = True
         anystr_strip_whitespace = True
-        validate_all = True
 
     async def apost_as_json(self, api_method: str) -> bytes:
         """Send a request to the Telegram Bot API asynchronously using a JSON payload.
