@@ -18,17 +18,47 @@ class User(BaseModel):
     See here: https://core.telegram.org/bots/api#user
     """
 
-    id: int  # noqa A003
-    is_bot: bool
-    first_name: str
-    last_name: str | None = None
-    username: str | None = None
-    language_code: str | None = None
-    is_premium: bool | None = None
-    added_to_attachment_menu: bool | None = None
-    can_join_groups: bool | None = None
-    can_read_all_group_messages: bool | None = None
-    supports_inline_queries: bool | None = None
+    id: int = Field( # noqa A003
+        description='Unique identifier for this user or bot',
+    )
+    is_bot: bool = Field(
+        description="True, if this user is a bot",
+    )
+    first_name: str = Field(
+        description="User's or bot's first name",
+    )
+    last_name: str | None = Field(
+        default=None,
+        description="User's or bot's last name",
+    )
+    username: str | None = Field(
+        default=None,
+        description="User's or bot's username",
+    )
+    language_code: str | None = Field(
+        default=None,
+        description="IETF language tag of the user's language",
+    )
+    is_premium: bool | None = Field(
+        default=None,
+        description="True, if this user is a Telegram Premium user",
+    )
+    added_to_attachment_menu: bool | None = Field(
+        default=None,
+        description="True, if this user added the bot to the attachment menu",
+    )
+    can_join_groups: bool | None = Field(
+        default=None,
+        description="True, if the bot can be invited to groups. Returned only in getMe",
+    )
+    can_read_all_group_messages: bool | None = Field(
+        default=None,
+        description="True, if privacy mode is disabled for the bot. Returned only in getMe",
+    )
+    supports_inline_queries: bool | None = Field(
+        default=None,
+        description="True, if the bot supports inline queries. Returned only in getMe",
+    )
 
 
 class Chat(BaseModel):
