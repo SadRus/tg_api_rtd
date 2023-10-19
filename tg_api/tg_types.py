@@ -372,10 +372,29 @@ class InputMediaBytesDocument(BaseModel):
 
 
 class CallbackQuery(BaseModel):
-    data: str
-    message: Message | None = Field(description='New incoming message of any kind - text, photo, sticker, etc.')
-    from_: User | None = Field(default=None, alias='from')
-    chat_instance: str | None = None
+    """This object represents an incoming callback query from a callback button in an inline keyboard.
+
+    See here: https://core.telegram.org/bots/api#callbackquery
+    """
+
+    id_: str = Field(
+        description='Unique identifier for this query', alias='id',
+    )
+    from_: User = Field(
+        description='Sender', alias='from',
+    )
+    message: Message | None = Field(
+        description='Message with call back button. If the message is out of date, the message data is not available',
+    )
+    inline_message_id: str | None = Field(
+        description='Identifier of the message sent via the bot in inline mode, that originated the query',
+    )
+    chat_instance: str | None = Field(
+        description='Uniquely corresponding to the chat to which the message with the callback button was sent',
+    )
+    data: str | None = Field(
+        description='Data associated with the call back button',
+    )
 
 
 class Location(BaseModel):
