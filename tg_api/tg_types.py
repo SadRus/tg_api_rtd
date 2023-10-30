@@ -255,8 +255,13 @@ class ReplyKeyboardRemove(BaseModel):
     See here: https://core.telegram.org/bots/api#replykeyboardremove
     """
 
-    remove_keyboard: bool
-    selective: bool | None = None
+    remove_keyboard: bool = Field(
+        description="Requests clients to remove the custom keyboard",
+    )
+    selective: bool | None = Field(
+        default=None,
+        description="Use this parameter if you want to remove the keyboard for specific users only",
+    )
 
 
 class ForceReply(BaseModel):
