@@ -351,11 +351,21 @@ class Invoice(BaseModel):
     See here: https://core.telegram.org/bots/api#invoice
     """
 
-    title: str
-    description: str
-    start_parameter: str
-    currency: str
-    total_amount: int
+    title: str = Field(
+        description="Product name",
+    )
+    description: str = Field(
+        description="Product description",
+    )
+    start_parameter: str = Field(
+        description="Unique bot deep-linking parameter that can be used to generate this invoice",
+    )
+    currency: str = Field(
+        description="Three-letter ISO 4217 currency code",
+    )
+    total_amount: int = Field(
+        description="Total price in the smallest units of the currency (integer, not float/double)",
+    )
 
 
 class ShippingAddress(BaseModel):
