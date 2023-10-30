@@ -340,7 +340,9 @@ class InlineKeyboardMarkup(BaseModel):
     See here: https://core.telegram.org/bots/api#inlinekeyboardmarkup
     """
 
-    inline_keyboard: list[list[InlineKeyboardButton]]
+    inline_keyboard: list[list[InlineKeyboardButton]] = Field(
+        description="Array of button rows, each represented by an Array of InlineKeyboardButton objects",
+    )
 
 
 class Invoice(BaseModel):
