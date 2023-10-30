@@ -274,9 +274,17 @@ class ForceReply(BaseModel):
     See here: https://core.telegram.org/bots/api#forcereply
     """
 
-    force_reply: bool
-    input_field_placeholder: bool | None = None
-    selective: bool | None = None
+    force_reply: bool = Field(
+        description="Shows reply interface to the user, as if they manually selected the bot's message",
+    )
+    input_field_placeholder: bool | None = Field(
+        default=None,
+        description="The placeholder to be shown in the input field when the reply is active",
+    )
+    selective: bool | None = Field(
+        default=None,
+        description="Use this parameter if you want to force reply from specific users only.",
+    )
 
 
 class InlineKeyboardButton(BaseModel):
