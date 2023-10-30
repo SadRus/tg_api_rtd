@@ -374,12 +374,24 @@ class ShippingAddress(BaseModel):
     See here: https://core.telegram.org/bots/api#shippingaddress
     """
 
-    country_code: str
-    state: str
-    city: str
-    street_line1: str
-    street_line2: str
-    post_code: str
+    country_code: str = Field(
+        description="Two-letter ISO 3166-1 alpha-2 country code",
+    )
+    state: str = Field(
+        description="State, if applicable",
+    )
+    city: str = Field(
+        description="City",
+    )
+    street_line1: str = Field(
+        description="First line for the address",
+    )
+    street_line2: str = Field(
+        description="Second line for the address",
+    )
+    post_code: str = Field(
+        description="Address post code",
+    )
 
 
 class OrderInfo(BaseModel):
