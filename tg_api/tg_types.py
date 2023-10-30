@@ -185,13 +185,33 @@ class KeyboardButton(BaseModel):
     See here: https://core.telegram.org/bots/api#keyboardbutton
     """
 
-    text: str
-    request_user: dict[str, Union[int, bool]] | None = None
-    request_chat: dict[str, Union[int, bool, dict[str, bool]]] | None = None
-    request_contact: bool | None = None
-    request_location: bool | None = None
-    request_poll: dict[str, str] | None = None
-    web_app: dict[str, AnyHttpUrl] | None = None
+    text: str = Field(
+        description="Text of the button",
+    )
+    request_user: dict[str, Union[int, bool]] | None = Field(
+        default=None,
+        description="If specified, pressing the button will open a list of suitable users",
+    )
+    request_chat: dict[str, Union[int, bool, dict[str, bool]]] | None = Field(
+        default=None,
+        description="If specified, pressing the button will open a list of suitable chats",
+    )
+    request_contact: bool | None = Field(
+        default=None,
+        description="If True, the user's phone number will be sent as a contact when the button is pressed",
+    )
+    request_location: bool | None = Field(
+        default=None,
+        description="If True, the user's current location will be sent when the button is pressed",
+    )
+    request_poll: dict[str, str] | None = Field(
+        default=None,
+        description="If specified, the user will be asked to create a poll and send it to the bot",
+    )
+    web_app: dict[str, AnyHttpUrl] | None = Field(
+        default=None,
+        description="If specified, the described Web App will be launched when the button is pressed",
+    )
 
 
 class ReplyKeyboardMarkup(BaseModel):
