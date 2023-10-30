@@ -220,12 +220,29 @@ class ReplyKeyboardMarkup(BaseModel):
     See here: https://core.telegram.org/bots/api#replykeyboardmarkup
     """
 
-    keyboard: list[list[KeyboardButton]]
-    is_persistent: bool | None = None
-    resize_keyboard: bool | None = None
-    one_time_keyboard: bool | None = None
-    input_field_placeholder: str | None = None
-    selective: bool | None = None
+    keyboard: list[list[KeyboardButton]] = Field(
+        description="Array of button rows, each represented by an Array of KeyboardButton objects",
+    )
+    is_persistent: bool | None = Field(
+        default=None,
+        description="Requests clients to always show the keyboard when the regular keyboard is hidden",
+    )
+    resize_keyboard: bool | None = Field(
+        default=None,
+        description="Requests clients to resize the keyboard vertically for optimal fit",
+    )
+    one_time_keyboard: bool | None = Field(
+        default=None,
+        description="Requests clients to hide the keyboard as soon as it's been used",
+    )
+    input_field_placeholder: str | None = Field(
+        default=None,
+        description="The placeholder to be shown in the input field when the keyboard is active",
+    )
+    selective: bool | None = Field(
+        default=None,
+        description="Use this parameter if you want to show the keyboard to specific users only",
+    )
 
 
 class ReplyKeyboardRemove(BaseModel):
