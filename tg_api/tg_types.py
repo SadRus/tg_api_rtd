@@ -459,13 +459,31 @@ class MessageEntity(BaseModel):
     See here: https://core.telegram.org/bots/api#messageentity
     """
 
-    type: str  # noqa A003
-    offset: int
-    length: int
-    url: str | None = None
-    user: User | None = None
-    language: str | None = None
-    custom_emoji_id: str | None = None
+    type: str = Field( # noqa A003
+        description="Type of the entity",
+    )
+    offset: int = Field(
+        description="Offset in UTF-16 code units to the start of the entity",
+    )
+    length: int = Field(
+        description="Length of the entity in UTF-16 code units",
+    )
+    url: str | None = Field(
+        default=None,
+        description="For “text_link” only, URL that will be opened after user taps on the text",
+    )
+    user: User | None = Field(
+        default=None,
+        description="For “text_mention” only, the mentioned user",
+    )
+    language: str | None = Field(
+        default=None,
+        description="For “pre” only, the programming language of the entity text",
+    )
+    custom_emoji_id: str | None = Field(
+        default=None,
+        description="For “custom_emoji” only, unique identifier of the custom emoji",
+    )
 
 
 class Message(BaseModel):
