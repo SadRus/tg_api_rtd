@@ -293,16 +293,45 @@ class InlineKeyboardButton(BaseModel):
     See here: https://core.telegram.org/bots/api#inlinekeyboardbutton
     """
 
-    text: str
-    url: str | None = None
-    callback_data: str | None = None
-    web_app: dict[str, AnyHttpUrl] | None = None
-    login_url: dict[str, Union[str, bool]] | None = None
-    switch_inline_query: str | None = None
-    switch_inline_query_current_chat: str | None = None
-    switch_inline_query_chosen_chat: dict[str, Union[str, bool]] | None = None
-    callback_game: Any | None = None
-    pay: bool | None = None
+    text: str = Field(
+        description="Label text on the button",
+    )
+    url: str | None = Field(
+        default=None,
+        description="HTTP or tg:// URL to be opened when the button is pressed",
+    )
+    callback_data: str | None = Field(
+        default=None,
+        description="Data to be sent in a callback query to the bot when button is pressed",
+    )
+    web_app: dict[str, AnyHttpUrl] | None = Field(
+        default=None,
+        description="Description of the Web App that will be launched when the user presses the button",
+    )
+    login_url: dict[str, Union[str, bool]] | None = Field(
+        default=None,
+        description="An HTTPS URL used to automatically authorize the user",
+    )
+    switch_inline_query: str | None = Field(
+        default=None,
+        description="If set, pressing the button will prompt the user to select one of their chats",
+    )
+    switch_inline_query_current_chat: str | None = Field(
+        default=None,
+        description="If set, pressing the button will insert the bot's username and the specified inline query",
+    )
+    switch_inline_query_chosen_chat: dict[str, Union[str, bool]] | None = Field(
+        default=None,
+        description="If set, pressing the button will prompt the user to select one of their chats of the type",
+    )
+    callback_game: Any | None = Field(
+        default=None,
+        description="Description of the game that will be launched when the user presses the button",
+    )
+    pay: bool | None = Field(
+        default=None,
+        description="Specify True, to send a Pay button",
+    )
 
 
 class InlineKeyboardMarkup(BaseModel):
