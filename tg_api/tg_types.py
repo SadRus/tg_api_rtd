@@ -67,33 +67,112 @@ class Chat(BaseModel):
     See here: https://core.telegram.org/bots/api#chat
     """
 
-    id: int  # noqa A003
-    type: str  # noqa A003
-    title: str | None = None
-    username: str | None = None
-    first_name: str | None = None
-    last_name: str | None = None
-    is_forum: bool | None = None
-    photo: dict[str, Any] | None = None
-    active_usernames: list[str] | None = None
-    emoji_status_custom_emoji_id: str | None = None
-    bio: str | None = None
-    has_private_forwards: bool | None = None
-    has_restricted_voice_and_video_messages: bool | None = None
-    join_to_send_messages: bool | None = None
-    join_by_request: bool | None = None
-    description: str | None = None
-    invite_link: str | None = None
-    pinned_message: Message | None = None
-    permissions: dict[str, Any] | None = None
-    slow_mode_delay: int | None = None
-    message_auto_delete_time: int | None = None
-    has_aggressive_anti_spam_enabled: bool | None = None
-    has_hidden_members: bool | None = None
-    has_protected_content: bool | None = None
-    sticker_set_name: str | None = None
-    can_set_sticker_set: bool | None = None
-    linked_chat_id: int | None = None
+    id: int = Field( # noqa A003
+        description="Unique identifier for this chat",
+    )
+    type: str = Field( # noqa A003
+        description="Type of chat, can be either “private”, “group”, “supergroup” or “channel”",
+    )
+    title: str | None = Field(
+        default=None,
+        description="Title, for supergroups, channels and group chats",
+    )
+    username: str | None = Field(
+        default=None,
+        description="Username, for private chats, supergroups and channels if available",
+    )
+    first_name: str | None = Field(
+        default=None,
+        description="First name of the other party in a private chat",
+    )
+    last_name: str | None = Field(
+        default=None,
+        description="Last name of the other party in a private chat",
+    )
+    is_forum: bool | None = Field(
+        default=None,
+        description="True, if the supergroup chat is a forum",
+    )
+    photo: dict[str, Any] | None = Field(
+        default=None,
+        description="Chat photo. Returned only in getChat",
+    )
+    active_usernames: list[str] | None = Field(
+        default=None,
+        description="If non-empty, the list of all active chat usernames; for private chats, supergroups and channels",
+    )
+    emoji_status_custom_emoji_id: str | None = Field(
+        default=None,
+        description="Custom emoji identifier of emoji status of the other party in a private chat",
+    )
+    bio: str | None = Field(
+        default=None,
+        description="Bio of the other party in a private chat",
+    )
+    has_private_forwards: bool | None = Field(
+        default=None,
+        description="True if privacy settings allow tg://user?id=<user_id> links.",
+    )
+    has_restricted_voice_and_video_messages: bool | None = Field(
+        default=None,
+        description="True, if the privacy settings restrict sending voice and video note messages in the private chat",
+    )
+    join_to_send_messages: bool | None = Field(
+        default=None,
+        description="True, if privacy settings limit sending messages, voice and video notes",
+    )
+    join_by_request: bool | None = Field(
+        default=None,
+        description="True, if all users directly joining the supergroup need to be approved by administrators",
+    )
+    description: str | None = Field(
+        default=None,
+        description="Description, for groups, supergroups and channel chats",
+    )
+    invite_link: str | None = Field(
+        default=None,
+        description="Primary invite link, for groups, supergroups and channel chats",
+    )
+    pinned_message: Message | None = Field(
+        default=None,
+        description="The most recent pinned message",
+    )
+    permissions: dict[str, Any] | None = Field(
+        default=None,
+        description="Default chat member permissions, for groups and supergroups",
+    )
+    slow_mode_delay: int | None = Field(
+        default=None,
+        description="The minimum allowed delay between consecutive messages sent by each unpriviledged user",
+    )
+    message_auto_delete_time: int | None = Field(
+        default=None,
+        description="The time after which all messages sent to the chat will be automatically deleted; in seconds",
+    )
+    has_aggressive_anti_spam_enabled: bool | None = Field(
+        default=None,
+        description="True, if aggressive anti-spam checks are enabled in the supergroup",
+    )
+    has_hidden_members: bool | None = Field(
+        default=None,
+        description="True, if non-administrators can only get the list of bots and administrators in the chat",
+    )
+    has_protected_content: bool | None = Field(
+        default=None,
+        description="True, if messages from the chat can't be forwarded to other chats",
+    )
+    sticker_set_name: str | None = Field(
+        default=None,
+        description="For supergroups, name of group sticker set",
+    )
+    can_set_sticker_set: bool | None = Field(
+        default=None,
+        description="True, if the bot can change the group sticker set.",
+    )
+    linked_chat_id: int | None = Field(
+        default=None,
+        description="Unique identifier for the linked chat",
+    )
 
 
 class KeyboardButton(BaseModel):
