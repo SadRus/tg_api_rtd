@@ -424,13 +424,31 @@ class SuccessfulPayment(BaseModel):
     See here: https://core.telegram.org/bots/api#successfulpayment
     """
 
-    currency: str
-    total_amount: int
-    invoice_payload: str
-    shipping_option_id: str | None = None
-    order_info: OrderInfo | None = None
-    telegram_payment_charge_id: str | None = None
-    provider_payment_charge_id: str | None = None
+    currency: str = Field(
+        description="Three-letter ISO 4217 currency code",
+    )
+    total_amount: int = Field(
+        description="Total price in the smallest units of the currency (integer, not float/double)",
+    )
+    invoice_payload: str = Field(
+        description="Bot specified invoice payload",
+    )
+    shipping_option_id: str | None = Field(
+        default=None,
+        description="Identifier of the shipping option chosen by the user",
+    )
+    order_info: OrderInfo | None = Field(
+        default=None,
+        description="Order information provided by the user",
+    )
+    telegram_payment_charge_id: str | None = Field(
+        default=None,
+        description="Telegram payment identifier",
+    )
+    provider_payment_charge_id: str | None = Field(
+        default=None,
+        description="Provider payment identifier",
+    )
 
 
 class MessageEntity(BaseModel):
