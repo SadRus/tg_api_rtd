@@ -400,10 +400,22 @@ class OrderInfo(BaseModel):
     See here: https://core.telegram.org/bots/api#orderinfo
     """
 
-    name: str | None = None
-    phone_number: str | None = None
-    email: str | None = None
-    shipping_address: ShippingAddress | None = None
+    name: str | None = Field(
+        default=None,
+        description="User name",
+    )
+    phone_number: str | None = Field(
+        default=None,
+        description="User's phone number",
+    )
+    email: str | None = Field(
+        default=None,
+        description="User email",
+    )
+    shipping_address: ShippingAddress | None = Field(
+        default=None,
+        description="User shipping address",
+    )
 
 
 class SuccessfulPayment(BaseModel):
