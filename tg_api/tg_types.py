@@ -240,7 +240,7 @@ class KeyboardButton(BaseModel):
     text: str = Field(
         description=dedent("""\
             Text of the button. If none of the optional fields are used, it will be sent
-            as a message when the button is pressed
+            as a message when the button is pressed.
         """),
     )
     request_user: dict[str, Union[int, bool]] | None = Field(
@@ -418,7 +418,11 @@ class InlineKeyboardButton(BaseModel):
     )
     url: str | None = Field(
         default=None,
-        description="Optional. HTTP or tg:// URL to be opened when the button is pressed. Links tg://user?id=<user_id> can be used to mention a user by their ID without using a username, if this is allowed by their privacy settings.",
+        description=dedent("""\
+            Optional. HTTP or tg:// URL to be opened when the button is pressed.
+            Links tg://user?id=<user_id> can be used to mention a user by their ID without using a username,
+            if this is allowed by their privacy settings.
+        """),
     )
     callback_data: str | None = Field(
         default=None,
@@ -426,31 +430,58 @@ class InlineKeyboardButton(BaseModel):
     )
     web_app: dict[str, AnyHttpUrl] | None = Field(
         default=None,
-        description="Optional. Description of the Web App that will be launched when the user presses the button. The Web App will be able to send an arbitrary message on behalf of the user using the method answerWebAppQuery. Available only in private chats between a user and the bot.",
+        description=dedent("""\
+            Optional. Description of the Web App that will be launched when the user presses the button.
+            The Web App will be able to send an arbitrary message on behalf of the user using the method
+            answerWebAppQuery. Available only in private chats between a user and the bot.
+        """),
     )
     login_url: dict[str, Union[str, bool]] | None = Field(
         default=None,
-        description="Optional. An HTTPS URL used to automatically authorize the user. Can be used as a replacement for the Telegram Login Widget.",
+        description=dedent("""\
+            Optional. An HTTPS URL used to automatically authorize the user.
+            Can be used as a replacement for the Telegram Login Widget.
+        """),
     )
     switch_inline_query: str | None = Field(
         default=None,
-        description="Optional. If set, pressing the button will prompt the user to select one of their chats, open that chat and insert the bot's username and the specified inline query in the input field. May be empty, in which case just the bot's username will be inserted.",
+        description=dedent("""\
+            Optional. If set, pressing the button will prompt the user to select one of their chats,
+            open that chat and insert the bot's username and the specified inline query in the input field.
+            May be empty, in which case just the bot's username will be inserted.
+        """),
     )
     switch_inline_query_current_chat: str | None = Field(
         default=None,
-        description="Optional. If set, pressing the button will insert the bot's username and the specified inline query in the current chat's input field. May be empty, in which case only the bot's username will be inserted. This offers a quick way for the user to open your bot in inline mode in the same chat - good for selecting something from multiple options.",
+        description=dedent("""\
+            Optional. If set, pressing the button will insert the bot's username and the specified inline query
+            in the current chat's input field. May be empty, in which case only the bot's username will be inserted.
+            This offers a quick way for the user to open your bot in inline mode
+            in the same chat - good for selecting something from multiple options.
+        """),
     )
     switch_inline_query_chosen_chat: dict[str, Union[str, bool]] | None = Field(
         default=None,
-        description="Optional. If set, pressing the button will prompt the user to select one of their chats of the specified type, open that chat and insert the bot's username and the specified inline query in the input field",
+        description=dedent("""\
+            Optional. If set, pressing the button will prompt the user to select one of their chats of
+            the specified type, open that chat and insert the bot's username and the specified
+            inline query in the input field.
+        """),
     )
     callback_game: Any | None = Field(
         default=None,
-        description="Optional. Description of the game that will be launched when the user presses the button. NOTE: This type of button must always be the first button in the first row.",
+        description=dedent("""\
+            Optional. Description of the game that will be launched when the user presses the button.
+            NOTE: This type of button must always be the first button in the first row.
+        """),
     )
     pay: bool | None = Field(
         default=None,
-        description="Optional. Specify True, to send a Pay button. NOTE: This type of button must always be the first button in the first row and can only be used in invoice messages.",
+        description=dedent("""\
+            Optional. Specify True, to send a Pay button.
+            NOTE: This type of button must always be the first
+            button in the first row and can only be used in invoice messages.
+        """),
     )
 
 
@@ -461,7 +492,7 @@ class InlineKeyboardMarkup(BaseModel):
     """
 
     inline_keyboard: list[list[InlineKeyboardButton]] = Field(
-        description="Array of button rows, each represented by an Array of InlineKeyboardButton objects",
+        description="Array of button rows, each represented by an Array of InlineKeyboardButton objects.",
     )
 
 
@@ -472,19 +503,23 @@ class Invoice(BaseModel):
     """
 
     title: str = Field(
-        description="Product name",
+        description="Product name.",
     )
     description: str = Field(
         description="Product description",
     )
     start_parameter: str = Field(
-        description="Unique bot deep-linking parameter that can be used to generate this invoice",
+        description="Unique bot deep-linking parameter that can be used to generate this invoice.",
     )
     currency: str = Field(
-        description="Three-letter ISO 4217 currency code",
+        description="Three-letter ISO 4217 currency code.",
     )
     total_amount: int = Field(
-        description="Total price in the smallest units of the currency (integer, not float/double). For example, for a price of US$ 1.45 pass amount = 145. See the exp parameter in currencies.json, it shows the number of digits past the decimal point for each currency (2 for the majority of currencies).",
+        description=dedent("""\
+            Total price in the smallest units of the currency (integer, not float/double).
+            For example, for a price of US$ 1.45 pass amount = 145. See the exp parameter in currencies.json,
+            it shows the number of digits past the decimal point for each currency (2 for the majority of currencies).
+        """),
     )
 
 
@@ -495,22 +530,22 @@ class ShippingAddress(BaseModel):
     """
 
     country_code: str = Field(
-        description="Two-letter ISO 3166-1 alpha-2 country code",
+        description="Two-letter ISO 3166-1 alpha-2 country code.",
     )
     state: str = Field(
-        description="State, if applicable",
+        description="State, if applicable.",
     )
     city: str = Field(
-        description="City",
+        description="City.",
     )
     street_line1: str = Field(
-        description="First line for the address",
+        description="First line for the address.",
     )
     street_line2: str = Field(
-        description="Second line for the address",
+        description="Second line for the address.",
     )
     post_code: str = Field(
-        description="Address post code",
+        description="Address post code.",
     )
 
 
@@ -522,19 +557,19 @@ class OrderInfo(BaseModel):
 
     name: str | None = Field(
         default=None,
-        description="Optional. User name",
+        description="Optional. User name.",
     )
     phone_number: str | None = Field(
         default=None,
-        description="Optional. User's phone number",
+        description="Optional. User's phone number.",
     )
     email: str | None = Field(
         default=None,
-        description="Optional. User email",
+        description="Optional. User email.",
     )
     shipping_address: ShippingAddress | None = Field(
         default=None,
-        description="Optional. User shipping address",
+        description="Optional. User shipping address.",
     )
 
 
@@ -545,29 +580,33 @@ class SuccessfulPayment(BaseModel):
     """
 
     currency: str = Field(
-        description="Three-letter ISO 4217 currency code",
+        description="Three-letter ISO 4217 currency code.",
     )
     total_amount: int = Field(
-        description="Total price in the smallest units of the currency (integer, not float/double). For example, for a price of US$ 1.45 pass amount = 145. See the exp parameter in currencies.json, it shows the number of digits past the decimal point for each currency (2 for the majority of currencies).",
+        description=dedent("""\
+            Total price in the smallest units of the currency (integer, not float/double).
+            For example, for a price of US$ 1.45 pass amount = 145. See the exp parameter in currencies.json,
+            it shows the number of digits past the decimal point for each currency (2 for the majority of currencies).
+        """),
     )
     invoice_payload: str = Field(
-        description="Bot specified invoice payload",
+        description="Bot specified invoice payload.",
     )
     shipping_option_id: str | None = Field(
         default=None,
-        description="Optional. Identifier of the shipping option chosen by the user",
+        description="Optional. Identifier of the shipping option chosen by the user.",
     )
     order_info: OrderInfo | None = Field(
         default=None,
-        description="Optional. Order information provided by the user",
+        description="Optional. Order information provided by the user.",
     )
     telegram_payment_charge_id: str | None = Field(
         default=None,
-        description="Telegram payment identifier",
+        description="Telegram payment identifier.",
     )
     provider_payment_charge_id: str | None = Field(
         default=None,
-        description="Provider payment identifier",
+        description="Provider payment identifier.",
     )
 
 
@@ -580,29 +619,37 @@ class MessageEntity(BaseModel):
     """
 
     type: str = Field( # noqa A003
-        description="Type of the entity. Currently, can be “mention” (@username), “hashtag” (#hashtag), “cashtag” ($USD), “bot_command” (/start@jobs_bot), “url” (https://telegram.org), “email” (do-not-reply@telegram.org), “phone_number” (+1-212-555-0123), “bold” (bold text), “italic” (italic text), “underline” (underlined text), “strikethrough” (strikethrough text), “spoiler” (spoiler message), “code” (monowidth string), “pre” (monowidth block), “text_link” (for clickable text URLs), “text_mention” (for users without usernames), “custom_emoji” (for inline custom emoji stickers)",
+        description=dedent("""\
+            Type of the entity. Currently, can be “mention” (@username), “hashtag” (#hashtag),
+            “cashtag” ($USD), “bot_command” (/start@jobs_bot), “url” (https://telegram.org),
+            “email” (do-not-reply@telegram.org), “phone_number” (+1-212-555-0123), “bold” (bold text),
+            “italic” (italic text), “underline” (underlined text), “strikethrough” (strikethrough text),
+            “spoiler” (spoiler message), “code” (monowidth string), “pre” (monowidth block),
+            “text_link” (for clickable text URLs), “text_mention” (for users without usernames),
+            “custom_emoji” (for inline custom emoji stickers).
+        """),
     )
     offset: int = Field(
-        description="Offset in UTF-16 code units to the start of the entity",
+        description="Offset in UTF-16 code units to the start of the entity.",
     )
     length: int = Field(
-        description="Length of the entity in UTF-16 code units",
+        description="Length of the entity in UTF-16 code units.",
     )
     url: str | None = Field(
         default=None,
-        description="Optional. For “text_link” only, URL that will be opened after user taps on the text",
+        description="Optional. For “text_link” only, URL that will be opened after user taps on the text.",
     )
     user: User | None = Field(
         default=None,
-        description="Optional. For “text_mention” only, the mentioned user",
+        description="Optional. For “text_mention” only, the mentioned user.",
     )
     language: str | None = Field(
         default=None,
-        description="Optional. For “pre” only, the programming language of the entity text",
+        description="Optional. For “pre” only, the programming language of the entity text.",
     )
     custom_emoji_id: str | None = Field(
         default=None,
-        description="Optional. For “custom_emoji” only, unique identifier of the custom emoji",
+        description="Optional. For “custom_emoji” only, unique identifier of the custom emoji.",
     )
 
 
@@ -613,46 +660,69 @@ class Message(BaseModel):
     """
 
     message_id: int = Field(
-        description="Unique message identifier inside this chat",
+        description="Unique message identifier inside this chat.",
     )
     message_thread_id: int | None = Field(
         default=None,
-        description="Optional. Unique identifier of a message thread to which the message belongs; for supergroups only",
+        description=dedent("""\
+            Optional. Unique identifier of a message thread to which the message belongs; for supergroups only.
+        """),
     )
     from_: User | None = Field(
         default=None,
         alias="from",
-        description="Optional. Sender of the message; empty for messages sent to channels. For backward compatibility, the field contains a fake sender user in non-channel chats, if the message was sent on behalf of a chat.",
+        description=dedent("""\
+            Optional. Sender of the message; empty for messages sent to channels. For backward compatibility,
+            the field contains a fake sender user in non-channel chats, if the message was sent on behalf of a chat.
+        """),
     )
     sender_chat: Chat | None = Field(
         default=None,
-        description=" 	Optional. Sender of the message, sent on behalf of a chat. For example, the channel itself for channel posts, the supergroup itself for messages from anonymous group administrators, the linked channel for messages automatically forwarded to the discussion group. For backward compatibility, the field from contains a fake sender user in non-channel chats, if the message was sent on behalf of a chat.",
+        description=dedent("""\
+            Optional. Sender of the message, sent on behalf of a chat. For example,
+            the channel itself for channel posts,the supergroup itself for messages
+            from anonymous group administrators, the linked channel for messages
+            automatically forwarded to the discussion group. For backward compatibility,
+            the field from contains a fake sender user in non-channel chats,
+            if the message was sent on behalf of a chat.
+        """),
     )
     date: int = Field(
-        description="Date the message was sent in Unix time",
+        description="Date the message was sent in Unix time.",
     )
     chat: Chat = Field(
-        description="Conversation the message belongs to",
+        description="Conversation the message belongs to.",
     )
     forward_from: User | None = Field(
         default=None,
-        description="Optional. For forwarded messages, sender of the original message",
+        description="Optional. For forwarded messages, sender of the original message.",
     )
     forward_from_chat: Chat | None = Field(
         default=None,
-        description="Optional. For messages forwarded from channels or from anonymous administrators, information about the original sender chat",
+        description=dedent("""\
+            Optional. For messages forwarded from channels or from anonymous administrators,
+            information about the original sender chat.
+        """),
     )
     forward_from_message_id: int | None = Field(
         default=None,
-        description="Optional. For messages forwarded from channels, identifier of the original message in the channel",
+        description=dedent("""\
+            Optional. For messages forwarded from channels, identifier of the original message in the channel.
+        """),
     )
     forward_signature: str | None = Field(
         default=None,
-        description="Optional. For forwarded messages that were originally sent in channels or by an anonymous chat administrator, signature of the message sender if present",
+        description=dedent("""\
+            Optional. For forwarded messages that were originally sent in channels or
+            by an anonymous chat administrator, signature of the message sender if present.
+        """),
     )
     forward_sender_name: str | None = Field(
         default=None,
-        description="Optional. Sender's name for messages forwarded from users who disallow adding a link to their account in forwarded messages.",
+        description=dedent("""\
+            Optional. Sender's name for messages forwarded from users who disallow
+            adding a link to their account in forwarded messages.
+        """),
     )
     forward_date: int | None = Field(
         default=None,
@@ -664,11 +734,17 @@ class Message(BaseModel):
     )
     is_automatic_forward: bool | None = Field(
         default=None,
-        description="Optional. True, if the message is a channel post that was automatically forwarded to the connected discussion group.",
+        description=dedent("""\
+            Optional. True, if the message is a channel post that was automatically
+            forwarded to the connected discussion group.
+        """),
     )
     reply_to_message: Optional['Message'] = Field(
         default=None,
-        description=" 	Optional. For replies, the original message. Note that the Message object in this field will not contain further reply_to_message fields even if it itself is a reply.",
+        description=dedent("""\
+            Optional. For replies, the original message. Note that the Message object
+            in this field will not contain further reply_to_message fields even if it itself is a reply.
+        """),
     )
     via_bot: User | None = Field(
         default=None,
@@ -688,7 +764,10 @@ class Message(BaseModel):
     )
     author_signature: str | None = Field(
         default=None,
-        description="Optional. Signature of the post author for messages in channels, or the custom title of an anonymous group administrator.",
+        description=dedent("""\
+            Optional. Signature of the post author for messages in channels,
+            or the custom title of an anonymous group administrator.
+        """),
     )
     text: str | None = Field(
         default=None,
@@ -696,11 +775,17 @@ class Message(BaseModel):
     )
     entities: list[MessageEntity] | None = Field(
         default=None,
-        description="Optional. For text messages, special entities like usernames, URLs, bot commands, etc. that appear in the text.",
+        description=dedent("""\
+            Optional. For text messages, special entities like usernames,
+            URLs, bot commands, etc. that appear in the text.
+        """),
     )
     animation: dict[str, Any] | None = Field(
         default=None,
-        description="Optional. Message is an animation, information about the animation. For backward compatibility, when this field is set, the document field will also be set.",
+        description=dedent("""\
+            Optional. Message is an animation, information about the animation.
+            For backward compatibility, when this field is set, the document field will also be set.
+        """),
     )
     audio: dict[str, Any] | None = Field(
         default=None,
@@ -736,7 +821,10 @@ class Message(BaseModel):
     )
     caption_entities: list[MessageEntity] | None = Field(
         default=None,
-        description="Optional. For messages with a caption, special entities like usernames, URLs, bot commands, etc. that appear in the caption.",
+        description=dedent("""\
+            Optional. For messages with a caption, special entities like usernames,
+            URLs, bot commands, etc. that appear in the caption.
+        """),
     )
     has_media_spoiler: bool | None = Field(
         default=None,
@@ -760,7 +848,10 @@ class Message(BaseModel):
     )
     venue: dict[str, Any] | None = Field(
         default=None,
-        description="Optional. Message is a venue, information about the venue. For backward compatibility, when this field is set, the location field will also be set.",
+        description=dedent("""\
+            Optional. Message is a venue, information about the venue. For backward compatibility,
+            when this field is set, the location field will also be set.
+        """),
     )
     location: dict[str, Any] | None = Field(
         default=None,
@@ -768,11 +859,16 @@ class Message(BaseModel):
     )
     new_chat_members: list[User] | None = Field(
         default=None,
-        description="Optional. New members that were added to the group or supergroup and information about them (the bot itself may be one of these members).",
+        description=dedent("""\
+            Optional. New members that were added to the group
+            or supergroup and information about them (the bot itself may be one of these members).
+        """),
     )
     left_chat_member: User | None = Field(
         default=None,
-        description="Optional. A member was removed from the group, information about them (this member may be the bot itself).",
+        description=dedent("""\
+            Optional. A member was removed from the group, information about them (this member may be the bot itself).
+        """),
     )
     new_chat_title: str | None = Field(
         default=None,
@@ -792,11 +888,19 @@ class Message(BaseModel):
     )
     supergroup_chat_created: bool | None = Field(
         default=None,
-        description="Optional. Service message: the supergroup has been created. This field can't be received in a message coming through updates, because bot can't be a member of a supergroup when it is created. It can only be found in reply_to_message if someone replies to a very first message in a directly created supergroup.",
+        description=dedent("""\
+            Optional. Service message: the supergroup has been created. This field can't be received in a message
+            coming through updates, because bot can't be a member of a supergroup when it is created. It can only
+            be found in reply_to_message if someone replies to a very first message in a directly created supergroup.
+        """),
     )
     channel_chat_created: bool | None = Field(
         default=None,
-        description="Optional. Service message: the channel has been created. This field can't be received in a message coming through updates, because bot can't be a member of a channel when it is created. It can only be found in reply_to_message if someone replies to a very first message in a channel.",
+        description=dedent("""\
+            Optional. Service message: the channel has been created. This field can't be received in a message
+            coming through updates, because bot can't be a member of a channel when it is created. It can only
+            be found in reply_to_message if someone replies to a very first message in a channel.
+        """),
     )
     message_auto_delete_timer_changed: list[dict[str, Any]] | None = Field(
         default=None,
@@ -804,15 +908,28 @@ class Message(BaseModel):
     )
     migrate_to_chat_id: int | None = Field(
         default=None,
-        description="Optional. The group has been migrated to a supergroup with the specified identifier. This number may have more than 32 significant bits and some programming languages may have difficulty/silent defects in interpreting it. But it has at most 52 significant bits, so a signed 64-bit integer or double-precision float type are safe for storing this identifier.",
+        description=dedent("""\
+            Optional. The group has been migrated to a supergroup with the specified identifier.
+            This number may have more than 32 significant bits and some programming languages may
+            have difficulty/silent defects in interpreting it. But it has at most 52 significant bits,
+            so a signed 64-bit integer or double-precision float type are safe for storing this identifier.
+        """),
     )
     migrate_from_chat_id: int | None = Field(
         default=None,
-        description="Optional. The supergroup has been migrated from a group with the specified identifier. This number may have more than 32 significant bits and some programming languages may have difficulty/silent defects in interpreting it. But it has at most 52 significant bits, so a signed 64-bit integer or double-precision float type are safe for storing this identifier.",
+        description=dedent("""\
+            Optional. The supergroup has been migrated from a group with the specified identifier.
+            This number may have more than 32 significant bits and some programming languages may
+            have difficulty/silent defects in interpreting it. But it has at most 52 significant bits,
+            so a signed 64-bit integer or double-precision float type are safe for storing this identifier.
+        """),
     )
     pinned_message: Optional['Message'] | None = Field(
         default=None,
-        description="Optional. Specified message was pinned. Note that the Message object in this field will not contain further reply_to_message fields even if it is itself a reply.",
+        description=dedent("""\
+            Optional. Specified message was pinned. Note that the Message object in this field
+            will not contain further reply_to_message fields even if it is itself a reply.
+        """),
     )
     invoice: Invoice | None = Field(
         default=None,
@@ -820,7 +937,9 @@ class Message(BaseModel):
     )
     successful_payment: SuccessfulPayment | None = Field(
         default=None,
-        description="Optional. Message is a service message about a successful payment, information about the payment.",
+        description=dedent("""\
+            Optional. Message is a service message about a successful payment, information about the payment.
+        """),
     )
     user_shared: dict[str, Any] | None = Field(
         default=None,
@@ -836,7 +955,11 @@ class Message(BaseModel):
     )
     write_access_allowed: dict[str, Any] | None = Field(
         default=None,
-        description="Optional. Service message: the user allowed the bot to write messages after adding it to the attachment or side menu, launching a Web App from a link, or accepting an explicit request from a Web App sent by the method requestWriteAccess.",
+        description=dedent("""\
+            Optional. Service message: the user allowed the bot to write messages after adding
+            it to the attachment or side menu, launching a Web App from a link, or accepting an
+            explicit request from a Web App sent by the method requestWriteAccess.
+        """),
     )
     passport_data: dict[str, Any] | None = Field(
         default=None,
@@ -844,7 +967,10 @@ class Message(BaseModel):
     )
     proximity_alert_triggered: dict[str, Any] | None = Field(
         default=None,
-        description="Optional. Service message. A user in the chat triggered another user's proximity alert while sharing Live Location.",
+        description=dedent("""\
+            Optional. Service message. A user in the chat triggered another user's proximity
+            alert while sharing Live Location.
+        """),
     )
     forum_topic_created: dict[str, Any] | None = Field(
         default=None,
@@ -892,7 +1018,10 @@ class Message(BaseModel):
     )
     reply_markup: InlineKeyboardMarkup | None = Field(
         default=None,
-        description="Optional. Inline keyboard attached to the message. login_url buttons are represented as ordinary url buttons.",
+        description=dedent("""\
+            Optional. Inline keyboard attached to the message.
+            login_url buttons are represented as ordinary url buttons.
+    """),
     )
 
 
@@ -913,7 +1042,11 @@ class InputMediaUrlPhoto(BaseModel):
         description="Type of the result, must be photo.",
     )
     media: str = Field(
-        description="File to send. Pass a file_id to send a file that exists on the Telegram servers (recommended), pass an HTTP URL for Telegram to get a file from the Internet, or pass “attach://<file_attach_name>” to upload a new one using multipart/form-data under <file_attach_name> name.",
+        description=dedent("""\
+            File to send. Pass a file_id to send a file that exists on the Telegram servers (recommended),
+            pass an HTTP URL for Telegram to get a file from the Internet, or pass “attach://<file_attach_name>”
+            to upload a new one using multipart/form-data under <file_attach_name> name.
+        """),
     )
     caption: str = Field(
         default=None,
@@ -922,11 +1055,16 @@ class InputMediaUrlPhoto(BaseModel):
     )
     parse_mode: str | None = Field(
         default=None,
-        description="Optional. Mode for parsing entities in the photo caption. See formatting options for more details.",
+        description=dedent("""\
+            Optional. Mode for parsing entities in the photo caption. See formatting options for more details.
+        """),
     )
     caption_entities: list[MessageEntity] | None = Field(
         default=None,
-        description="Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode.",
+        description=dedent("""\
+            Optional. List of special entities that appear in the caption,
+            which can be specified instead of parse_mode.
+        """),
     )
     has_spoiler: bool | None = Field(
         default=None,
@@ -945,10 +1083,14 @@ class InputMediaBytesPhoto(BaseModel):
         description="Type of the result, must be photo.",
     )
     media: str = Field(
-        description="File to send. Pass a file_id to send a file that exists on the Telegram servers (recommended), pass an HTTP URL for Telegram to get a file from the Internet, or pass “attach://<file_attach_name>” to upload a new one using multipart/form-data under <file_attach_name> name.",
+        description=dedent("""\
+            File to send. Pass a file_id to send a file that exists on the Telegram servers (recommended),
+            pass an HTTP URL for Telegram to get a file from the Internet, or pass “attach://<file_attach_name>”
+            to upload a new one using multipart/form-data under <file_attach_name> name.
+        """),
     )
     media_content: bytes = Field(
-        description="",
+        description="File to send in bytes.",
     )
     caption: str = Field(
         default=None,
@@ -957,11 +1099,16 @@ class InputMediaBytesPhoto(BaseModel):
     )
     parse_mode: str | None = Field(
         default=None,
-        description="Optional. Mode for parsing entities in the photo caption. See formatting options for more details.",
+        description=dedent("""\
+            Optional. Mode for parsing entities in the photo caption. See formatting options for more details.
+        """),
     )
     caption_entities: list[MessageEntity] | None = Field(
         default=None,
-        description="Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode.",
+        description=dedent("""\
+            Optional. List of special entities that appear in the caption,
+            which can be specified instead of parse_mode.
+        """),
     )
     has_spoiler: bool | None = Field(
         default=None,
@@ -980,32 +1127,51 @@ class InputMediaUrlDocument(BaseModel):
         description="Type of the result, must be document",
     )
     media: str = Field(
-        description="File to send. Pass a file_id to send a file that exists on the Telegram servers (recommended), pass an HTTP URL for Telegram to get a file from the Internet, or pass “attach://<file_attach_name>” to upload a new one using multipart/form-data under <file_attach_name> name.",
+        description=dedent("""\
+            File to send. Pass a file_id to send a file that exists on the Telegram servers (recommended),
+            pass an HTTP URL for Telegram to get a file from the Internet, or pass “attach://<file_attach_name>”
+            to upload a new one using multipart/form-data under <file_attach_name> name.
+        """),
     )
     thumbnail: str | None = Field(
         default=None,
-        description="Optional. Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail's width and height should not exceed 320. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can't be reused and can be only uploaded as a new file, so you can pass “attach://<file_attach_name>” if the thumbnail was uploaded using multipart/form-data under <file_attach_name>.",
+        description=dedent("""\
+            Optional. Thumbnail of the file sent; can be ignored if thumbnail generation
+            for the file is supported server-side. The thumbnail should be in JPEG format
+            and less than 200 kB in size. A thumbnail's width and height should not exceed 320.
+            Ignored if the file is not uploaded using multipart/form-data. Thumbnails can't be
+            reused and can be only uploaded as a new file, so you can pass “attach://<file_attach_name>”
+            if the thumbnail was uploaded using multipart/form-data under <file_attach_name>.
+        """),
     )
     thumbnail_content: bytes | None = Field(
         default=None,
-        description="",
+        description="Thumbnail of the sent file in bytes.",
     )
     caption: str = Field(
         default=None,
         max_length=1024,
-        description="Optional. Caption of the document to be sent, 0-1024 characters after entities parsing",
+        description="Optional. Caption of the document to be sent, 0-1024 characters after entities parsing.",
     )
     parse_mode: str | None = Field(
         default=None,
-        description="Optional. Mode for parsing entities in the document caption. See formatting options for more details.",
+        description=dedent("""\
+            Optional. Mode for parsing entities in the document caption. See formatting options for more details.
+        """),
     )
     caption_entities: list[MessageEntity] | None = Field(
         default=None,
-        description="Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode",
+        description=dedent("""\
+            Optional. List of special entities that appear in the caption,
+            which can be specified instead of parse_mode.
+        """),
     )
     disable_content_type_detection: bool | None = Field(
         default=None,
-        description="Optional. Disables automatic server-side content type detection for files uploaded using multipart/form-data. Always True, if the document is sent as part of an album.",
+        description=dedent("""\
+            Optional. Disables automatic server-side content type detectionfor filesuploaded using
+            multipart/form-data. Always True, if the document is sent as part of an album.
+        """),
     )
 
 
@@ -1020,18 +1186,29 @@ class InputMediaBytesDocument(BaseModel):
         description="Type of the result, must be document.",
     )
     media: str = Field(
-        description="File to send. Pass a file_id to send a file that exists on the Telegram servers (recommended), pass an HTTP URL for Telegram to get a file from the Internet, or pass “attach://<file_attach_name>” to upload a new one using multipart/form-data under <file_attach_name> name.",
+        description=dedent("""\
+            File to send. Pass a file_id to send a file that exists on the Telegram servers (recommended),
+            pass an HTTP URL for Telegram to get a file from the Internet, or pass “attach://<file_attach_name>”
+            to upload a new one using multipart/form-data under <file_attach_name> name.
+        """),
     )
     media_content: bytes = Field(
-        description="",
+        description="File to send in bytes.",
     )
     thumbnail: str | None = Field(
         default=None,
-        description="Optional. Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail's width and height should not exceed 320. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can't be reused and can be only uploaded as a new file, so you can pass “attach://<file_attach_name>” if the thumbnail was uploaded using multipart/form-data under <file_attach_name>.",
+        description=dedent("""\
+            Optional. Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported
+            server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail's width
+            and height should not exceed 320. Ignored if the file is not uploaded using multipart/form-data.
+            Thumbnails can't be reused and can be only uploaded as a new file,
+            so you can pass “attach://<file_attach_name>” if the thumbnail was uploaded
+            using multipart/form-data under <file_attach_name>.
+        """),
     )
     thumbnail_content: bytes | None = Field(
         default=None,
-        description="",
+        description="Thumbnail of the sent file in bytes.",
     )
     caption: str = Field(
         default=None,
@@ -1040,15 +1217,23 @@ class InputMediaBytesDocument(BaseModel):
     )
     parse_mode: str | None = Field(
         default=None,
-        description="Optional. Mode for parsing entities in the document caption. See formatting options for more details.",
+        description=dedent("""\
+            Optional. Mode for parsing entities in the document caption. See formatting options for more details.
+        """),
     )
     caption_entities: list[MessageEntity] | None = Field(
         default=None,
-        description="Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode.",
+        description=dedent("""\
+            Optional. List of special entities that appear in the caption,
+            which can be specified instead of parse_mode.
+        """),
     )
     disable_content_type_detection: bool | None = Field(
         default=None,
-        description="Optional. Disables automatic server-side content type detection for files uploaded using multipart/form-data. Always True, if the document is sent as part of an album.",
+        description=dedent("""\
+            Optional. Disables automatic server-side content type detection for files uploaded using
+            multipart/form-data. Always True, if the document is sent as part of an album.
+        """),
     )
 
 
@@ -1088,15 +1273,23 @@ class Location(BaseModel):
     )
     live_period: int | None = Field(
         default=None,
-        description="Optional. Time relative to the message sending date, during which the location can be updated; in seconds. For active live locations only.",
+        description=dedent("""\
+            Optional. Time relative to the message sending date, during which the location can be updated;
+            in seconds. For active live locations only.
+        """),
     )
     heading: int | None = Field(
         default=None,
-        description="Optional. The direction in which user is moving, in degrees; 1-360. For active live locations only.",
+        description=dedent("""\
+            Optional. The direction in which user is moving, in degrees; 1-360. For active live locations only.
+        """),
     )
     proximity_alert_radius: int | None = Field(
         default=None,
-        description="Optional. The maximum distance for proximity alerts about approaching another chat member, in meters. For sent live locations only.",
+        description=dedent("""\
+            Optional. The maximum distance for proximity alerts about approaching another chat member,
+            in meters. For sent live locations only.
+        """),
     )
 
 
@@ -1122,7 +1315,12 @@ class InlineQuery(BaseModel):
     )
     chat_type: str | None = Field(
         default=None,
-        description="Optional. Type of the chat from which the inline query was sent. Can be either “sender” for a private chat with the inline query sender, “private”, “group”, “supergroup”, or “channel”. The chat type should be always known for requests sent from official clients and most third-party clients, unless the request was sent from a secret chat.",
+        description=dedent("""\
+            Optional. Type of the chat from which the inline query was sent. Can be either “sender” for a private
+            chat with the inline query sender, “private”, “group”, “supergroup”, or “channel”. The chat type should
+            be always known for requests sent from official clients and most third-party clients, unless the request
+            was sent from a secret chat.
+        """),
     )
     location: Location | None = Field(
         default=None,
@@ -1150,7 +1348,10 @@ class ChosenInlineResult(BaseModel):
     )
     inline_message_id: str | None = Field(
         default=None,
-        description="Optional. Identifier of the sent inline message. Available only if there is an inline keyboard attached to the message. Will be also received in callback queries and can be used to edit the message.",
+        description=dedent("""\
+            Optional. Identifier of the sent inline message. Available only if there is an inline keyboard
+            attached to the message. Will be also received in callback queries and can be used to edit the message.
+        """),
     )
     query: str | None = Field(
         default=None,
@@ -1196,7 +1397,11 @@ class PreCheckoutQuery(BaseModel):
         description="Three-letter ISO 4217 currency code.",
     )
     total_amount: int = Field(
-        description="Total price in the smallest units of the currency (integer, not float/double). For example, for a price of US$ 1.45 pass amount = 145. See the exp parameter in currencies.json, it shows the number of digits past the decimal point for each currency (2 for the majority of currencies).",
+        description=dedent("""\
+            Total price in the smallest units of the currency (integer, not float/double). For example,
+            for a price of US$ 1.45 pass amount = 145. See the exp parameter in currencies.json, it shows
+            the number of digits past the decimal point for each currency (2 for the majority of currencies).
+        """),
     )
     invoice_payload: str = Field(
         description="Bot specified invoice payload.",
@@ -1257,15 +1462,23 @@ class Poll(BaseModel):
     )
     correct_option_id: int | None = Field( # noqa A003
         default=None,
-        description=" 	Optional. 0-based identifier of the correct answer option. Available only for polls in the quiz mode, which are closed, or was sent (not forwarded) by the bot or to the private chat with the bot.",
+        description=dedent("""\
+            Optional. 0-based identifier of the correct answer option. Available only for polls in the quiz mode,
+            which are closed, or was sent (not forwarded) by the bot or to the private chat with the bot.
+        """),
     )
     explanation: str | None = Field(
         default=None,
-        description="Optional. Text that is shown when a user chooses an incorrect answer or taps on the lamp icon in a quiz-style poll, 0-200 characters.",
+        description=dedent("""\
+            Optional. Text that is shown when a user chooses an incorrect answer or taps
+            on the lamp icon in a quiz-style poll, 0-200 characters.
+        """),
     )
     explanation_entities: list[MessageEntity] | None = Field(
         default=None,
-        description="Optional. Special entities like usernames, URLs, bot commands, etc. that appear in the explanation.",
+        description=dedent("""\
+            Optional. Special entities like usernames, URLs, bot commands, etc. that appear in the explanation.
+        """),
     )
     open_period: int | None = Field(
         default=None,
@@ -1301,7 +1514,10 @@ class ChatInviteLink(BaseModel):
     """
 
     invite_link: str = Field(
-        description="The invite link. If the link was created by another chat administrator, then the second part of the link will be replaced with “…”.",
+        description=dedent("""\
+            The invite link. If the link was created by another chat administrator,
+            then the second part of the link will be replaced with “…”.
+        """),
     )
     creator: User = Field(
         description="Creator of the link.",
@@ -1325,7 +1541,10 @@ class ChatInviteLink(BaseModel):
     )
     member_limit: int | None = Field(
         default=None,
-        description="Optional. The maximum number of users that can be members of the chat simultaneously after joining the chat via this invite link; 1-99999.",
+        description=dedent("""\
+            Optional. The maximum number of users that can be members of the chat simultaneously
+            after joining the chat via this invite link; 1-99999.
+        """),
     )
     pending_join_request_count: int | None = Field(
         default=None,
@@ -1347,7 +1566,13 @@ class ChatJoinRequest(BaseModel):
         description="User that sent the join request.",
     )
     user_chat_id: int = Field(
-        description="Identifier of a private chat with the user who sent the join request. This number may have more than 32 significant bits and some programming languages may have difficulty/silent defects in interpreting it. But it has at most 52 significant bits, so a 64-bit integer or double-precision float type are safe for storing this identifier. The bot can use this identifier for 5 minutes to send messages until the join request is processed, assuming no other administrator contacted the user.",
+        description=dedent("""\
+            Identifier of a private chat with the user who sent the join request. This number may have
+            more than 32 significant bits and some programming languages may have difficulty/silent defects
+            in interpreting it. But it has at most 52 significant bits, so a 64-bit integer or double-precision
+            float type are safe for storing this identifier. The bot can use this identifier for 5 minutes
+            to send messages until the join request is processed, assuming no other administrator contacted the user.
+        """),
     )
     date: int = Field(
         description="Date the request was sent in Unix time.",
@@ -1401,7 +1626,11 @@ class ChatMemberAdministrator(BaseModel):
         description="True, if the user's presence in the chat is hidden.",
     )
     can_manage_chat: bool = Field(
-        description=" 	True, if the administrator can access the chat event log, boost list in channels, see channel members, report spam messages, see anonymous administrators in supergroups and ignore slow mode. Implied by any other administrator privilege.",
+        description=dedent("""\
+            True, if the administrator can access the chat event log, boost list in channels,
+            see channel members, report spam messages, see anonymous administrators in supergroups
+            and ignore slow mode. Implied by any other administrator privilege.
+        """),
     )
     can_delete_messages: bool = Field(
         description="True, if the administrator can delete messages of other users.",
@@ -1410,10 +1639,16 @@ class ChatMemberAdministrator(BaseModel):
         description="True, if the administrator can manage video chats.",
     )
     can_restrict_members: bool = Field(
-        description="True, if the administrator can restrict, ban or unban chat members, or access supergroup statistics.",
+        description=dedent("""\
+            True, if the administrator can restrict, ban or unban chat members, or access supergroup statistics.
+        """),
     )
     can_promote_members: bool = Field(
-        description="True, if the administrator can add new administrators with a subset of their own privileges or demote administrators that they have promoted, directly or indirectly (promoted by administrators that were appointed by the user).",
+        description=dedent("""\
+            True, if the administrator can add new administrators with a subset of their own privileges or demote
+            administrators that they have promoted, directly or indirectly
+            (promoted by administrators that were appointed by the user).
+        """),
     )
     can_change_info: bool = Field(
         description="True, if the user is allowed to change the chat title, photo and other settings.",
@@ -1422,16 +1657,24 @@ class ChatMemberAdministrator(BaseModel):
         description="True, if the user is allowed to invite new users to the chat.",
     )
     can_post_messages: bool = Field(
-        description="Optional. True, if the administrator can post messages in the channel, or access channel statistics; channels only.",
+        description=dedent("""\
+            Optional. True, if the administrator can post messages in the channel,
+            or access channel statistics; channels only.
+        """),
     )
     can_edit_messages: bool = Field(
-        description="Optional. True, if the administrator can edit messages of other users and can pin messages; channels only.",
+        description=dedent("""\
+            Optional. True, if the administrator can edit messages of other users and can pin messages; channels only.
+        """),
     )
     can_pin_messages: bool = Field(
         description="Optional. True, if the user is allowed to pin messages; groups and supergroups only.",
     )
     can_manage_topics: bool = Field(
-        description="Optional. True, if the user is allowed to create, rename, close, and reopen forum topics; supergroups only.",
+        description=dedent("""\
+            Optional. True, if the user is allowed to create, rename, close,
+            and reopen forum topics; supergroups only.
+        """),
     )
     custom_title: bool = Field(
         description="Optional. Custom title for this user.",
@@ -1510,7 +1753,9 @@ class ChatMemberRestricted(BaseModel):
         description="True, if the user is allowed to create forum topics.",
     )
     until_date: bool = Field(
-        description="Date when restrictions will be lifted for this user; Unix time. If 0, then the user is restricted forever.",
+        description=dedent("""\
+            Date when restrictions will be lifted for this user; Unix time. If 0, then the user is restricted forever.
+        """),
     )
 
 
@@ -1541,7 +1786,9 @@ class ChatMemberBanned(BaseModel):
         description="Information about the user.",
     )
     until_date: int = Field(
-        description="Date when restrictions will be lifted for this user; Unix time. If 0, then the user is banned forever.",
+        description=dedent("""\
+            Date when restrictions will be lifted for this user; Unix time. If 0, then the user is banned forever.
+        """),
     )
 
 
@@ -1582,7 +1829,10 @@ class ChatMemberUpdated(BaseModel):
     )
     invite_link: ChatInviteLink | None = Field(
         default=None,
-        description="Optional. Chat invite link, which was used by the user to join the chat; for joining by invite link events only.",
+        description=dedent("""\
+            Optional. Chat invite link, which was used by the user to join the chat;
+            for joining by invite link events only.
+        """),
     )
     via_chat_folder_invite_link: bool = Field(
         description="Optional. True, if the user joined the chat via a chat folder invite link.",
@@ -1596,7 +1846,13 @@ class Update(BaseModel):
     """
 
     update_id: int = Field(
-        description="The update's unique identifier. Update identifiers start from a certain positive number and increase sequentially. This ID becomes especially handy if you're using webhooks, since it allows you to ignore repeated updates or to restore the correct update sequence, should they get out of order. If there are no new updates for at least a week, then identifier of the next update will be chosen randomly instead of sequentially.",
+        description=dedent("""\
+            The update's unique identifier. Update identifiers start from a certain positive number
+            and increase sequentially. This ID becomes especially handy if you're using webhooks, since
+            it allows you to ignore repeated updates or to restore the correct update sequence, should they
+            get out of order. If there are no new updates for at least a week, then identifier of the next update
+            will be chosen randomly instead of sequentially.
+        """),
     )
     message: Message | None = Field(
         default=None,
@@ -1617,7 +1873,11 @@ class Update(BaseModel):
     )
     chosen_inline_result: ChosenInlineResult | None = Field(
         default=None,
-        description="Optional. The result of an inline query that was chosen by a user and sent to their chat partner. Please see our documentation on the feedback collecting for details on how to enable these updates for your bot.",
+        description=dedent("""\
+            Optional. The result of an inline query that was chosen by a user and sent to their chat partner.
+            Please see our documentation on the feedback collecting for details
+            on how to enable these updates for your bot.
+        """),
     )
     callback_query: CallbackQuery | None = Field(
         default=None,
@@ -1633,23 +1893,39 @@ class Update(BaseModel):
     )
     poll: Poll | None = Field(
         default=None,
-        description="Optional. New poll state. Bots receive only updates about stopped polls and polls, which are sent by the bot.",
+        description=dedent("""\
+            Optional. New poll state. Bots receive only updates about
+            stopped polls and polls, which are sent by the bot.
+        """),
     )
     poll_answer: PollAnswer | None = Field(
         default=None,
-        description="Optional. A user changed their answer in a non-anonymous poll. Bots receive new votes only in polls that were sent by the bot itself.",
+        description=dedent("""\
+            Optional. A user changed their answer in a non-anonymous poll.
+            Bots receive new votes only in polls that were sent by the bot itself.
+        """),
     )
     my_chat_member: ChatMemberUpdated | None = Field(
         default=None,
-        description="Optional. The bot's chat member status was updated in a chat. For private chats, this update is received only when the bot is blocked or unblocked by the user.",
+        description=dedent("""\
+            Optional. The bot's chat member status was updated in a chat.
+            For private chats, this update is received only when the bot is blocked or unblocked by the user.
+        """),
     )
     chat_member: ChatMemberUpdated | None = Field(
         default=None,
-        description="Optional. A chat member's status was updated in a chat. The bot must be an administrator in the chat and must explicitly specify `chat_member` in the list of allowed_updates to receive these updates.",
+        description=dedent("""\
+            Optional. A chat member's status was updated in a chat. The bot must be an administrator
+            in the chat and must explicitly specify `chat_member` in the list
+            of allowed_updates to receive these updates.
+        """),
     )
     chat_join_request: ChatJoinRequest | None = Field(
         default=None,
-        description="Optional. A request to join the chat has been sent. The bot must have the can_invite_users administrator right in the chat to receive these updates.",
+        description=dedent("""\
+            Optional. A request to join the chat has been sent. The bot must have the can_invite_users
+            administrator right in the chat to receive these updates.
+        """),
     )
 
     # TODO At most one of the optional parameters can be present in any given update.
