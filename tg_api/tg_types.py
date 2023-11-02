@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from textwrap import dedent
 from enum import Enum
 from typing import Any, Union, Optional
 
@@ -377,23 +378,37 @@ class CallbackQuery(BaseModel):
     See here: https://core.telegram.org/bots/api#callbackquery
     """
 
-    id_: str = Field(
-        description='Unique identifier for this query', alias='id',
+    id: str = Field( # noqa A003
+        alias="id",
+        description="Unique identifier for this query.",
     )
     from_: User = Field(
-        description='Sender', alias='from',
+        alias="from",
+        description="Sender.",
     )
     message: Message | None = Field(
-        description='Message with call back button. If the message is out of date, the message data is not available',
+        default=None,
+        description=dedent("""\
+            Optional. Message with the callback button that originated the query. Note that message content
+            and message date will not be available if the message is too old.
+        """),
     )
     inline_message_id: str | None = Field(
-        description='Identifier of the message sent via the bot in inline mode, that originated the query',
+        default=None,
+        description="Optional. Identifier of the message sent via the bot in inline mode, that originated the query.",
     )
     chat_instance: str | None = Field(
-        description='Uniquely corresponding to the chat to which the message with the callback button was sent',
+        description=dedent("""\
+            Global identifier, uniquely corresponding to the chat to which the message with the callback
+            button was sent. Useful for high scores in games.
+        """),
     )
     data: str | None = Field(
-        description='Data associated with the call back button',
+        default=None,
+        description=dedent("""\
+            Optional. Data associated with the callback button. Be aware that the message originated the
+            query can contain no callback buttons with this data.
+        """),
     )
 
 
