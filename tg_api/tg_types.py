@@ -1802,6 +1802,7 @@ class ChatMemberUpdated(BaseModel):
         description="Chat the user belongs to.",
     )
     from_: User = Field(
+        alias="from",
         description="Performer of the action, which resulted in the change.",
     )
     date: int = Field(
@@ -1835,6 +1836,7 @@ class ChatMemberUpdated(BaseModel):
         """),
     )
     via_chat_folder_invite_link: bool = Field(
+        default=None,
         description="Optional. True, if the user joined the chat via a chat folder invite link.",
     )
 
