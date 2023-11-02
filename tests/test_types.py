@@ -297,13 +297,16 @@ def test_update_btn():
                     ],
                 },
             },
+            "inline_message_id": "12345",
             "chat_instance": "-9009133691020524056",
             "data": "test",
         },
     }
     update_obj = tg_types.Update.parse_obj(payload)
     assert isinstance(update_obj, tg_types.Update)
+    assert isinstance(update_obj.callback_query, tg_types.CallbackQuery)
     assert isinstance(update_obj.callback_query.message.chat, tg_types.Chat)
     assert update_obj.callback_query.message.chat.id == 305151544
     assert isinstance(update_obj.callback_query.message.reply_markup, tg_types.InlineKeyboardMarkup)
     assert update_obj.callback_query.message.reply_markup.inline_keyboard[0][0].text == 'button_1'
+    assert update_obj.callback_query.inline_message_id == "12345"
