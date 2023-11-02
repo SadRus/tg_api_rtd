@@ -640,7 +640,7 @@ class ChatMemberUpdated(BaseModel):
     """
 
     chat: Chat
-    from_: User
+    from_: User = Field(alias='from')
     date: int
     old_chat_member: Union[
         ChatMemberOwner,
@@ -659,7 +659,7 @@ class ChatMemberUpdated(BaseModel):
         ChatMemberBanned,
     ]
     invite_link: ChatInviteLink | None = None
-    via_chat_folder_invite_link: bool
+    via_chat_folder_invite_link: bool | None = None
 
 
 class Update(BaseModel):
