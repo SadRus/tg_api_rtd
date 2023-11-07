@@ -8,7 +8,7 @@ from .client import AsyncTgClient, SyncTgClient, TgRuntimeError, raise_for_tg_re
 from . import tg_types
 
 
-class BaseTgRequest(BaseModel):
+class BaseTgRequest(BaseModel, tg_types.ValidableMixin):
     """Base class representing a request to the Telegram Bot API.
 
     Provides utility methods for making both asynchronous and synchronous requests to the API.
@@ -476,7 +476,7 @@ class EditMessageCaptionRequest(BaseTgRequest):
     chat_id: int | None
     message_id: int | None
     inline_message_id: str | None
-    caption: str = Field(None, max_length=1024)
+    caption: str | None = Field(None, max_length=1024)
     parse_mode: str | None
     caption_entities: list[tg_types.MessageEntity] | None
     reply_markup: tg_types.InlineKeyboardMarkup | None
