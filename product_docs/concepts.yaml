@@ -50,7 +50,7 @@
 Метод API Tg: !concept
   определение: |
     Метод API Tg -- это способ взаимодействия с Tg API. Складывается из сочетания выбранных API endpoint, Request и HTTP method
-    Англ. API Methods.
+    Англ. Method.
   # TODO включают в себя и запросы и ответы
   sendMessage: !example
   Бинарная картинка: !example
