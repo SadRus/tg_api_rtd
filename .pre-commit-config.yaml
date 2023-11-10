@@ -14,6 +14,12 @@ repos:
         language: system
         pass_filenames: no
 
+      - id: mypy
+        name: mypy
+        entry: docker compose run -T --rm py-linters mypy /tg_api/ /tests/
+        language: system
+        pass_filenames: no
+
       - id: test-tg-api
         name: test-tg-api
         entry: docker compose run -T --rm tg-api pytest

@@ -590,11 +590,21 @@ $ docker compose run --rm py-linters flake8 /tg_api/ /tests/
 ```
 Цифра в конце `1` -- это количество найденных линтером ошибок форматирования кода.
 
-Того же результата можно добиться с помощью make:
+
+Запустить mypy:
+```shell
+$ docker compose run --rm py-linters mypy /tg_api/ /tests/
+Success: no issues found in 11 source files
+```
+
+Того же результата -- запустить и pytest, и mypy вмеcте -- можно добиться с помощью make:
 
 ```shell
 $ make linter
-...
+flake8 /tg_api/ /tests/
+0
+mypy /tg_api/ /tests/
+Success: no issues found in 11 source files
 ```
 
 Тот же образ с линтером можно использовать, чтобы подсветить ошибки форматирования прямо внутри IDE. Вот пример настройки Sublime Text с предустановленными плагинами [SublimeLinter](http://www.sublimelinter.com/en/stable/) и [SublimeLinter-flake8](https://packagecontrol.io/packages/SublimeLinter-flake8):
