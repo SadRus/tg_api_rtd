@@ -17,7 +17,7 @@ class BaseTgRequest(BaseModel, tg_types.ValidableMixin):
     possibly override or extend the base methods to customize behavior.
     """
 
-    model_config = ConfigDict(extra='forbid', validate_assignment=True, anystr_strip_whitespace = True)
+    model_config = ConfigDict(extra='forbid', validate_assignment=True, anystr_strip_whitespace=True)
 
     async def apost_as_json(self, api_method: str) -> bytes:
         """Send a request to the Telegram Bot API asynchronously using a JSON payload.
