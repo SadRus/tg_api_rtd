@@ -13,6 +13,7 @@
 Не в релизе
 ------------------------
 
+- Исправлен метод отправки запроса `EditBytesMessageMediaRequest` в случае пустых атрибутов `media.thumbnail` и/или `media.thumbnail_content`
 - Исправлена схема SendBytesPhotoRequest: атрибут `photo` больше не разрешает `Iterable[bytes]`, принимает только `bytes`
 - Добавлена поддержка mypy
 

@@ -1,6 +1,6 @@
 import io
 import json
-from typing import Any, Union, Iterable
+from typing import Any, Union
 
 from pydantic import BaseModel, Field
 
@@ -525,7 +525,7 @@ class EditBytesMessageMediaRequest(BaseTgRequest):
             files[thumbnail] = thumbnail_bytes
 
             if not thumbnail.startswith('attach://'):
-                content['media']['thumbnail'] = f"attach://{content['media']['thumbnail']}"
+                content['media']['thumbnail'] = f"attach://{thumbnail}"
 
         json_payload = await self.apost_multipart_form_data('editmessagemedia', content, files)
         response = EditMessageMediaResponse.parse_raw(json_payload)
@@ -542,13 +542,14 @@ class EditBytesMessageMediaRequest(BaseTgRequest):
         if not self.media.media.startswith('attach://'):
             content['media']['media'] = f"attach://{content['media']['media']}"
 
-        if 'thumbnail' in content['media'] and 'thumbnail_content' in content['media']:
-            content['media'].pop('thumbnail_content')
-            thumbnail_bytes = io.BytesIO(self.media.thumbnail_content)
-            files[self.media.thumbnail] = thumbnail_bytes
+        if content['media'].get('thumbnail') and content['media'].get('thumbnail_content'):
+            thumbnail = content['media']['thumbnail']
+            thumbnail_content = content['media'].pop('thumbnail_content')
+            thumbnail_bytes = io.BytesIO(thumbnail_content)
+            files[thumbnail] = thumbnail_bytes
 
-            if not self.media.thumbnail.startswith('attach://'):
-                content['media']['thumbnail'] = f"attach://{content['media']['thumbnail']}"
+            if not thumbnail.startswith('attach://'):
+                content['media']['thumbnail'] = f"attach://{thumbnail}"
 
         json_payload = self.post_multipart_form_data('editmessagemedia', content, files)
         response = EditMessageMediaResponse.parse_raw(json_payload)
