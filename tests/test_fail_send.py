@@ -9,7 +9,7 @@ from tg_api import tg_methods, tg_types
 
 def test_photo_request_mocking_with_large_caption(
     get_photo_response: dict[str, typing.Any],
-):
+) -> None:
     """Программист - Узнавать о длинных заголовках сообщений до отправки запроса к серверу Telegram
     при отправке SendBytesPhotoRequest: !func
         Проверить срабатывание ValidationError до отправки сообщений: !story
@@ -55,7 +55,7 @@ def test_photo_request_mocking_with_large_caption(
 
 def test_message_request_with_large_text(
     get_message_response: dict[str, typing.Any],
-):
+) -> None:
     """Программист - Узнавать о длинных сообщениях до отправки запроса к серверу Telegram
     при отправке SendMessageRequest: !func
         Проверить срабатывание ValidationError до отправки сообщений: !story
@@ -73,7 +73,7 @@ def test_message_request_with_large_text(
 
 def test_message_request_with_empty_text(
     get_message_response: dict[str, typing.Any],
-):
+) -> None:
     """Программист - Узнавать о пустых сообщениях до отправки запроса к серверу Telegram
     при отправке SendMessageRequest: !func
         Проверить срабатывание ValidationError до отправки сообщений: !story
@@ -98,7 +98,7 @@ def test_message_request_with_empty_text(
 
 def test_document_request_mocking_with_large_caption(
     get_document_response: dict[str, typing.Any],
-):
+) -> None:
     """Программист - Узнавать о длинных заголовках сообщений до отправки запроса к серверу Telegram
     при отправке SendBytesDocumentRequest: !func
         Проверить срабатывание ValidationError до отправки сообщений: !story
@@ -158,7 +158,7 @@ def test_document_request_mocking_with_large_caption(
 def test_edit_message_text_request_mocking_with_large_text(
     edit_message_text_response: dict[str, typing.Any],
     keyboard: tg_types.InlineKeyboardMarkup,
-):
+) -> None:
     """Программист - Узнавать о длинных сообщениях до отправки запроса к серверу Telegram
     при отправке EditMessageTextRequest: !func
         Проверить срабатывание ValidationError до отправки сообщений: !story
@@ -178,7 +178,7 @@ def test_edit_message_text_request_mocking_with_large_text(
 def test_edit_message_text_request_mocking_with_empty_text(
     edit_message_text_response: dict[str, typing.Any],
     keyboard: tg_types.InlineKeyboardMarkup,
-):
+) -> None:
     """Программист - Узнавать о пустых сообщениях до отправки запроса к серверу Telegram
     при отправке EditMessageTextRequest: !func
         Проверить срабатывание ValidationError до отправки сообщений: !story
@@ -205,7 +205,7 @@ def test_edit_message_text_request_mocking_with_empty_text(
 
 def test_edit_message_caption_request_mocking_with_large_caption(
     edit_message_caption_response: dict[str, typing.Any],
-):
+) -> None:
     """Программист - Узнавать о длинных заголовках сообщений до отправки запроса к серверу Telegram
     при отправке EditMessageCaptionRequest: !func
         Проверить срабатывание ValidationError до отправки сообщений: !story
@@ -224,7 +224,7 @@ def test_edit_message_caption_request_mocking_with_large_caption(
 
 def test_edit_message_media_url_photo_request_mocking_with_large_caption(
     edit_message_media_photo_response: dict[str, typing.Any],
-):
+) -> None:
     """Программист - Узнавать о длинных заголовках сообщений до отправки запроса к серверу Telegram
     при отправке EditUrlMessageMediaRequest: !func
         Проверить срабатывание ValidationError до отправки сообщений: !story
@@ -247,7 +247,7 @@ def test_edit_message_media_url_photo_request_mocking_with_large_caption(
 
 def test_edit_message_media_url_document_request_mocking(
     edit_message_media_document_response: dict[str, typing.Any],
-):
+) -> None:
     """Программист - Узнавать о длинных заголовках сообщений до отправки запроса к серверу Telegram
     при отправке EditUrlMessageMediaRequest: !func
         Проверить срабатывание ValidationError до отправки сообщений: !story
@@ -270,7 +270,7 @@ def test_edit_message_media_url_document_request_mocking(
 
 def test_edit_message_media_bytes_photo_request_mocking(
     edit_message_media_photo_response: dict[str, typing.Any],
-):
+) -> None:
     """Программист - Узнавать о длинных заголовках сообщений до отправки запроса к серверу Telegram
     при отправке EditBytesMessageMediaRequest: !func
         Проверить срабатывание ValidationError до отправки сообщений: !story
@@ -294,7 +294,7 @@ def test_edit_message_media_bytes_photo_request_mocking(
 
 def test_edit_message_media_bytes_document_request_mocking(
     edit_message_media_document_response: dict[str, typing.Any],
-):
+) -> None:
     """Программист - Узнавать о длинных заголовках сообщений до отправки запроса к серверу Telegram
     при отправке EditBytesMessageMediaRequest: !func
         Проверить срабатывание ValidationError до отправки сообщений: !story

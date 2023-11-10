@@ -9,8 +9,8 @@ import httpx
 from .exceptions import TgHttpStatusError, TgRuntimeError
 
 
-AsyncTgClientType = TypeVar('AsyncTgClient', bound='AsyncTgClient')
-SyncTgClientType = TypeVar('SyncTgClient', bound='SyncTgClient')
+AsyncTgClientType = TypeVar('AsyncTgClientType', bound='AsyncTgClient')
+SyncTgClientType = TypeVar('SyncTgClientType', bound='SyncTgClient')
 
 
 @dataclass(frozen=True)
@@ -24,7 +24,7 @@ class AsyncTgClient:
 
     default_client: ClassVar[ContextVar['AsyncTgClient']] = ContextVar('default_client')
 
-    def __post_init__(self):
+    def __post_init__(self) -> None:
         api_root = urljoin(self.tg_server_url, f'./bot{self.token}/')
         object.__setattr__(self, 'api_root', api_root)
 
@@ -69,7 +69,7 @@ class SyncTgClient:
 
     default_client: ClassVar[ContextVar['SyncTgClient']] = ContextVar('default_client')
 
-    def __post_init__(self):
+    def __post_init__(self) -> None:
         api_root = urljoin(self.tg_server_url, f'./bot{self.token}/')
         object.__setattr__(self, 'api_root', api_root)
 
