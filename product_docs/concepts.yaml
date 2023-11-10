@@ -27,11 +27,14 @@
     Англ. Request.
   С методами для отправки HTTP запроса: !example
   С дефолтными значениями для полей: !example
-  Multupart form data: !example
+  Multipart form data: !example |
+    Запрос предназначен для отправки бинарных данных в Tg API с кодировкой HTTP запроса `multipart/form-data` вместо
+    привычного `application/x-www-form-urlencoded`. 
   Только с синхронными методами: !example
   Только с асинхронными методами: !example
   Со смешанными синхронно-асинхронными методами: !example
-  Универсальный запрос, подходящий для нескольких API endpoints: !extension
+  Универсальный запрос к нескольким API endpoints: !extension |
+    Универсальный запрос, подходящий для нескольких API endpoints
 
 
 Ответ Tg API: !concept
@@ -46,11 +49,11 @@
 
 Метод API Tg: !concept
   определение: |
-    Метод API Tg -- это способ взаимодействия с Tg API. 
+    Метод API Tg -- это способ взаимодействия с Tg API. Складывается из сочетания выбранных API endpoint, Request и HTTP method
     Англ. API Methods.
+  # TODO включают в себя и запросы и ответы
   sendMessage: !example
   Бинарная картинка: !example
-  # TODO включают в себя и запросы и ответы
   # TODO Описать больше example, extension и exclusion
 
 
