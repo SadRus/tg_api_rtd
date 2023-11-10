@@ -58,7 +58,7 @@ async def test_photo_request_mocking(
     async with tg_methods.AsyncTgClient.setup('token'):
         tg_request = tg_methods.SendBytesPhotoRequest(
             chat_id=1234567890,
-            photo=str(response.content),
+            photo=response.content,
             caption_entities=[tg_types.MessageEntity(type='123', offset=1, length=1)],
             reply_markup=tg_types.InlineKeyboardMarkup(
                 inline_keyboard=[
@@ -66,9 +66,7 @@ async def test_photo_request_mocking(
                 ],
             ),
         )
-        json_payload = await tg_request.apost_as_json('sendPhoto')
         response = await tg_request.asend()
-        assert get_photo_response == json.loads(json_payload)
         assert get_photo_response == response.dict()
 
     async with tg_methods.AsyncTgClient.setup('token'):
@@ -82,9 +80,7 @@ async def test_photo_request_mocking(
                 ],
             ),
         )
-        json_payload = await tg_request.apost_as_json('sendPhoto')
         response = await tg_request.asend()
-        assert get_photo_response == json.loads(json_payload)
         assert get_photo_response == response.dict()
 
 

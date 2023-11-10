@@ -207,10 +207,7 @@ class SendBytesPhotoRequest(BaseTgRequest):
     """
 
     chat_id: int
-    photo: Union[
-        bytes,
-        Iterable[bytes],
-    ]
+    photo: bytes
     filename: str | None = None
     message_thread_id: int | None = None
     caption: str | None = Field(None, max_length=1024)
@@ -231,9 +228,9 @@ class SendBytesPhotoRequest(BaseTgRequest):
     async def asend(self) -> SendPhotoResponse:
         """Send HTTP request to `sendPhoto` Telegram Bot API endpoint asynchronously and parse response."""
         content = self.dict(exclude_none=True, exclude={'photo'})
-        photo_bytes = io.BytesIO(self.photo)
-        photo_bytes.name = self.filename
-        files = {'photo': photo_bytes}
+        photo_bytes_io = io.BytesIO(self.photo)
+        photo_bytes_io.name = self.filename
+        files = {'photo': photo_bytes_io}
         json_payload = await self.apost_multipart_form_data('sendPhoto', content, files)
         response = SendPhotoResponse.parse_raw(json_payload)
         return response
@@ -241,9 +238,9 @@ class SendBytesPhotoRequest(BaseTgRequest):
     def send(self) -> SendPhotoResponse:
         """Send HTTP request to `sendPhoto` Telegram Bot API endpoint synchronously and parse response."""
         content = self.dict(exclude_none=True, exclude={'photo'})
-        photo_bytes = io.BytesIO(self.photo)
-        photo_bytes.name = self.filename
-        files = {'photo': photo_bytes}
+        photo_bytes_io = io.BytesIO(self.photo)
+        photo_bytes_io.name = self.filename
+        files = {'photo': photo_bytes_io}
         json_payload = self.post_multipart_form_data('sendPhoto', content, files)
         response = SendPhotoResponse.parse_raw(json_payload)
         return response
@@ -521,12 +518,13 @@ class EditBytesMessageMediaRequest(BaseTgRequest):
         if not self.media.media.startswith('attach://'):
             content['media']['media'] = f"attach://{content['media']['media']}"
 
-        if 'thumbnail' in content['media'] and 'thumbnail_content' in content['media']:
-            content['media'].pop('thumbnail_content')
-            thumbnail_bytes = io.BytesIO(self.media.thumbnail_content)
-            files[self.media.thumbnail] = thumbnail_bytes
+        if content['media'].get('thumbnail') and content['media'].get('thumbnail_content'):
+            thumbnail = content['media']['thumbnail']
+            thumbnail_content = content['media'].pop('thumbnail_content')
+            thumbnail_bytes = io.BytesIO(thumbnail_content)
+            files[thumbnail] = thumbnail_bytes
 
-            if not self.media.thumbnail.startswith('attach://'):
+            if not thumbnail.startswith('attach://'):
                 content['media']['thumbnail'] = f"attach://{content['media']['thumbnail']}"
 
         json_payload = await self.apost_multipart_form_data('editmessagemedia', content, files)

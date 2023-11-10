@@ -38,9 +38,7 @@ def test_photo_request_mocking(
                 ],
             ),
         )
-        json_payload = tg_request.post_as_json('sendPhoto')
         response = tg_request.send()
-        assert get_photo_response == json.loads(json_payload)
         assert get_photo_response == response.dict()
 
     with tg_methods.SyncTgClient.setup('token'):
@@ -54,9 +52,7 @@ def test_photo_request_mocking(
                 ],
             ),
         )
-        json_payload = tg_request.post_as_json('sendPhoto')
         response = tg_request.send()
-        assert get_photo_response == json.loads(json_payload)
         assert get_photo_response == response.dict()
 
 
