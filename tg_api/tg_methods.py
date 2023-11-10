@@ -2,7 +2,7 @@ import io
 import json
 from typing import Any, Union, Iterable
 
-from pydantic import BaseModel, Field, ConfigDict
+from pydantic import BaseModel, Field
 
 from .client import AsyncTgClient, SyncTgClient, TgRuntimeError, raise_for_tg_response_status
 from . import tg_types
@@ -17,7 +17,10 @@ class BaseTgRequest(BaseModel, tg_types.ValidableMixin):
     possibly override or extend the base methods to customize behavior.
     """
 
-    model_config = ConfigDict(extra='forbid', validate_assignment=True, anystr_strip_whitespace=True)
+    class Config:
+        extra = 'forbid'
+        validate_assignment = True
+        anystr_strip_whitespace = True
 
     async def apost_as_json(self, api_method: str) -> bytes:
         """Send a request to the Telegram Bot API asynchronously using a JSON payload.
@@ -142,9 +145,10 @@ class BaseTgResponse(BaseModel):
     description: str = ''
 
     result: Any = None
-    # TODO[pydantic]: The following keys were removed: `allow_mutation`.
-    # Check https://docs.pydantic.dev/dev-v2/migration/#changes-to-config for more information.
-    model_config = ConfigDict(extra='ignore', allow_mutation=False)
+
+    class Config:
+        extra = 'ignore'
+        allow_mutation = False
 
     # TODO Some errors may also have an optional field 'parameters' of the type ResponseParameters, which can
     # help to automatically handle the error.
