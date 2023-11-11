@@ -24,7 +24,7 @@ def test_photo_request_mocking_with_large_caption(
         jpg_sample_bytes = file.read()
 
     with tg_methods.SyncTgClient.setup('token'):
-        with pytest.raises(ValidationError):
+        with pytest.raises(ValidationError, match='caption'):
             tg_methods.SendBytesPhotoRequest(
                 chat_id=1234567890,
                 caption='a' * 1025,
@@ -38,7 +38,7 @@ def test_photo_request_mocking_with_large_caption(
             )
 
     with tg_methods.SyncTgClient.setup('token'):
-        with pytest.raises(ValidationError):
+        with pytest.raises(ValidationError, match='caption'):
             tg_methods.SendUrlPhotoRequest(
                 chat_id=1234567890,
                 photo='https://example.com/not-exist.jpg',
@@ -63,7 +63,7 @@ def test_message_request_with_large_text(
             успех: Сработало исключение до отправки сообщения к серверу
     """  # noqa D205 D400
     with tg_methods.SyncTgClient.setup('token'):
-        with pytest.raises(ValidationError):
+        with pytest.raises(ValidationError, match='text'):
             tg_methods.SendMessageRequest(
                 chat_id=1234567890,
                 text='a' * 4097,
@@ -81,14 +81,14 @@ def test_message_request_with_empty_text(
             успех: Сработало исключение до отправки сообщения к серверу
     """  # noqa D205 D400
     with tg_methods.SyncTgClient.setup('token'):
-        with pytest.raises(ValidationError):
+        with pytest.raises(ValidationError, match='text'):
             tg_methods.SendMessageRequest(
                 chat_id=1234567890,
                 text='',
             )
 
     with tg_methods.SyncTgClient.setup('token'):
-        with pytest.raises(ValidationError):
+        with pytest.raises(ValidationError, match='text'):
             tg_methods.SendMessageRequest(
                 chat_id=1234567890,
                 text='   ',
@@ -117,7 +117,7 @@ def test_document_request_mocking_with_large_caption(
 
     for obj in objects_which_pydantic_transforms_to_bytes_or_iterable_bytes:
         with tg_methods.SyncTgClient.setup('token'):
-            with pytest.raises(ValidationError):
+            with pytest.raises(ValidationError, match='caption'):
                 tg_methods.SendBytesDocumentRequest(
                     chat_id=1234567890,
                     caption="a" * 1025,
@@ -139,7 +139,7 @@ def test_document_request_mocking_with_large_caption(
 
     for obj in objects_which_pydantic_transforms_to_str:
         with tg_methods.SyncTgClient.setup('token'):
-            with pytest.raises(ValidationError):
+            with pytest.raises(ValidationError, match='caption'):
                 tg_methods.SendUrlDocumentRequest(
                     chat_id=1234567890,
                     caption="a" * 1025,
@@ -166,7 +166,7 @@ def test_edit_message_text_request_mocking_with_large_text(
             успех: Сработало исключение до отправки сообщения к серверу
     """  # noqa D205 D400
     with tg_methods.SyncTgClient.setup('token'):
-        with pytest.raises(ValidationError):
+        with pytest.raises(ValidationError, match='text'):
             tg_methods.EditMessageTextRequest(
                 chat_id=1234567890,
                 message_id=12345,
@@ -186,7 +186,7 @@ def test_edit_message_text_request_mocking_with_empty_text(
             успех: Сработало исключение до отправки сообщения к серверу
     """  # noqa D205 D400
     with tg_methods.SyncTgClient.setup('token'):
-        with pytest.raises(ValidationError):
+        with pytest.raises(ValidationError, match='text'):
             tg_methods.EditMessageTextRequest(
                 chat_id=1234567890,
                 message_id=12345,
@@ -194,7 +194,7 @@ def test_edit_message_text_request_mocking_with_empty_text(
             )
 
     with tg_methods.SyncTgClient.setup('token'):
-        with pytest.raises(ValidationError):
+        with pytest.raises(ValidationError, match='text'):
             tg_methods.EditMessageTextRequest(
                 chat_id=1234567890,
                 message_id=12345,
@@ -213,7 +213,7 @@ def test_edit_message_caption_request_mocking_with_large_caption(
             успех: Сработало исключение до отправки сообщения к серверу
     """  # noqa D205 D400
     with tg_methods.SyncTgClient.setup('token'):
-        with pytest.raises(ValidationError):
+        with pytest.raises(ValidationError, match='caption'):
             tg_methods.EditMessageCaptionRequest(
                 chat_id=1234567890,
                 message_id=12345,
@@ -232,7 +232,7 @@ def test_edit_message_media_url_photo_request_mocking_with_large_caption(
             успех: Сработало исключение до отправки сообщения к серверу
     """  # noqa D205 D400
     with tg_methods.SyncTgClient.setup('token'):
-        with pytest.raises(ValidationError):
+        with pytest.raises(ValidationError, match='caption'):
             media = tg_types.InputMediaUrlPhoto(
                 media='https://link_to_photo.jpg',
                 caption='a' * 1025,
@@ -255,7 +255,7 @@ def test_edit_message_media_url_document_request_mocking(
             успех: Сработало исключение до отправки сообщения к серверу
     """  # noqa D205 D400
     with tg_methods.SyncTgClient.setup('token'):
-        with pytest.raises(ValidationError):
+        with pytest.raises(ValidationError, match='caption'):
             media = tg_types.InputMediaUrlDocument(
                 media='https://link_to_document.pdf',
                 caption='a' * 1025,
@@ -278,7 +278,7 @@ def test_edit_message_media_bytes_photo_request_mocking(
             успех: Сработало исключение до отправки сообщения к серверу
     """  # noqa D205 D400
     with tg_methods.SyncTgClient.setup('token'):
-        with pytest.raises(ValidationError):
+        with pytest.raises(ValidationError, match='caption'):
             media = tg_types.InputMediaBytesPhoto(
                 media='attach://attachement.jpg',
                 media_content=b'photo content',
@@ -302,7 +302,7 @@ def test_edit_message_media_bytes_document_request_mocking(
             успех: Сработало исключение до отправки сообщения к серверу
     """  # noqa D205 D400
     with tg_methods.SyncTgClient.setup('token'):
-        with pytest.raises(ValidationError):
+        with pytest.raises(ValidationError, match='caption'):
             media = tg_types.InputMediaBytesDocument(
                 media='attach://attachement.pdf',
                 media_content=b'document content',
