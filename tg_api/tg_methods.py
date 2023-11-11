@@ -1,6 +1,6 @@
 import io
 import json
-from typing import Any, Union, Iterable
+from typing import Any, Union
 
 from pydantic import BaseModel, Field
 
@@ -144,7 +144,7 @@ class BaseTgResponse(BaseModel):
     error_code: int | None = None
     description: str = ''
 
-    result: Any
+    result: Any = None
 
     class Config:
         extra = 'ignore'
@@ -166,13 +166,13 @@ class SendMessageRequest(BaseTgRequest):
 
     chat_id: int
     text: str = Field(min_length=1, max_length=4096)
-    parse_mode: tg_types.ParseMode | None
-    entities: list[tg_types.MessageEntity] | None
-    disable_web_page_preview: bool | None
-    disable_notification: bool | None
-    protect_content: bool | None
-    message_thread_id: bool | None
-    allow_sending_without_reply: bool | None
+    parse_mode: tg_types.ParseMode | None = None
+    entities: list[tg_types.MessageEntity] | None = None
+    disable_web_page_preview: bool | None = None
+    disable_notification: bool | None = None
+    protect_content: bool | None = None
+    message_thread_id: bool | None = None
+    allow_sending_without_reply: bool | None = None
     reply_markup: Union[
         tg_types.InlineKeyboardMarkup,
         tg_types.ReplyKeyboardMarkup,
@@ -207,20 +207,17 @@ class SendBytesPhotoRequest(BaseTgRequest):
     """
 
     chat_id: int
-    photo: Union[
-        bytes,
-        Iterable[bytes],
-    ]
-    filename: str | None
-    message_thread_id: int | None
+    photo: bytes
+    filename: str | None = None
+    message_thread_id: int | None = None
     caption: str | None = Field(None, max_length=1024)
-    parse_mode: str | None
-    caption_entities: list[tg_types.MessageEntity] | None
-    has_spoiler: bool | None
-    disable_notification: bool | None
-    protect_content: bool | None
-    reply_to_message_id: int | None
-    allow_sending_without_reply: bool | None
+    parse_mode: str | None = None
+    caption_entities: list[tg_types.MessageEntity] | None = None
+    has_spoiler: bool | None = None
+    disable_notification: bool | None = None
+    protect_content: bool | None = None
+    reply_to_message_id: int | None = None
+    allow_sending_without_reply: bool | None = None
     reply_markup: Union[
         tg_types.InlineKeyboardMarkup,
         tg_types.ReplyKeyboardMarkup,
@@ -231,9 +228,9 @@ class SendBytesPhotoRequest(BaseTgRequest):
     async def asend(self) -> SendPhotoResponse:
         """Send HTTP request to `sendPhoto` Telegram Bot API endpoint asynchronously and parse response."""
         content = self.dict(exclude_none=True, exclude={'photo'})
-        photo_bytes = io.BytesIO(self.photo)
-        photo_bytes.name = self.filename
-        files = {'photo': photo_bytes}
+        photo_bytes_io = io.BytesIO(self.photo)
+        photo_bytes_io.name = self.filename
+        files = {'photo': photo_bytes_io}
         json_payload = await self.apost_multipart_form_data('sendPhoto', content, files)
         response = SendPhotoResponse.parse_raw(json_payload)
         return response
@@ -241,9 +238,9 @@ class SendBytesPhotoRequest(BaseTgRequest):
     def send(self) -> SendPhotoResponse:
         """Send HTTP request to `sendPhoto` Telegram Bot API endpoint synchronously and parse response."""
         content = self.dict(exclude_none=True, exclude={'photo'})
-        photo_bytes = io.BytesIO(self.photo)
-        photo_bytes.name = self.filename
-        files = {'photo': photo_bytes}
+        photo_bytes_io = io.BytesIO(self.photo)
+        photo_bytes_io.name = self.filename
+        files = {'photo': photo_bytes_io}
         json_payload = self.post_multipart_form_data('sendPhoto', content, files)
         response = SendPhotoResponse.parse_raw(json_payload)
         return response
@@ -257,16 +254,16 @@ class SendUrlPhotoRequest(BaseTgRequest):
 
     chat_id: int
     photo: str
-    filename: str | None
-    message_thread_id: int | None
+    filename: str | None = None
+    message_thread_id: int | None = None
     caption: str | None = Field(None, max_length=1024)
-    parse_mode: str | None
-    caption_entities: list[tg_types.MessageEntity] | None
-    has_spoiler: bool | None
-    disable_notification: bool | None
-    protect_content: bool | None
-    reply_to_message_id: int | None
-    allow_sending_without_reply: bool | None
+    parse_mode: str | None = None
+    caption_entities: list[tg_types.MessageEntity] | None = None
+    has_spoiler: bool | None = None
+    disable_notification: bool | None = None
+    protect_content: bool | None = None
+    reply_to_message_id: int | None = None
+    allow_sending_without_reply: bool | None = None
     reply_markup: Union[
         tg_types.InlineKeyboardMarkup,
         tg_types.ReplyKeyboardMarkup,
@@ -299,17 +296,17 @@ class SendBytesDocumentRequest(BaseTgRequest):
 
     chat_id: int
     document: bytes
-    filename: str | None
-    message_thread_id: int | None
-    thumbnail: bytes | str | None
+    filename: str | None = None
+    message_thread_id: int | None = None
+    thumbnail: bytes | str | None = None
     caption: str | None = Field(None, max_length=1024)
-    parse_mode: str | None
-    caption_entities: list[tg_types.MessageEntity] | None
-    disable_content_type_detection: bool | None
-    disable_notification: bool | None
-    protect_content: bool | None
-    reply_to_message_id: int | None
-    allow_sending_without_reply: bool | None
+    parse_mode: str | None = None
+    caption_entities: list[tg_types.MessageEntity] | None = None
+    disable_content_type_detection: bool | None = None
+    disable_notification: bool | None = None
+    protect_content: bool | None = None
+    reply_to_message_id: int | None = None
+    allow_sending_without_reply: bool | None = None
     reply_markup: Union[
         tg_types.InlineKeyboardMarkup,
         tg_types.ReplyKeyboardMarkup,
@@ -346,17 +343,17 @@ class SendUrlDocumentRequest(BaseTgRequest):
 
     chat_id: int
     document: str
-    filename: str | None
-    message_thread_id: int | None
-    thumbnail: bytes | str | None
+    filename: str | None = None
+    message_thread_id: int | None = None
+    thumbnail: bytes | str | None = None
     caption: str | None = Field(None, max_length=1024)
-    parse_mode: str | None
-    caption_entities: list[tg_types.MessageEntity] | None
-    disable_content_type_detection: bool | None
-    disable_notification: bool | None
-    protect_content: bool | None
-    reply_to_message_id: int | None
-    allow_sending_without_reply: bool | None
+    parse_mode: str | None = None
+    caption_entities: list[tg_types.MessageEntity] | None = None
+    disable_content_type_detection: bool | None = None
+    disable_notification: bool | None = None
+    protect_content: bool | None = None
+    reply_to_message_id: int | None = None
+    allow_sending_without_reply: bool | None = None
     reply_markup: Union[
         tg_types.InlineKeyboardMarkup,
         tg_types.ReplyKeyboardMarkup,
@@ -413,14 +410,14 @@ class EditMessageTextRequest(BaseTgRequest):
     See here https://core.telegram.org/bots/api#editmessagetext
     """
 
-    chat_id: int | None
-    message_id: int | None
-    inline_message_id: str | None
+    chat_id: int | None = None
+    message_id: int | None = None
+    inline_message_id: str | None = None
     text: str = Field(min_length=1, max_length=4096)
-    parse_mode: str | None
-    entities: list[tg_types.MessageEntity] | None
-    disable_web_page_preview: bool | None
-    reply_markup: tg_types.InlineKeyboardMarkup | None
+    parse_mode: str | None = None
+    entities: list[tg_types.MessageEntity] | None = None
+    disable_web_page_preview: bool | None = None
+    reply_markup: tg_types.InlineKeyboardMarkup | None = None
 
     async def asend(self) -> EditMessageTextResponse:
         """Send HTTP request to `editmessagetext` Telegram Bot API endpoint asynchronously and parse response."""
@@ -445,10 +442,10 @@ class EditMessageReplyMarkupRequest(BaseTgRequest):
     See here https://core.telegram.org/bots/api#editmessagereplymarkup
     """
 
-    chat_id: int | None
-    message_id: int | None
-    inline_message_id: str | None
-    reply_markup: tg_types.InlineKeyboardMarkup | None
+    chat_id: int | None = None
+    message_id: int | None = None
+    inline_message_id: str | None = None
+    reply_markup: tg_types.InlineKeyboardMarkup | None = None
 
     async def asend(self) -> EditMessageReplyMarkupResponse:
         """Send HTTP request to `editmessagereplymarkup` Telegram Bot API endpoint asynchronously and parse response."""
@@ -473,13 +470,13 @@ class EditMessageCaptionRequest(BaseTgRequest):
     See here https://core.telegram.org/bots/api#editmessagecaption
     """
 
-    chat_id: int | None
-    message_id: int | None
-    inline_message_id: str | None
+    chat_id: int | None = None
+    message_id: int | None = None
+    inline_message_id: str | None = None
     caption: str | None = Field(None, max_length=1024)
-    parse_mode: str | None
-    caption_entities: list[tg_types.MessageEntity] | None
-    reply_markup: tg_types.InlineKeyboardMarkup | None
+    parse_mode: str | None = None
+    caption_entities: list[tg_types.MessageEntity] | None = None
+    reply_markup: tg_types.InlineKeyboardMarkup | None = None
 
     async def asend(self) -> EditMessageCaptionResponse:
         """Send HTTP request to `editmessagecaption` Telegram Bot API endpoint asynchronously and parse response."""
@@ -504,11 +501,11 @@ class EditBytesMessageMediaRequest(BaseTgRequest):
     See here https://core.telegram.org/bots/api#editmessagemedia
     """
 
-    chat_id: int | None
-    message_id: int | None
-    inline_message_id: str | None
+    chat_id: int | None = None
+    message_id: int | None = None
+    inline_message_id: str | None = None
     media: Union[tg_types.InputMediaBytesDocument, tg_types.InputMediaBytesPhoto]
-    reply_markup: tg_types.InlineKeyboardMarkup | None
+    reply_markup: tg_types.InlineKeyboardMarkup | None = None
 
     async def asend(self) -> EditMessageMediaResponse:
         """Send HTTP request to `editmessagemedia` Telegram Bot API endpoint asynchronously and parse response."""
@@ -521,13 +518,14 @@ class EditBytesMessageMediaRequest(BaseTgRequest):
         if not self.media.media.startswith('attach://'):
             content['media']['media'] = f"attach://{content['media']['media']}"
 
-        if 'thumbnail' in content['media'] and 'thumbnail_content' in content['media']:
-            content['media'].pop('thumbnail_content')
-            thumbnail_bytes = io.BytesIO(self.media.thumbnail_content)
-            files[self.media.thumbnail] = thumbnail_bytes
+        if content['media'].get('thumbnail') and content['media'].get('thumbnail_content'):
+            thumbnail = content['media']['thumbnail']
+            thumbnail_content = content['media'].pop('thumbnail_content')
+            thumbnail_bytes = io.BytesIO(thumbnail_content)
+            files[thumbnail] = thumbnail_bytes
 
-            if not self.media.thumbnail.startswith('attach://'):
-                content['media']['thumbnail'] = f"attach://{content['media']['thumbnail']}"
+            if not thumbnail.startswith('attach://'):
+                content['media']['thumbnail'] = f"attach://{thumbnail}"
 
         json_payload = await self.apost_multipart_form_data('editmessagemedia', content, files)
         response = EditMessageMediaResponse.parse_raw(json_payload)
@@ -544,13 +542,14 @@ class EditBytesMessageMediaRequest(BaseTgRequest):
         if not self.media.media.startswith('attach://'):
             content['media']['media'] = f"attach://{content['media']['media']}"
 
-        if 'thumbnail' in content['media'] and 'thumbnail_content' in content['media']:
-            content['media'].pop('thumbnail_content')
-            thumbnail_bytes = io.BytesIO(self.media.thumbnail_content)
-            files[self.media.thumbnail] = thumbnail_bytes
+        if content['media'].get('thumbnail') and content['media'].get('thumbnail_content'):
+            thumbnail = content['media']['thumbnail']
+            thumbnail_content = content['media'].pop('thumbnail_content')
+            thumbnail_bytes = io.BytesIO(thumbnail_content)
+            files[thumbnail] = thumbnail_bytes
 
-            if not self.media.thumbnail.startswith('attach://'):
-                content['media']['thumbnail'] = f"attach://{content['media']['thumbnail']}"
+            if not thumbnail.startswith('attach://'):
+                content['media']['thumbnail'] = f"attach://{thumbnail}"
 
         json_payload = self.post_multipart_form_data('editmessagemedia', content, files)
         response = EditMessageMediaResponse.parse_raw(json_payload)
@@ -563,11 +562,11 @@ class EditUrlMessageMediaRequest(BaseTgRequest):
     See here https://core.telegram.org/bots/api#editmessagemedia
     """
 
-    chat_id: int | None
-    message_id: int | None
-    inline_message_id: str | None
+    chat_id: int | None = None
+    message_id: int | None = None
+    inline_message_id: str | None = None
     media: Union[tg_types.InputMediaUrlDocument, tg_types.InputMediaUrlPhoto]
-    reply_markup: tg_types.InlineKeyboardMarkup | None
+    reply_markup: tg_types.InlineKeyboardMarkup | None = None
 
     async def asend(self) -> EditMessageMediaResponse:
         """Send HTTP request to `editmessagemedia` Telegram Bot API endpoint asynchronously and parse response."""
