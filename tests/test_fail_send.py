@@ -17,9 +17,6 @@ def test_photo_request_mocking_with_large_caption(
             старт: Отправка заголовка свыше 1024 символов
             успех: Сработало исключение до отправки сообщения к серверу
     """  # noqa D205 D400
-    tg_types.Chat.update_forward_refs()
-    tg_types.Message.update_forward_refs()
-
     with open(Path(__file__).parent / 'samples/sample_640×426.jpeg', 'rb') as file:
         jpg_sample_bytes = file.read()
 
@@ -105,9 +102,6 @@ def test_document_request_mocking_with_large_caption(
             старт: Отправка заголовка свыше 1024 символов
             успех: Сработало исключение до отправки сообщения к серверу
     """  # noqa D205 D400
-    tg_types.Chat.update_forward_refs()
-    tg_types.Message.update_forward_refs()
-
     objects_which_pydantic_transforms_to_bytes_or_iterable_bytes = [
         bytes('document content', encoding='utf8'),
         b'document content',

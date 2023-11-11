@@ -11,8 +11,6 @@ def test_photo_request_mocking(
     httpx_mock: pytest_httpx.HTTPXMock,
     get_photo_response: dict[str, typing.Any],
 ) -> None:
-    tg_types.Chat.update_forward_refs()
-    tg_types.Message.update_forward_refs()
     httpx_mock.add_response(
         url='https://api.telegram.org/bottoken/sendPhoto',
         method='POST',
@@ -82,8 +80,6 @@ def test_document_request_mocking(
     httpx_mock: pytest_httpx.HTTPXMock,
     get_document_response: dict[str, typing.Any],
 ) -> None:
-    tg_types.Chat.update_forward_refs()
-    tg_types.Message.update_forward_refs()
     httpx_mock.add_response(
         url='https://api.telegram.org/bottoken/sendDocument',
         method='POST',
