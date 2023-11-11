@@ -1,8 +1,8 @@
+from pathlib import Path
 import typing
 
-import pytest
-import requests
 from pydantic import ValidationError
+import pytest
 
 from tg_api import tg_methods, tg_types
 
@@ -20,16 +20,15 @@ def test_photo_request_mocking_with_large_caption(
     tg_types.Chat.update_forward_refs()
     tg_types.Message.update_forward_refs()
 
-    photo_url = 'https://memepedia.ru/wp-content/uploads/2018/06/kto-prochital-tot-sdohnet.jpg'
-    response = requests.get(photo_url)
-    response.raise_for_status()
+    with open(Path(__file__).parent / 'samples/sample_640×426.jpeg', 'rb') as file:
+        jpg_sample_bytes = file.read()
 
     with tg_methods.SyncTgClient.setup('token'):
         with pytest.raises(ValidationError):
             tg_methods.SendBytesPhotoRequest(
                 chat_id=1234567890,
                 caption='a' * 1025,
-                photo=str(response.content),
+                photo=jpg_sample_bytes,
                 caption_entities=[tg_types.MessageEntity(type='123', offset=1, length=1)],
                 reply_markup=tg_types.InlineKeyboardMarkup(
                     inline_keyboard=[
@@ -42,7 +41,7 @@ def test_photo_request_mocking_with_large_caption(
         with pytest.raises(ValidationError):
             tg_methods.SendUrlPhotoRequest(
                 chat_id=1234567890,
-                photo=photo_url,
+                photo='https://example.com/not-exist.jpg',
                 caption='a' * 1025,
                 caption_entities=[tg_types.MessageEntity(type='123', offset=1, length=1)],
                 reply_markup=tg_types.InlineKeyboardMarkup(

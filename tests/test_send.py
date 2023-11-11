@@ -1,7 +1,7 @@
 import json
+from pathlib import Path
 import typing
 
-import requests
 import pytest_httpx
 
 from tg_api import tg_methods, tg_types
@@ -23,14 +23,13 @@ def test_photo_request_mocking(
         json=get_photo_response,
     )
 
-    photo_url = 'https://memepedia.ru/wp-content/uploads/2018/06/kto-prochital-tot-sdohnet.jpg'
-    response = requests.get(photo_url)
-    response.raise_for_status()
+    with open(Path(__file__).parent / 'samples/sample_640×426.jpeg', 'rb') as file:
+        jpg_sample_bytes = file.read()
 
     with tg_methods.SyncTgClient.setup('token'):
         tg_request = tg_methods.SendBytesPhotoRequest(
             chat_id=1234567890,
-            photo=str(response.content),
+            photo=jpg_sample_bytes,
             caption_entities=[tg_types.MessageEntity(type='123', offset=1, length=1)],
             reply_markup=tg_types.InlineKeyboardMarkup(
                 inline_keyboard=[
@@ -44,7 +43,7 @@ def test_photo_request_mocking(
     with tg_methods.SyncTgClient.setup('token'):
         tg_request = tg_methods.SendUrlPhotoRequest(
             chat_id=1234567890,
-            photo=photo_url,
+            photo='https://example.com/not-exist.jpg',
             caption_entities=[tg_types.MessageEntity(type='123', offset=1, length=1)],
             reply_markup=tg_types.InlineKeyboardMarkup(
                 inline_keyboard=[
