@@ -8,6 +8,7 @@ import httpx
 
 from .exceptions import TgHttpStatusError, TgRuntimeError
 
+DEFAULT_TG_SERVER_URL = 'https://api.telegram.org'
 
 AsyncTgClientType = TypeVar('AsyncTgClientType', bound='AsyncTgClient')
 SyncTgClientType = TypeVar('SyncTgClientType', bound='SyncTgClient')
@@ -18,7 +19,7 @@ class AsyncTgClient:
     token: str
     _: KW_ONLY
     session: httpx.AsyncClient
-    tg_server_url: str = 'https://api.telegram.org'
+    tg_server_url: str = DEFAULT_TG_SERVER_URL
 
     api_root: str = field(init=False)
 
@@ -35,7 +36,7 @@ class AsyncTgClient:
         token: str,
         *,
         session: httpx.AsyncClient | None = None,
-        **client_kwargs,
+        tg_server_url: str = DEFAULT_TG_SERVER_URL,
     ) -> AsyncGenerator[AsyncTgClientType, None]:
         if not token:
             # Safety check for empty string or None to avoid confusing HTTP 404 error
@@ -45,7 +46,7 @@ class AsyncTgClient:
             if not session:
                 session = await stack.enter_async_context(httpx.AsyncClient())
 
-            client = cls(token=token, session=session, **client_kwargs)
+            client = cls(token=token, session=session, tg_server_url=tg_server_url)
             with client.set_as_default():
                 yield client
 
@@ -63,7 +64,7 @@ class SyncTgClient:
     token: str
     _: KW_ONLY
     session: httpx.Client
-    tg_server_url: str = 'https://api.telegram.org'
+    tg_server_url: str = DEFAULT_TG_SERVER_URL
 
     api_root: str = field(init=False)
 
@@ -80,7 +81,7 @@ class SyncTgClient:
         token: str,
         *,
         session: httpx.Client = None,
-        **client_kwargs,
+        tg_server_url: str = DEFAULT_TG_SERVER_URL,
     ) -> Generator[SyncTgClientType, None, None]:
         if not token:
             # Safety check for empty string or None to avoid confusing HTTP 404 error
@@ -89,7 +90,7 @@ class SyncTgClient:
         if not session:
             session = httpx.Client()
 
-        client = cls(token=token, session=session, **client_kwargs)
+        client = cls(token=token, session=session, tg_server_url=tg_server_url)
         with client.set_as_default():
             yield client
 
