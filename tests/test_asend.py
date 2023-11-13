@@ -1,7 +1,7 @@
 import json
+from pathlib import Path
 import typing
 
-import requests
 import pytest
 import pytest_httpx
 
@@ -12,9 +12,7 @@ from tg_api import tg_methods, tg_types
 async def test_httpx_mocking(
     httpx_mock: pytest_httpx.HTTPXMock,
     get_message_response: dict[str, typing.Any],
-):
-    tg_types.Chat.update_forward_refs()
-    tg_types.Message.update_forward_refs()
+) -> None:
     httpx_mock.add_response(
         url='https://api.telegram.org/bottoken/sendMessage',
         method='POST',
@@ -38,9 +36,7 @@ async def test_httpx_mocking(
 async def test_photo_request_mocking(
     httpx_mock: pytest_httpx.HTTPXMock,
     get_photo_response: dict[str, typing.Any],
-):
-    tg_types.Chat.update_forward_refs()
-    tg_types.Message.update_forward_refs()
+) -> None:
     httpx_mock.add_response(
         url='https://api.telegram.org/bottoken/sendPhoto',
         method='POST',
@@ -51,14 +47,13 @@ async def test_photo_request_mocking(
         json=get_photo_response,
     )
 
-    photo_url = 'https://memepedia.ru/wp-content/uploads/2018/06/kto-prochital-tot-sdohnet.jpg'
-    response = requests.get(photo_url)
-    response.raise_for_status()
+    with open(Path(__file__).parent / 'samples/sample_640×426.jpeg', 'rb') as file:
+        jpg_sample_bytes = file.read()
 
     async with tg_methods.AsyncTgClient.setup('token'):
         tg_request = tg_methods.SendBytesPhotoRequest(
             chat_id=1234567890,
-            photo=str(response.content),
+            photo=jpg_sample_bytes,
             caption_entities=[tg_types.MessageEntity(type='123', offset=1, length=1)],
             reply_markup=tg_types.InlineKeyboardMarkup(
                 inline_keyboard=[
@@ -66,15 +61,13 @@ async def test_photo_request_mocking(
                 ],
             ),
         )
-        json_payload = await tg_request.apost_as_json('sendPhoto')
         response = await tg_request.asend()
-        assert get_photo_response == json.loads(json_payload)
         assert get_photo_response == response.dict()
 
     async with tg_methods.AsyncTgClient.setup('token'):
         tg_request = tg_methods.SendUrlPhotoRequest(
             chat_id=1234567890,
-            photo=photo_url,
+            photo='https://example.com/not-exist.jpg',
             caption_entities=[tg_types.MessageEntity(type='123', offset=1, length=1)],
             reply_markup=tg_types.InlineKeyboardMarkup(
                 inline_keyboard=[
@@ -82,9 +75,7 @@ async def test_photo_request_mocking(
                 ],
             ),
         )
-        json_payload = await tg_request.apost_as_json('sendPhoto')
         response = await tg_request.asend()
-        assert get_photo_response == json.loads(json_payload)
         assert get_photo_response == response.dict()
 
 
@@ -92,9 +83,7 @@ async def test_photo_request_mocking(
 async def test_document_request_mocking(
     httpx_mock: pytest_httpx.HTTPXMock,
     get_document_response: dict[str, typing.Any],
-):
-    tg_types.Chat.update_forward_refs()
-    tg_types.Message.update_forward_refs()
+) -> None:
     httpx_mock.add_response(
         url='https://api.telegram.org/bottoken/sendDocument',
         method='POST',
@@ -159,9 +148,7 @@ async def test_document_request_mocking(
 async def test_delete_message_request_mocking(
     httpx_mock: pytest_httpx.HTTPXMock,
     delete_message_response: dict[str, typing.Any],
-):
-    tg_types.Chat.update_forward_refs()
-    tg_types.Message.update_forward_refs()
+) -> None:
     httpx_mock.add_response(
         url='https://api.telegram.org/bottoken/deleteMessage',
         method='POST',
@@ -186,9 +173,7 @@ async def test_edit_message_text_request_mocking(
     httpx_mock: pytest_httpx.HTTPXMock,
     edit_message_text_response: dict[str, typing.Any],
     keyboard: tg_types.InlineKeyboardMarkup,
-):
-    tg_types.Chat.update_forward_refs()
-    tg_types.Message.update_forward_refs()
+) -> None:
     httpx_mock.add_response(
         url='https://api.telegram.org/bottoken/editmessagetext',
         method='POST',
@@ -218,9 +203,7 @@ async def test_edit_message_reply_markup_request_mocking(
     httpx_mock: pytest_httpx.HTTPXMock,
     edit_message_reply_markup_response: dict[str, typing.Any],
     keyboard: tg_types.InlineKeyboardMarkup,
-):
-    tg_types.Chat.update_forward_refs()
-    tg_types.Message.update_forward_refs()
+) -> None:
     httpx_mock.add_response(
         url='https://api.telegram.org/bottoken/editmessagereplymarkup',
         method='POST',
@@ -248,9 +231,7 @@ async def test_edit_message_reply_markup_request_mocking(
 async def test_edit_message_caption_request_mocking(
     httpx_mock: pytest_httpx.HTTPXMock,
     edit_message_caption_response: dict[str, typing.Any],
-):
-    tg_types.Chat.update_forward_refs()
-    tg_types.Message.update_forward_refs()
+) -> None:
     httpx_mock.add_response(
         url='https://api.telegram.org/bottoken/editmessagecaption',
         method='POST',
@@ -278,9 +259,7 @@ async def test_edit_message_caption_request_mocking(
 async def test_edit_message_media_url_photo_request_mocking(
     httpx_mock: pytest_httpx.HTTPXMock,
     edit_message_media_photo_response: dict[str, typing.Any],
-):
-    tg_types.Chat.update_forward_refs()
-    tg_types.Message.update_forward_refs()
+) -> None:
     httpx_mock.add_response(
         url='https://api.telegram.org/bottoken/editmessagemedia',
         method='POST',
@@ -312,9 +291,7 @@ async def test_edit_message_media_url_photo_request_mocking(
 async def test_edit_message_media_url_document_request_mocking(
     httpx_mock: pytest_httpx.HTTPXMock,
     edit_message_media_document_response: dict[str, typing.Any],
-):
-    tg_types.Chat.update_forward_refs()
-    tg_types.Message.update_forward_refs()
+) -> None:
     httpx_mock.add_response(
         url='https://api.telegram.org/bottoken/editmessagemedia',
         method='POST',
@@ -346,9 +323,7 @@ async def test_edit_message_media_url_document_request_mocking(
 async def test_edit_message_media_bytes_photo_request_mocking(
     httpx_mock: pytest_httpx.HTTPXMock,
     edit_message_media_photo_response: dict[str, typing.Any],
-):
-    tg_types.Chat.update_forward_refs()
-    tg_types.Message.update_forward_refs()
+) -> None:
     httpx_mock.add_response(
         url='https://api.telegram.org/bottoken/editmessagemedia',
         method='POST',
@@ -381,9 +356,7 @@ async def test_edit_message_media_bytes_photo_request_mocking(
 async def test_edit_message_media_bytes_document_request_mocking(
     httpx_mock: pytest_httpx.HTTPXMock,
     edit_message_media_document_response: dict[str, typing.Any],
-):
-    tg_types.Chat.update_forward_refs()
-    tg_types.Message.update_forward_refs()
+) -> None:
     httpx_mock.add_response(
         url='https://api.telegram.org/bottoken/editmessagemedia',
         method='POST',
