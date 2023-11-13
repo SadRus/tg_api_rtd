@@ -13,7 +13,14 @@ class ParseMode(str, Enum):
     Markdown = 'Markdown'  # legacy mode https://core.telegram.org/bots/api#markdown-style
 
 
-class User(BaseModel):
+class ValidableMixin:
+    """This mixin sets validation for all fields."""
+
+    class Config:
+        validate_all = True
+
+
+class User(BaseModel, ValidableMixin):
     """This model represents a Telegram user or bot.
 
     See here: https://core.telegram.org/bots/api#user
@@ -32,7 +39,7 @@ class User(BaseModel):
     supports_inline_queries: bool | None = None
 
 
-class Chat(BaseModel):
+class Chat(BaseModel, ValidableMixin):
     """This model represents a chat.
 
     See here: https://core.telegram.org/bots/api#chat
@@ -67,7 +74,7 @@ class Chat(BaseModel):
     linked_chat_id: int | None = None
 
 
-class KeyboardButton(BaseModel):
+class KeyboardButton(BaseModel, ValidableMixin):
     """This model represents one button of the reply keyboard.
 
     For simple text buttons, String can be used instead of this object to specify the button text.
@@ -86,7 +93,7 @@ class KeyboardButton(BaseModel):
     web_app: dict[str, AnyHttpUrl] | None = None
 
 
-class ReplyKeyboardMarkup(BaseModel):
+class ReplyKeyboardMarkup(BaseModel, ValidableMixin):
     """This model represents a custom keyboard with reply options.
 
     See here: https://core.telegram.org/bots/api#replykeyboardmarkup
@@ -100,7 +107,7 @@ class ReplyKeyboardMarkup(BaseModel):
     selective: bool | None = None
 
 
-class ReplyKeyboardRemove(BaseModel):
+class ReplyKeyboardRemove(BaseModel, ValidableMixin):
     """Upon receiving a message with this object, Telegram clients will remove the current.
 
     custom keyboard and display the default letter-keyboard. By default, custom keyboards
@@ -114,7 +121,7 @@ class ReplyKeyboardRemove(BaseModel):
     selective: bool | None = None
 
 
-class ForceReply(BaseModel):
+class ForceReply(BaseModel, ValidableMixin):
     """Upon receiving a message with this object, Telegram clients will display a reply.
 
     interface to the user (act as if the user has selected the bot's message and tapped 'Reply').
@@ -129,7 +136,7 @@ class ForceReply(BaseModel):
     selective: bool | None = None
 
 
-class InlineKeyboardButton(BaseModel):
+class InlineKeyboardButton(BaseModel, ValidableMixin):
     """This model represents one button of an inline keyboard.
 
     See here: https://core.telegram.org/bots/api#inlinekeyboardbutton
@@ -147,7 +154,7 @@ class InlineKeyboardButton(BaseModel):
     pay: bool | None = None
 
 
-class InlineKeyboardMarkup(BaseModel):
+class InlineKeyboardMarkup(BaseModel, ValidableMixin):
     """This model represents an inline keyboard that appears right next to the message it belongs to.
 
     See here: https://core.telegram.org/bots/api#inlinekeyboardmarkup
@@ -156,7 +163,7 @@ class InlineKeyboardMarkup(BaseModel):
     inline_keyboard: list[list[InlineKeyboardButton]]
 
 
-class Invoice(BaseModel):
+class Invoice(BaseModel, ValidableMixin):
     """This model contains basic information about an invoice.
 
     See here: https://core.telegram.org/bots/api#invoice
@@ -169,7 +176,7 @@ class Invoice(BaseModel):
     total_amount: int
 
 
-class ShippingAddress(BaseModel):
+class ShippingAddress(BaseModel, ValidableMixin):
     """This object represents a shipping address.
 
     See here: https://core.telegram.org/bots/api#shippingaddress
@@ -183,7 +190,7 @@ class ShippingAddress(BaseModel):
     post_code: str
 
 
-class OrderInfo(BaseModel):
+class OrderInfo(BaseModel, ValidableMixin):
     """This object represents information about an order.
 
     See here: https://core.telegram.org/bots/api#orderinfo
@@ -195,7 +202,7 @@ class OrderInfo(BaseModel):
     shipping_address: ShippingAddress | None = None
 
 
-class SuccessfulPayment(BaseModel):
+class SuccessfulPayment(BaseModel, ValidableMixin):
     """This object contains basic information about a successful payment.
 
     See here: https://core.telegram.org/bots/api#successfulpayment
@@ -210,7 +217,7 @@ class SuccessfulPayment(BaseModel):
     provider_payment_charge_id: str | None = None
 
 
-class MessageEntity(BaseModel):
+class MessageEntity(BaseModel, ValidableMixin):
     """This model represents one special entity in a text message.
 
     For example, hashtags, usernames, URLs, etc.
@@ -227,7 +234,7 @@ class MessageEntity(BaseModel):
     custom_emoji_id: str | None = None
 
 
-class Message(BaseModel):
+class Message(BaseModel, ValidableMixin):
     """This model represents a message.
 
     See here: https://core.telegram.org/bots/api#message
@@ -306,11 +313,11 @@ class Message(BaseModel):
     reply_markup: InlineKeyboardMarkup | None = None
 
 
-class MessageReplyMarkup(BaseModel):
+class MessageReplyMarkup(BaseModel, ValidableMixin):
     message_reply_markup: Union[Message, bool]
 
 
-class InputMediaUrlPhoto(BaseModel):
+class InputMediaUrlPhoto(BaseModel, ValidableMixin):
     """This model represents a photo with url or file id.
 
     See here: https://core.telegram.org/bots/api#inputmediaphoto
@@ -318,13 +325,13 @@ class InputMediaUrlPhoto(BaseModel):
 
     type: str = 'photo' # noqa A003
     media: str
-    caption: str = Field(None, max_length=1024)
+    caption: str | None = Field(None, max_length=1024)
     parse_mode: str | None = None
     caption_entities: list[MessageEntity] | None = None
     has_spoiler: bool | None = None
 
 
-class InputMediaBytesPhoto(BaseModel):
+class InputMediaBytesPhoto(BaseModel, ValidableMixin):
     """This model represents a photo with file.
 
     See here: https://core.telegram.org/bots/api#inputmediaphoto
@@ -333,13 +340,13 @@ class InputMediaBytesPhoto(BaseModel):
     type: str = 'photo' # noqa A003
     media: str
     media_content: bytes
-    caption: str = Field(None, max_length=1024)
+    caption: str | None = Field(None, max_length=1024)
     parse_mode: str | None = None
     caption_entities: list[MessageEntity] | None = None
     has_spoiler: bool | None = None
 
 
-class InputMediaUrlDocument(BaseModel):
+class InputMediaUrlDocument(BaseModel, ValidableMixin):
     """This model represents a document with url or file id.
 
     See here: https://core.telegram.org/bots/api#inputmediadocument
@@ -349,13 +356,13 @@ class InputMediaUrlDocument(BaseModel):
     media: str
     thumbnail: str | None = None
     thumbnail_content: bytes | None = None
-    caption: str = Field(None, max_length=1024)
+    caption: str | None = Field(None, max_length=1024)
     parse_mode: str | None = None
     caption_entities: list[MessageEntity] | None = None
     disable_content_type_detection: bool | None = None
 
 
-class InputMediaBytesDocument(BaseModel):
+class InputMediaBytesDocument(BaseModel, ValidableMixin):
     """This model represents a document with file.
 
     See here: https://core.telegram.org/bots/api#inputmediadocument
@@ -366,13 +373,13 @@ class InputMediaBytesDocument(BaseModel):
     media_content: bytes
     thumbnail: str | None = None
     thumbnail_content: bytes | None = None
-    caption: str = Field(None, max_length=1024)
+    caption: str | None = Field(None, max_length=1024)
     parse_mode: str | None = None
     caption_entities: list[MessageEntity] | None = None
     disable_content_type_detection: bool | None = None
 
 
-class CallbackQuery(BaseModel):
+class CallbackQuery(BaseModel, ValidableMixin):
     """This object represents an incoming callback query from a callback button in an inline keyboard.
 
     See here: https://core.telegram.org/bots/api#callbackquery
@@ -426,7 +433,7 @@ class CallbackQuery(BaseModel):
         return inline_message_id
 
 
-class Location(BaseModel):
+class Location(BaseModel, ValidableMixin):
     """This object represents a point on the map.
 
     See here: https://core.telegram.org/bots/api#location
@@ -440,7 +447,7 @@ class Location(BaseModel):
     proximity_alert_radius: int | None = None
 
 
-class InlineQuery(BaseModel):
+class InlineQuery(BaseModel, ValidableMixin):
     """This object represents an incoming inline query.
 
     When the user sends an empty query, your bot could return some default or trending results.
@@ -455,7 +462,7 @@ class InlineQuery(BaseModel):
     location: Location | None = None
 
 
-class ChosenInlineResult(BaseModel):
+class ChosenInlineResult(BaseModel, ValidableMixin):
     """Represents a result of an inline query that was chosen by the user and sent to their chat partner.
 
     Note: It is necessary to enable inline feedback via @BotFather in order to receive these objects in updates.
@@ -469,7 +476,7 @@ class ChosenInlineResult(BaseModel):
     query: str | None = None
 
 
-class ShippingQuery(BaseModel):
+class ShippingQuery(BaseModel, ValidableMixin):
     """This object contains information about an incoming shipping query.
 
     See here: https://core.telegram.org/bots/api#shippingquery
@@ -481,7 +488,7 @@ class ShippingQuery(BaseModel):
     shipping_address: ShippingAddress
 
 
-class PreCheckoutQuery(BaseModel):
+class PreCheckoutQuery(BaseModel, ValidableMixin):
     """This object contains information about an incoming pre-checkout query.
 
     See here: https://core.telegram.org/bots/api#shippingquery
@@ -496,7 +503,7 @@ class PreCheckoutQuery(BaseModel):
     order_info: OrderInfo | None = None
 
 
-class PollOption(BaseModel):
+class PollOption(BaseModel, ValidableMixin):
     """This object contains information about one answer option in a poll.
 
     See here: https://core.telegram.org/bots/api#polloption
@@ -506,7 +513,7 @@ class PollOption(BaseModel):
     voter_count: int
 
 
-class Poll(BaseModel):
+class Poll(BaseModel, ValidableMixin):
     """This object contains information about a poll.
 
     See here: https://core.telegram.org/bots/api#poll
@@ -527,7 +534,7 @@ class Poll(BaseModel):
     close_date: int | None = None
 
 
-class PollAnswer(BaseModel):
+class PollAnswer(BaseModel, ValidableMixin):
     """This object represents an answer of a user in a non-anonymous poll.
 
     See here: https://core.telegram.org/bots/api#pollanswer
@@ -538,7 +545,7 @@ class PollAnswer(BaseModel):
     option_ids: list[int]
 
 
-class ChatInviteLink(BaseModel):
+class ChatInviteLink(BaseModel, ValidableMixin):
     """Represents an invite link for a chat.
 
     See here: https://core.telegram.org/bots/api#chatinvitelink
@@ -555,7 +562,7 @@ class ChatInviteLink(BaseModel):
     pending_join_request_count: int | None = None
 
 
-class ChatJoinRequest(BaseModel):
+class ChatJoinRequest(BaseModel, ValidableMixin):
     """Represents a join request sent to a chat.
 
     See here: https://core.telegram.org/bots/api#chatjoinrequest
@@ -569,7 +576,7 @@ class ChatJoinRequest(BaseModel):
     invite_link: ChatInviteLink | None = None
 
 
-class ChatMemberOwner(BaseModel):
+class ChatMemberOwner(BaseModel, ValidableMixin):
     """Represents a join request sent to a chat.
 
     See here: https://core.telegram.org/bots/api#chatmemberowner
@@ -581,7 +588,7 @@ class ChatMemberOwner(BaseModel):
     custom_title: str
 
 
-class ChatMemberAdministrator(BaseModel):
+class ChatMemberAdministrator(BaseModel, ValidableMixin):
     """Represents a join request sent to a chat.
 
     See here: https://core.telegram.org/bots/api#chatmemberadministrator
@@ -605,7 +612,7 @@ class ChatMemberAdministrator(BaseModel):
     custom_title: bool
 
 
-class ChatMemberMember(BaseModel):
+class ChatMemberMember(BaseModel, ValidableMixin):
     """Represents a join request sent to a chat.
 
     See here: https://core.telegram.org/bots/api#chatmembermember
@@ -615,7 +622,7 @@ class ChatMemberMember(BaseModel):
     user: User
 
 
-class ChatMemberRestricted(BaseModel):
+class ChatMemberRestricted(BaseModel, ValidableMixin):
     """Represents a join request sent to a chat.
 
     See here: https://core.telegram.org/bots/api#chatmemberrestricted
@@ -641,7 +648,7 @@ class ChatMemberRestricted(BaseModel):
     until_date: bool
 
 
-class ChatMemberLeft(BaseModel):
+class ChatMemberLeft(BaseModel, ValidableMixin):
     """Represents a join request sent to a chat.
 
     See here: https://core.telegram.org/bots/api#chatmemberleft
@@ -651,7 +658,7 @@ class ChatMemberLeft(BaseModel):
     user: User
 
 
-class ChatMemberBanned(BaseModel):
+class ChatMemberBanned(BaseModel, ValidableMixin):
     """Represents a join request sent to a chat.
 
     See here: https://core.telegram.org/bots/api#chatmemberbanned
@@ -662,7 +669,7 @@ class ChatMemberBanned(BaseModel):
     until_date: int
 
 
-class ChatMemberUpdated(BaseModel):
+class ChatMemberUpdated(BaseModel, ValidableMixin):
     """This object represents changes in the status of a chat member.
 
     See here: https://core.telegram.org/bots/api#chatmemberupdated
@@ -691,7 +698,7 @@ class ChatMemberUpdated(BaseModel):
     via_chat_folder_invite_link: bool | None = None
 
 
-class Update(BaseModel):
+class Update(BaseModel, ValidableMixin):
     """This object represents an incoming update.
 
     See here: https://core.telegram.org/bots/api#update
