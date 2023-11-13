@@ -1,9 +1,10 @@
 from __future__ import annotations
 
+from textwrap import dedent
 from enum import Enum
 from typing import Any, Union, Optional
 
-from pydantic import BaseModel, AnyHttpUrl, Field
+from pydantic import BaseModel, AnyHttpUrl, Field, validator
 
 
 class ParseMode(str, Enum):
@@ -379,10 +380,57 @@ class InputMediaBytesDocument(BaseModel, ValidableMixin):
 
 
 class CallbackQuery(BaseModel, ValidableMixin):
-    data: str
-    message: Message | None = Field(description='New incoming message of any kind - text, photo, sticker, etc.')
-    from_: User | None = Field(default=None, alias='from')
-    chat_instance: str | None = None
+    """This object represents an incoming callback query from a callback button in an inline keyboard.
+
+    See here: https://core.telegram.org/bots/api#callbackquery
+    """
+
+    id: str = Field( # noqa A003
+        alias="id",
+        description="Unique identifier for this query.",
+    )
+    from_: User = Field(
+        alias="from",
+        description="Sender.",
+    )
+    message: Message | None = Field(
+        default=None,
+        description=dedent("""\
+            Optional. Message with the callback button that originated the query. Note that message content
+            and message date will not be available if the message is too old.
+        """),
+    )
+    inline_message_id: str | None = Field(
+        default=None,
+        description="Optional. Identifier of the message sent via the bot in inline mode, that originated the query.",
+    )
+    chat_instance: str | None = Field(
+        description=dedent("""\
+            Global identifier, uniquely corresponding to the chat to which the message with the callback
+            button was sent. Useful for high scores in games.
+        """),
+    )
+    data: str | None = Field(
+        default=None,
+        description=dedent("""\
+            Optional. Data associated with the callback button. Be aware that the message originated the
+            query can contain no callback buttons with this data.
+        """),
+    )
+
+    @validator('message')
+    def check_reply_markup(cls, message): # noqa N805
+        if not message.reply_markup.inline_keyboard:
+            raise ValueError("Inline_keyboard is missing")
+
+        return message
+
+    @validator('inline_message_id', always=True)
+    def check_inline_message_id(cls, inline_message_id): # noqa N805
+        if not inline_message_id:
+            raise ValueError("Inline_message_id is missing")
+
+        return inline_message_id
 
 
 class Location(BaseModel, ValidableMixin):
