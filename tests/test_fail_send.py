@@ -1,15 +1,15 @@
+from pathlib import Path
 import typing
 
-import pytest
-import requests
 from pydantic import ValidationError
+import pytest
 
 from tg_api import tg_methods, tg_types
 
 
 def test_photo_request_mocking_with_large_caption(
     get_photo_response: dict[str, typing.Any],
-):
+) -> None:
     """Программист - Узнавать о длинных заголовках сообщений до отправки запроса к серверу Telegram
     при отправке SendBytesPhotoRequest: !func
         Проверить срабатывание ValidationError до отправки сообщений: !story
@@ -17,19 +17,15 @@ def test_photo_request_mocking_with_large_caption(
             старт: Отправка заголовка свыше 1024 символов
             успех: Сработало исключение до отправки сообщения к серверу
     """  # noqa D205 D400
-    tg_types.Chat.update_forward_refs()
-    tg_types.Message.update_forward_refs()
-
-    photo_url = 'https://memepedia.ru/wp-content/uploads/2018/06/kto-prochital-tot-sdohnet.jpg'
-    response = requests.get(photo_url)
-    response.raise_for_status()
+    with open(Path(__file__).parent / 'samples/sample_640×426.jpeg', 'rb') as file:
+        jpg_sample_bytes = file.read()
 
     with tg_methods.SyncTgClient.setup('token'):
-        with pytest.raises(ValidationError):
+        with pytest.raises(ValidationError, match='caption'):
             tg_methods.SendBytesPhotoRequest(
                 chat_id=1234567890,
                 caption='a' * 1025,
-                photo=str(response.content),
+                photo=jpg_sample_bytes,
                 caption_entities=[tg_types.MessageEntity(type='123', offset=1, length=1)],
                 reply_markup=tg_types.InlineKeyboardMarkup(
                     inline_keyboard=[
@@ -39,10 +35,10 @@ def test_photo_request_mocking_with_large_caption(
             )
 
     with tg_methods.SyncTgClient.setup('token'):
-        with pytest.raises(ValidationError):
+        with pytest.raises(ValidationError, match='caption'):
             tg_methods.SendUrlPhotoRequest(
                 chat_id=1234567890,
-                photo=photo_url,
+                photo='https://example.com/not-exist.jpg',
                 caption='a' * 1025,
                 caption_entities=[tg_types.MessageEntity(type='123', offset=1, length=1)],
                 reply_markup=tg_types.InlineKeyboardMarkup(
@@ -55,7 +51,7 @@ def test_photo_request_mocking_with_large_caption(
 
 def test_message_request_with_large_text(
     get_message_response: dict[str, typing.Any],
-):
+) -> None:
     """Программист - Узнавать о длинных сообщениях до отправки запроса к серверу Telegram
     при отправке SendMessageRequest: !func
         Проверить срабатывание ValidationError до отправки сообщений: !story
@@ -64,7 +60,7 @@ def test_message_request_with_large_text(
             успех: Сработало исключение до отправки сообщения к серверу
     """  # noqa D205 D400
     with tg_methods.SyncTgClient.setup('token'):
-        with pytest.raises(ValidationError):
+        with pytest.raises(ValidationError, match='text'):
             tg_methods.SendMessageRequest(
                 chat_id=1234567890,
                 text='a' * 4097,
@@ -73,7 +69,7 @@ def test_message_request_with_large_text(
 
 def test_message_request_with_empty_text(
     get_message_response: dict[str, typing.Any],
-):
+) -> None:
     """Программист - Узнавать о пустых сообщениях до отправки запроса к серверу Telegram
     при отправке SendMessageRequest: !func
         Проверить срабатывание ValidationError до отправки сообщений: !story
@@ -82,14 +78,14 @@ def test_message_request_with_empty_text(
             успех: Сработало исключение до отправки сообщения к серверу
     """  # noqa D205 D400
     with tg_methods.SyncTgClient.setup('token'):
-        with pytest.raises(ValidationError):
+        with pytest.raises(ValidationError, match='text'):
             tg_methods.SendMessageRequest(
                 chat_id=1234567890,
                 text='',
             )
 
     with tg_methods.SyncTgClient.setup('token'):
-        with pytest.raises(ValidationError):
+        with pytest.raises(ValidationError, match='text'):
             tg_methods.SendMessageRequest(
                 chat_id=1234567890,
                 text='   ',
@@ -98,7 +94,7 @@ def test_message_request_with_empty_text(
 
 def test_document_request_mocking_with_large_caption(
     get_document_response: dict[str, typing.Any],
-):
+) -> None:
     """Программист - Узнавать о длинных заголовках сообщений до отправки запроса к серверу Telegram
     при отправке SendBytesDocumentRequest: !func
         Проверить срабатывание ValidationError до отправки сообщений: !story
@@ -106,9 +102,6 @@ def test_document_request_mocking_with_large_caption(
             старт: Отправка заголовка свыше 1024 символов
             успех: Сработало исключение до отправки сообщения к серверу
     """  # noqa D205 D400
-    tg_types.Chat.update_forward_refs()
-    tg_types.Message.update_forward_refs()
-
     objects_which_pydantic_transforms_to_bytes_or_iterable_bytes = [
         bytes('document content', encoding='utf8'),
         b'document content',
@@ -118,7 +111,7 @@ def test_document_request_mocking_with_large_caption(
 
     for obj in objects_which_pydantic_transforms_to_bytes_or_iterable_bytes:
         with tg_methods.SyncTgClient.setup('token'):
-            with pytest.raises(ValidationError):
+            with pytest.raises(ValidationError, match='caption'):
                 tg_methods.SendBytesDocumentRequest(
                     chat_id=1234567890,
                     caption="a" * 1025,
@@ -140,7 +133,7 @@ def test_document_request_mocking_with_large_caption(
 
     for obj in objects_which_pydantic_transforms_to_str:
         with tg_methods.SyncTgClient.setup('token'):
-            with pytest.raises(ValidationError):
+            with pytest.raises(ValidationError, match='caption'):
                 tg_methods.SendUrlDocumentRequest(
                     chat_id=1234567890,
                     caption="a" * 1025,
@@ -158,7 +151,7 @@ def test_document_request_mocking_with_large_caption(
 def test_edit_message_text_request_mocking_with_large_text(
     edit_message_text_response: dict[str, typing.Any],
     keyboard: tg_types.InlineKeyboardMarkup,
-):
+) -> None:
     """Программист - Узнавать о длинных сообщениях до отправки запроса к серверу Telegram
     при отправке EditMessageTextRequest: !func
         Проверить срабатывание ValidationError до отправки сообщений: !story
@@ -167,7 +160,7 @@ def test_edit_message_text_request_mocking_with_large_text(
             успех: Сработало исключение до отправки сообщения к серверу
     """  # noqa D205 D400
     with tg_methods.SyncTgClient.setup('token'):
-        with pytest.raises(ValidationError):
+        with pytest.raises(ValidationError, match='text'):
             tg_methods.EditMessageTextRequest(
                 chat_id=1234567890,
                 message_id=12345,
@@ -178,7 +171,7 @@ def test_edit_message_text_request_mocking_with_large_text(
 def test_edit_message_text_request_mocking_with_empty_text(
     edit_message_text_response: dict[str, typing.Any],
     keyboard: tg_types.InlineKeyboardMarkup,
-):
+) -> None:
     """Программист - Узнавать о пустых сообщениях до отправки запроса к серверу Telegram
     при отправке EditMessageTextRequest: !func
         Проверить срабатывание ValidationError до отправки сообщений: !story
@@ -187,7 +180,7 @@ def test_edit_message_text_request_mocking_with_empty_text(
             успех: Сработало исключение до отправки сообщения к серверу
     """  # noqa D205 D400
     with tg_methods.SyncTgClient.setup('token'):
-        with pytest.raises(ValidationError):
+        with pytest.raises(ValidationError, match='text'):
             tg_methods.EditMessageTextRequest(
                 chat_id=1234567890,
                 message_id=12345,
@@ -195,7 +188,7 @@ def test_edit_message_text_request_mocking_with_empty_text(
             )
 
     with tg_methods.SyncTgClient.setup('token'):
-        with pytest.raises(ValidationError):
+        with pytest.raises(ValidationError, match='text'):
             tg_methods.EditMessageTextRequest(
                 chat_id=1234567890,
                 message_id=12345,
@@ -205,7 +198,7 @@ def test_edit_message_text_request_mocking_with_empty_text(
 
 def test_edit_message_caption_request_mocking_with_large_caption(
     edit_message_caption_response: dict[str, typing.Any],
-):
+) -> None:
     """Программист - Узнавать о длинных заголовках сообщений до отправки запроса к серверу Telegram
     при отправке EditMessageCaptionRequest: !func
         Проверить срабатывание ValidationError до отправки сообщений: !story
@@ -214,7 +207,7 @@ def test_edit_message_caption_request_mocking_with_large_caption(
             успех: Сработало исключение до отправки сообщения к серверу
     """  # noqa D205 D400
     with tg_methods.SyncTgClient.setup('token'):
-        with pytest.raises(ValidationError):
+        with pytest.raises(ValidationError, match='caption'):
             tg_methods.EditMessageCaptionRequest(
                 chat_id=1234567890,
                 message_id=12345,
@@ -224,7 +217,7 @@ def test_edit_message_caption_request_mocking_with_large_caption(
 
 def test_edit_message_media_url_photo_request_mocking_with_large_caption(
     edit_message_media_photo_response: dict[str, typing.Any],
-):
+) -> None:
     """Программист - Узнавать о длинных заголовках сообщений до отправки запроса к серверу Telegram
     при отправке EditUrlMessageMediaRequest: !func
         Проверить срабатывание ValidationError до отправки сообщений: !story
@@ -233,7 +226,7 @@ def test_edit_message_media_url_photo_request_mocking_with_large_caption(
             успех: Сработало исключение до отправки сообщения к серверу
     """  # noqa D205 D400
     with tg_methods.SyncTgClient.setup('token'):
-        with pytest.raises(ValidationError):
+        with pytest.raises(ValidationError, match='caption'):
             media = tg_types.InputMediaUrlPhoto(
                 media='https://link_to_photo.jpg',
                 caption='a' * 1025,
@@ -247,7 +240,7 @@ def test_edit_message_media_url_photo_request_mocking_with_large_caption(
 
 def test_edit_message_media_url_document_request_mocking(
     edit_message_media_document_response: dict[str, typing.Any],
-):
+) -> None:
     """Программист - Узнавать о длинных заголовках сообщений до отправки запроса к серверу Telegram
     при отправке EditUrlMessageMediaRequest: !func
         Проверить срабатывание ValidationError до отправки сообщений: !story
@@ -256,7 +249,7 @@ def test_edit_message_media_url_document_request_mocking(
             успех: Сработало исключение до отправки сообщения к серверу
     """  # noqa D205 D400
     with tg_methods.SyncTgClient.setup('token'):
-        with pytest.raises(ValidationError):
+        with pytest.raises(ValidationError, match='caption'):
             media = tg_types.InputMediaUrlDocument(
                 media='https://link_to_document.pdf',
                 caption='a' * 1025,
@@ -270,7 +263,7 @@ def test_edit_message_media_url_document_request_mocking(
 
 def test_edit_message_media_bytes_photo_request_mocking(
     edit_message_media_photo_response: dict[str, typing.Any],
-):
+) -> None:
     """Программист - Узнавать о длинных заголовках сообщений до отправки запроса к серверу Telegram
     при отправке EditBytesMessageMediaRequest: !func
         Проверить срабатывание ValidationError до отправки сообщений: !story
@@ -279,7 +272,7 @@ def test_edit_message_media_bytes_photo_request_mocking(
             успех: Сработало исключение до отправки сообщения к серверу
     """  # noqa D205 D400
     with tg_methods.SyncTgClient.setup('token'):
-        with pytest.raises(ValidationError):
+        with pytest.raises(ValidationError, match='caption'):
             media = tg_types.InputMediaBytesPhoto(
                 media='attach://attachement.jpg',
                 media_content=b'photo content',
@@ -294,7 +287,7 @@ def test_edit_message_media_bytes_photo_request_mocking(
 
 def test_edit_message_media_bytes_document_request_mocking(
     edit_message_media_document_response: dict[str, typing.Any],
-):
+) -> None:
     """Программист - Узнавать о длинных заголовках сообщений до отправки запроса к серверу Telegram
     при отправке EditBytesMessageMediaRequest: !func
         Проверить срабатывание ValidationError до отправки сообщений: !story
@@ -303,7 +296,7 @@ def test_edit_message_media_bytes_document_request_mocking(
             успех: Сработало исключение до отправки сообщения к серверу
     """  # noqa D205 D400
     with tg_methods.SyncTgClient.setup('token'):
-        with pytest.raises(ValidationError):
+        with pytest.raises(ValidationError, match='caption'):
             media = tg_types.InputMediaBytesDocument(
                 media='attach://attachement.pdf',
                 media_content=b'document content',

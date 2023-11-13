@@ -1,7 +1,7 @@
 from tg_api import tg_types
 
 
-def test_inline_query_parsing():
+def test_inline_query_parsing() -> None:
     payload = {
         "id": "unique",
         "from": {
@@ -42,7 +42,7 @@ def test_inline_query_parsing():
     assert inline_query.location.proximity_alert_radius == 3
 
 
-def test_update_parsing():
+def test_update_parsing() -> None:
     payload = {
         "update_id": 692509117,
         "message": {
@@ -73,7 +73,7 @@ def test_update_parsing():
 
 
 class TestMessageParsing:
-    def test_text_message(self):
+    def test_text_message(self) -> None:
         payload = {
             "message_id": 3033,
             "from": {
@@ -106,7 +106,7 @@ class TestMessageParsing:
         assert message.chat.id == 43434343
         assert message.reply_to_message is None
 
-    def test_message_with_document(self):
+    def test_message_with_document(self) -> None:
         payload = {
             "message_id": 16,
             "from": {
@@ -145,7 +145,7 @@ class TestMessageParsing:
         assert isinstance(message.document, dict)
         assert message.document['file_id'] == "BQACAgIAAxkBAAMQZJRQU7dV3gHKrckVBQk4NAoy5TsAAvw2AAJq0KlIIuX8ICpuOOwvBA"
 
-    def test_message_keyboard_click(self):
+    def test_message_keyboard_click(self) -> None:
         raw_payload = {
             "message_id": 20,
             "from": {
@@ -190,7 +190,7 @@ class TestMessageParsing:
         assert len(message.reply_markup.inline_keyboard[0]) == 2
 
 
-def test_update_message():
+def test_update_message() -> None:
     payload = {
         "update_id": 815922528,
         "message": {
@@ -214,6 +214,7 @@ def test_update_message():
     }
     update_obj = tg_types.Update.parse_obj(payload)
     assert isinstance(update_obj, tg_types.Update)
+    assert update_obj.message
     assert update_obj.message.message_id == 194
     assert isinstance(update_obj.message.from_, tg_types.User)
     assert isinstance(update_obj.message.chat, tg_types.Chat)
@@ -221,7 +222,7 @@ def test_update_message():
     assert update_obj.message.text == "test text"
 
 
-def test_update_file():
+def test_update_file() -> None:
     payload = {
         "update_id": 815922511,
         "message": {
@@ -251,16 +252,18 @@ def test_update_file():
     }
     update_obj = tg_types.Update.parse_obj(payload)
     assert isinstance(update_obj, tg_types.Update)
+    assert update_obj.message
     assert update_obj.message.message_id == 150
     assert isinstance(update_obj.message.chat, tg_types.Chat)
     assert update_obj.message.chat.id == 305151544
+    assert update_obj.message.document
     assert update_obj.message.document['file_id'] == "BQACAgIAAxkBAAOWZJNrn6fnltGx65eSxok3r3Q2qGMAAoo4AAISLJlI" \
         "LYF9HWhc_aMvBA"
     assert update_obj.message.document['file_name'] == "\\u043d\\u044b\\u0439 " \
         "\\u0434\\u043e\\u043a\\u0443\\u043c\\u0435\\u043d\\u0442 1"
 
 
-def test_update_btn():
+def test_update_btn() -> None:
     payload = {
         "update_id": 815922533,
         "callback_query": {
@@ -297,13 +300,18 @@ def test_update_btn():
                     ],
                 },
             },
+            "inline_message_id": "12345",
             "chat_instance": "-9009133691020524056",
             "data": "test",
         },
     }
     update_obj = tg_types.Update.parse_obj(payload)
     assert isinstance(update_obj, tg_types.Update)
+    assert isinstance(update_obj.callback_query, tg_types.CallbackQuery)
+    assert update_obj.callback_query
+    assert update_obj.callback_query.message
     assert isinstance(update_obj.callback_query.message.chat, tg_types.Chat)
     assert update_obj.callback_query.message.chat.id == 305151544
     assert isinstance(update_obj.callback_query.message.reply_markup, tg_types.InlineKeyboardMarkup)
     assert update_obj.callback_query.message.reply_markup.inline_keyboard[0][0].text == 'button_1'
+    assert update_obj.callback_query.inline_message_id == "12345"
