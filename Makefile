@@ -29,7 +29,7 @@ publish-on-pypi: ## Публикует библиотеку на PyPI
 	docker compose build
 	make linter
 	make test
-	rm dist/*
+	rm -f dist/*  # ignore error if folder not exist
 	python3 -m build
 	twine upload dist/*
 
