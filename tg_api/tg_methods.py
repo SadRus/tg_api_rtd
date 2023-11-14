@@ -1,5 +1,7 @@
 import io
 import json
+
+from textwrap import dedent
 from typing import Any, Union
 
 from pydantic import BaseModel, Field
@@ -140,11 +142,22 @@ class BaseTgResponse(BaseModel):
     in this base model. Specific response types might extend this base structure.
     """
 
-    ok: bool
-    error_code: int | None = None
-    description: str = ''
+    ok: bool = Field(
+        description="",
+    )
+    error_code: int | None = Field(
+        default=None,
+        description="",
+    )
+    description: str = Field(
+        default="",
+        description="",
+    )
 
-    result: Any = None
+    result: Any = Field(
+        default=None,
+        description="",
+    )
 
     class Config:
         extra = 'ignore'
@@ -164,21 +177,51 @@ class SendMessageRequest(BaseTgRequest):
     See here https://core.telegram.org/bots/api#sendmessage
     """
 
-    chat_id: int
-    text: str = Field(min_length=1, max_length=4096)
-    parse_mode: tg_types.ParseMode | None = None
-    entities: list[tg_types.MessageEntity] | None = None
-    disable_web_page_preview: bool | None = None
-    disable_notification: bool | None = None
-    protect_content: bool | None = None
-    message_thread_id: bool | None = None
-    allow_sending_without_reply: bool | None = None
+    chat_id: int = Field(
+        description="",
+    )
+    text: str = Field(
+        min_length=1,
+        max_length=4096,
+        description="",
+    )
+    parse_mode: tg_types.ParseMode | None = Field(
+        default=None,
+        description="",
+    )
+    entities: list[tg_types.MessageEntity] | None = Field(
+        default=None,
+        description="",
+    )
+    disable_web_page_preview: bool | None = Field(
+        default=None,
+        description="",
+    )
+    disable_notification: bool | None = Field(
+        default=None,
+        description="",
+    )
+    protect_content: bool | None = Field(
+        default=None,
+        description="",
+    )
+    message_thread_id: bool | None = Field(
+        default=None,
+        description="",
+    )
+    allow_sending_without_reply: bool | None = Field(
+        default=None,
+        description="",
+    )
     reply_markup: Union[
         tg_types.InlineKeyboardMarkup,
         tg_types.ReplyKeyboardMarkup,
         tg_types.ReplyKeyboardRemove,
         tg_types.ForceReply,
-    ] | None = None
+    ] | None = Field(
+        default=None,
+        description="",
+    )
 
     class Config:
         anystr_strip_whitespace = True
@@ -197,7 +240,9 @@ class SendMessageRequest(BaseTgRequest):
 
 
 class SendPhotoResponse(BaseTgResponse):
-    result: tg_types.Message
+    result: tg_types.Message = Field(
+        description="",
+    )
 
 
 class SendBytesPhotoRequest(BaseTgRequest):
@@ -206,24 +251,58 @@ class SendBytesPhotoRequest(BaseTgRequest):
     See here https://core.telegram.org/bots/api#sendphoto
     """
 
-    chat_id: int
-    photo: bytes
-    filename: str | None = None
-    message_thread_id: int | None = None
+    chat_id: int = Field(
+        description="",
+    )
+    photo: bytes = Field(
+        description="",
+    )
+    filename: str | None = Field(
+        default=None,
+        description="",
+    )
+    message_thread_id: int | None = Field(
+        default=None,
+        description="",
+    )
     caption: str | None = Field(None, max_length=1024)
-    parse_mode: str | None = None
-    caption_entities: list[tg_types.MessageEntity] | None = None
-    has_spoiler: bool | None = None
-    disable_notification: bool | None = None
-    protect_content: bool | None = None
-    reply_to_message_id: int | None = None
-    allow_sending_without_reply: bool | None = None
+    parse_mode: str | None = Field(
+        default=None,
+        description="",
+    )
+    caption_entities: list[tg_types.MessageEntity] | None = Field(
+        default=None,
+        description="",
+    )
+    has_spoiler: bool | None = Field(
+        default=None,
+        description="",
+    )
+    disable_notification: bool | None = Field(
+        default=None,
+        description="",
+    )
+    protect_content: bool | None = Field(
+        default=None,
+        description="",
+    )
+    reply_to_message_id: int | None = Field(
+        default=None,
+        description="",
+    )
+    allow_sending_without_reply: bool | None = Field(
+        default=None,
+        description="",
+    )
     reply_markup: Union[
         tg_types.InlineKeyboardMarkup,
         tg_types.ReplyKeyboardMarkup,
         tg_types.ReplyKeyboardRemove,
         tg_types.ForceReply,
-    ] | None = None
+    ] | None = Field(
+        default=None,
+        description="",
+    )
 
     async def asend(self) -> SendPhotoResponse:
         """Send HTTP request to `sendPhoto` Telegram Bot API endpoint asynchronously and parse response."""
@@ -252,24 +331,58 @@ class SendUrlPhotoRequest(BaseTgRequest):
     See here https://core.telegram.org/bots/api#sendphoto
     """
 
-    chat_id: int
-    photo: str
-    filename: str | None = None
-    message_thread_id: int | None = None
+    chat_id: int = Field(
+        description="",
+    )
+    photo: str = Field(
+        description="",
+    )
+    filename: str | None = Field(
+        default=None,
+        description="",
+    )
+    message_thread_id: int | None = Field(
+        default=None,
+        description="",
+    )
     caption: str | None = Field(None, max_length=1024)
-    parse_mode: str | None = None
-    caption_entities: list[tg_types.MessageEntity] | None = None
-    has_spoiler: bool | None = None
-    disable_notification: bool | None = None
-    protect_content: bool | None = None
-    reply_to_message_id: int | None = None
-    allow_sending_without_reply: bool | None = None
+    parse_mode: str | None = Field(
+        default=None,
+        description="",
+    )
+    caption_entities: list[tg_types.MessageEntity] | None = Field(
+        default=None,
+        description="",
+    )
+    has_spoiler: bool | None = Field(
+        default=None,
+        description="",
+    )
+    disable_notification: bool | None = Field(
+        default=None,
+        description="",
+    )
+    protect_content: bool | None = Field(
+        default=None,
+        description="",
+    )
+    reply_to_message_id: int | None = Field(
+        default=None,
+        description="",
+    )
+    allow_sending_without_reply: bool | None = Field(
+        default=None,
+        description="",
+    )
     reply_markup: Union[
         tg_types.InlineKeyboardMarkup,
         tg_types.ReplyKeyboardMarkup,
         tg_types.ReplyKeyboardRemove,
         tg_types.ForceReply,
-    ] | None = None
+    ] | None = Field(
+        default=None,
+        description="",
+    )
 
     async def asend(self) -> SendPhotoResponse:
         """Send HTTP request to `sendPhoto` Telegram Bot API endpoint asynchronously and parse response."""
@@ -285,7 +398,9 @@ class SendUrlPhotoRequest(BaseTgRequest):
 
 
 class SendDocumentResponse(BaseTgResponse):
-    result: tg_types.Message
+    result: tg_types.Message = Field(
+        description="",
+    )
 
 
 class SendBytesDocumentRequest(BaseTgRequest):
@@ -294,25 +409,62 @@ class SendBytesDocumentRequest(BaseTgRequest):
     See here https://core.telegram.org/bots/api#senddocument
     """
 
-    chat_id: int
-    document: bytes
-    filename: str | None = None
-    message_thread_id: int | None = None
-    thumbnail: bytes | str | None = None
+    chat_id: int = Field(
+        description="",
+    )
+    document: bytes = Field(
+        description="",
+    )
+    filename: str | None = Field(
+        default=None,
+        description="",
+    )
+    message_thread_id: int | None = Field(
+        default=None,
+        description="",
+    )
+    thumbnail: bytes | str | None = Field(
+        default=None,
+        description="",
+    )
     caption: str | None = Field(None, max_length=1024)
-    parse_mode: str | None = None
-    caption_entities: list[tg_types.MessageEntity] | None = None
-    disable_content_type_detection: bool | None = None
-    disable_notification: bool | None = None
-    protect_content: bool | None = None
-    reply_to_message_id: int | None = None
-    allow_sending_without_reply: bool | None = None
+    parse_mode: str | None = Field(
+        default=None,
+        description="",
+    )
+    caption_entities: list[tg_types.MessageEntity] | None = Field(
+        default=None,
+        description="",
+    )
+    disable_content_type_detection: bool | None = Field(
+        default=None,
+        description="",
+    )
+    disable_notification: bool | None = Field(
+        default=None,
+        description="",
+    )
+    protect_content: bool | None = Field(
+        default=None,
+        description="",
+    )
+    reply_to_message_id: int | None = Field(
+        default=None,
+        description="",
+    )
+    allow_sending_without_reply: bool | None = Field(
+        default=None,
+        description="",
+    )
     reply_markup: Union[
         tg_types.InlineKeyboardMarkup,
         tg_types.ReplyKeyboardMarkup,
         tg_types.ReplyKeyboardRemove,
         tg_types.ForceReply,
-    ] | None = None
+    ] | None = Field(
+        default=None,
+        description="",
+    )
 
     async def asend(self) -> SendDocumentResponse:
         """Send HTTP request to `sendDocument` Telegram Bot API endpoint asynchronously and parse response."""
@@ -341,25 +493,62 @@ class SendUrlDocumentRequest(BaseTgRequest):
     See here https://core.telegram.org/bots/api#senddocument
     """
 
-    chat_id: int
-    document: str
-    filename: str | None = None
-    message_thread_id: int | None = None
-    thumbnail: bytes | str | None = None
+    chat_id: int = Field(
+        description="",
+    )
+    document: str = Field(
+        description="",
+    )
+    filename: str | None = Field(
+        default=None,
+        description="",
+    )
+    message_thread_id: int | None = Field(
+        default=None,
+        description="",
+    )
+    thumbnail: bytes | str | None = Field(
+        default=None,
+        description="",
+    )
     caption: str | None = Field(None, max_length=1024)
-    parse_mode: str | None = None
-    caption_entities: list[tg_types.MessageEntity] | None = None
-    disable_content_type_detection: bool | None = None
-    disable_notification: bool | None = None
-    protect_content: bool | None = None
-    reply_to_message_id: int | None = None
-    allow_sending_without_reply: bool | None = None
+    parse_mode: str | None = Field(
+        default=None,
+        description="",
+    )
+    caption_entities: list[tg_types.MessageEntity] | None = Field(
+        default=None,
+        description="",
+    )
+    disable_content_type_detection: bool | None = Field(
+        default=None,
+        description="",
+    )
+    disable_notification: bool | None = Field(
+        default=None,
+        description="",
+    )
+    protect_content: bool | None = Field(
+        default=None,
+        description="",
+    )
+    reply_to_message_id: int | None = Field(
+        default=None,
+        description="",
+    )
+    allow_sending_without_reply: bool | None = Field(
+        default=None,
+        description="",
+    )
     reply_markup: Union[
         tg_types.InlineKeyboardMarkup,
         tg_types.ReplyKeyboardMarkup,
         tg_types.ReplyKeyboardRemove,
         tg_types.ForceReply,
-    ] | None = None
+    ] | None = Field(
+        default=None,
+        description="",
+    )
 
     async def asend(self) -> SendDocumentResponse:
         """Send HTTP request to `sendDocument` Telegram Bot API endpoint asynchronously and parse response."""
@@ -375,7 +564,9 @@ class SendUrlDocumentRequest(BaseTgRequest):
 
 
 class DeleteMessageResponse(BaseTgResponse):
-    result: bool
+    result: bool = Field(
+        description="",
+    )
 
 
 class DeleteMessageRequest(BaseTgRequest):
@@ -384,8 +575,12 @@ class DeleteMessageRequest(BaseTgRequest):
     See here https://core.telegram.org/bots/api#deletemessage
     """
 
-    chat_id: int
-    message_id: int
+    chat_id: int = Field(
+        description="",
+    )
+    message_id: int = Field(
+        description="",
+    )
 
     async def asend(self) -> DeleteMessageResponse:
         """Send HTTP request to `deleteMessage` Telegram Bot API endpoint asynchronously and parse response."""
@@ -401,7 +596,9 @@ class DeleteMessageRequest(BaseTgRequest):
 
 
 class EditMessageTextResponse(BaseTgResponse):
-    result: tg_types.Message | bool
+    result: tg_types.Message | bool = Field(
+        description="",
+    )
 
 
 class EditMessageTextRequest(BaseTgRequest):
@@ -410,14 +607,35 @@ class EditMessageTextRequest(BaseTgRequest):
     See here https://core.telegram.org/bots/api#editmessagetext
     """
 
-    chat_id: int | None = None
-    message_id: int | None = None
-    inline_message_id: str | None = None
+    chat_id: int | None = Field(
+        default=None,
+        description="",
+    )
+    message_id: int | None = Field(
+        default=None,
+        description="",
+    )
+    inline_message_id: str | None = Field(
+        default=None,
+        description="",
+    )
     text: str = Field(min_length=1, max_length=4096)
-    parse_mode: str | None = None
-    entities: list[tg_types.MessageEntity] | None = None
-    disable_web_page_preview: bool | None = None
-    reply_markup: tg_types.InlineKeyboardMarkup | None = None
+    parse_mode: str | None = Field(
+        default=None,
+        description="",
+    )
+    entities: list[tg_types.MessageEntity] | None = Field(
+        default=None,
+        description="",
+    )
+    disable_web_page_preview: bool | None = Field(
+        default=None,
+        description="",
+    )
+    reply_markup: tg_types.InlineKeyboardMarkup | None = Field(
+        default=None,
+        description="",
+    )
 
     async def asend(self) -> EditMessageTextResponse:
         """Send HTTP request to `editmessagetext` Telegram Bot API endpoint asynchronously and parse response."""
@@ -433,7 +651,9 @@ class EditMessageTextRequest(BaseTgRequest):
 
 
 class EditMessageReplyMarkupResponse(BaseTgResponse):
-    result: tg_types.Message | bool
+    result: tg_types.Message | bool = Field(
+        description="",
+    )
 
 
 class EditMessageReplyMarkupRequest(BaseTgRequest):
@@ -442,10 +662,22 @@ class EditMessageReplyMarkupRequest(BaseTgRequest):
     See here https://core.telegram.org/bots/api#editmessagereplymarkup
     """
 
-    chat_id: int | None = None
-    message_id: int | None = None
-    inline_message_id: str | None = None
-    reply_markup: tg_types.InlineKeyboardMarkup | None = None
+    chat_id: int | None = Field(
+        default=None,
+        description="",
+    )
+    message_id: int | None = Field(
+        default=None,
+        description="",
+    )
+    inline_message_id: str | None = Field(
+        default=None,
+        description="",
+    )
+    reply_markup: tg_types.InlineKeyboardMarkup | None = Field(
+        default=None,
+        description="",
+    )
 
     async def asend(self) -> EditMessageReplyMarkupResponse:
         """Send HTTP request to `editmessagereplymarkup` Telegram Bot API endpoint asynchronously and parse response."""
@@ -461,7 +693,9 @@ class EditMessageReplyMarkupRequest(BaseTgRequest):
 
 
 class EditMessageCaptionResponse(BaseTgResponse):
-    result: tg_types.Message | bool
+    result: tg_types.Message | bool = Field(
+        description="",
+    )
 
 
 class EditMessageCaptionRequest(BaseTgRequest):
@@ -470,13 +704,31 @@ class EditMessageCaptionRequest(BaseTgRequest):
     See here https://core.telegram.org/bots/api#editmessagecaption
     """
 
-    chat_id: int | None = None
-    message_id: int | None = None
-    inline_message_id: str | None = None
+    chat_id: int | None = Field(
+        default=None,
+        description="",
+    )
+    message_id: int | None = Field(
+        default=None,
+        description="",
+    )
+    inline_message_id: str | None = Field(
+        default=None,
+        description="",
+    )
     caption: str | None = Field(None, max_length=1024)
-    parse_mode: str | None = None
-    caption_entities: list[tg_types.MessageEntity] | None = None
-    reply_markup: tg_types.InlineKeyboardMarkup | None = None
+    parse_mode: str | None = Field(
+        default=None,
+        description="",
+    )
+    caption_entities: list[tg_types.MessageEntity] | None = Field(
+        default=None,
+        description="",
+    )
+    reply_markup: tg_types.InlineKeyboardMarkup | None = Field(
+        default=None,
+        description="",
+    )
 
     async def asend(self) -> EditMessageCaptionResponse:
         """Send HTTP request to `editmessagecaption` Telegram Bot API endpoint asynchronously and parse response."""
@@ -492,7 +744,9 @@ class EditMessageCaptionRequest(BaseTgRequest):
 
 
 class EditMessageMediaResponse(BaseTgResponse):
-    result: tg_types.Message | bool
+    result: tg_types.Message | bool = Field(
+        description="",
+    )
 
 
 class EditBytesMessageMediaRequest(BaseTgRequest):
@@ -501,11 +755,23 @@ class EditBytesMessageMediaRequest(BaseTgRequest):
     See here https://core.telegram.org/bots/api#editmessagemedia
     """
 
-    chat_id: int | None = None
-    message_id: int | None = None
-    inline_message_id: str | None = None
+    chat_id: int | None = Field(
+        default=None,
+        description="",
+    )
+    message_id: int | None = Field(
+        default=None,
+        description="",
+    )
+    inline_message_id: str | None = Field(
+        default=None,
+        description="",
+    )
     media: Union[tg_types.InputMediaBytesDocument, tg_types.InputMediaBytesPhoto]
-    reply_markup: tg_types.InlineKeyboardMarkup | None = None
+    reply_markup: tg_types.InlineKeyboardMarkup | None = Field(
+        default=None,
+        description="",
+    )
 
     async def asend(self) -> EditMessageMediaResponse:
         """Send HTTP request to `editmessagemedia` Telegram Bot API endpoint asynchronously and parse response."""
@@ -562,11 +828,23 @@ class EditUrlMessageMediaRequest(BaseTgRequest):
     See here https://core.telegram.org/bots/api#editmessagemedia
     """
 
-    chat_id: int | None = None
-    message_id: int | None = None
-    inline_message_id: str | None = None
+    chat_id: int | None = Field(
+        default=None,
+        description="",
+    )
+    message_id: int | None = Field(
+        default=None,
+        description="",
+    )
+    inline_message_id: str | None = Field(
+        default=None,
+        description="",
+    )
     media: Union[tg_types.InputMediaUrlDocument, tg_types.InputMediaUrlPhoto]
-    reply_markup: tg_types.InlineKeyboardMarkup | None = None
+    reply_markup: tg_types.InlineKeyboardMarkup | None = Field(
+        default=None,
+        description="",
+    )
 
     async def asend(self) -> EditMessageMediaResponse:
         """Send HTTP request to `editmessagemedia` Telegram Bot API endpoint asynchronously and parse response."""
