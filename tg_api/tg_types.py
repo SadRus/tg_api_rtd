@@ -4,7 +4,7 @@ from textwrap import dedent
 from enum import Enum
 from typing import Any, Union, Optional
 
-from pydantic import BaseModel, AnyHttpUrl, Field, validator
+from pydantic import BaseModel, AnyHttpUrl, Field
 
 
 class ParseMode(str, Enum):
@@ -1282,20 +1282,6 @@ class CallbackQuery(BaseModel, ValidableMixin):
             query can contain no callback buttons with this data.
         """),
     )
-
-    @validator('message')
-    def check_reply_markup(cls, message): # noqa N805
-        if not message.reply_markup.inline_keyboard:
-            raise ValueError("Inline_keyboard is missing")
-
-        return message
-
-    @validator('inline_message_id', always=True)
-    def check_inline_message_id(cls, inline_message_id): # noqa N805
-        if not inline_message_id:
-            raise ValueError("Inline_message_id is missing")
-
-        return inline_message_id
 
 
 class Location(BaseModel, ValidableMixin):
