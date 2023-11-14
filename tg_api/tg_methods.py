@@ -143,32 +143,45 @@ class BaseTgResponse(BaseModel):
     """
 
     ok: bool = Field(
-        description="",
+        description="A Boolean value indicating the success of the operation.",
     )
     error_code: int | None = Field(
         default=None,
-        description="",
+        description=dedent("""\
+            An integer or `None` value that contains the error code if the operation fails.
+            If the operation was successful, the value will be `None`.
+        """),
     )
     description: str = Field(
         default="",
-        description="",
+        description=dedent("""\
+            A string value that can contain additional description of the result of the operation or the cause of
+            the error. If the operation was successful, the value will be empty.
+        """),
     )
-
     result: Any = Field(
         default=None,
-        description="",
+        description=dedent("""\
+            Any value that represents the specific result of an operation. The value type may depend on
+            the specific Telegram Bot API response type.
+        """),
+    )
+    parameters: tg_types.ResponseParameters | None = Field(
+        default=None,
+        description="An optional field that represents additional parameters associated with the response.",
     )
 
     class Config:
         extra = 'ignore'
         allow_mutation = False
 
-    # TODO Some errors may also have an optional field 'parameters' of the type ResponseParameters, which can
-    # help to automatically handle the error.
-
 
 class SendMessageResponse(BaseTgResponse):
-    result: tg_types.Message
+    """Represents an extended response structure from the Telegram Bot API."""
+
+    result: tg_types.Message = Field(
+        description="Result of sending a message.",
+    )
 
 
 class SendMessageRequest(BaseTgRequest):
@@ -250,8 +263,10 @@ class SendMessageRequest(BaseTgRequest):
 
 
 class SendPhotoResponse(BaseTgResponse):
+    """Represents an extended response structure from the Telegram Bot API."""
+
     result: tg_types.Message = Field(
-        description="",
+        description="Result of sending a photo.",
     )
 
 
@@ -452,8 +467,10 @@ class SendUrlPhotoRequest(BaseTgRequest):
 
 
 class SendDocumentResponse(BaseTgResponse):
+    """Represents an extended response structure from the Telegram Bot API."""
+
     result: tg_types.Message = Field(
-        description="",
+        description="Result of sending a document.",
     )
 
 
@@ -676,8 +693,10 @@ class SendUrlDocumentRequest(BaseTgRequest):
 
 
 class DeleteMessageResponse(BaseTgResponse):
+    """Represents an extended response structure from the Telegram Bot API."""
+
     result: bool = Field(
-        description="",
+        description="Message deletion result.",
     )
 
 
@@ -710,8 +729,10 @@ class DeleteMessageRequest(BaseTgRequest):
 
 
 class EditMessageTextResponse(BaseTgResponse):
+    """Represents an extended response structure from the Telegram Bot API."""
+
     result: tg_types.Message | bool = Field(
-        description="",
+        description="Message editing result.",
     )
 
 
@@ -775,8 +796,10 @@ class EditMessageTextRequest(BaseTgRequest):
 
 
 class EditMessageReplyMarkupResponse(BaseTgResponse):
+    """Represents an extended response structure from the Telegram Bot API."""
+
     result: tg_types.Message | bool = Field(
-        description="",
+        description="The result of editing a ReplyMarkup message.",
     )
 
 
@@ -820,8 +843,10 @@ class EditMessageReplyMarkupRequest(BaseTgRequest):
 
 
 class EditMessageCaptionResponse(BaseTgResponse):
+    """Represents an extended response structure from the Telegram Bot API."""
+
     result: tg_types.Message | bool = Field(
-        description="",
+        description="The result of editing a caption.",
     )
 
 
@@ -881,8 +906,10 @@ class EditMessageCaptionRequest(BaseTgRequest):
 
 
 class EditMessageMediaResponse(BaseTgResponse):
+    """Represents an extended response structure from the Telegram Bot API."""
+
     result: tg_types.Message | bool = Field(
-        description="",
+        description="The result of editing a media message.",
     )
 
 
