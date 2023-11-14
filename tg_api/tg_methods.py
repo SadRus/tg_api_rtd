@@ -178,40 +178,47 @@ class SendMessageRequest(BaseTgRequest):
     """
 
     chat_id: int = Field(
-        description="",
+        description=dedent("""\
+            Unique identifier for the target chat or username of the target channel (in the format @channelusername).
+        """),
     )
     text: str = Field(
         min_length=1,
         max_length=4096,
-        description="",
+        description="Text of the message to be sent, 1-4096 characters after entities parsing.",
     )
     parse_mode: tg_types.ParseMode | None = Field(
         default=None,
-        description="",
+        description="Mode for parsing entities in the message text. See formatting options for more details.",
     )
     entities: list[tg_types.MessageEntity] | None = Field(
         default=None,
-        description="",
+        description=dedent("""\
+            A JSON-serialized list of special entities that appear in message text,
+            which can be specified instead of parse_mode.
+        """),
     )
     disable_web_page_preview: bool | None = Field(
         default=None,
-        description="",
+        description="Disables link previews for links in this message.",
     )
     disable_notification: bool | None = Field(
         default=None,
-        description="",
+        description="Sends the message silently. Users will receive a notification with no sound.",
     )
     protect_content: bool | None = Field(
         default=None,
-        description="",
+        description="Protects the contents of the sent message from forwarding and saving.",
     )
     message_thread_id: bool | None = Field(
         default=None,
-        description="",
+        description=dedent("""\
+            Unique identifier for the target message thread (topic) of the forum; for forum supergroups only.
+        """),
     )
     allow_sending_without_reply: bool | None = Field(
         default=None,
-        description="",
+        description="Pass True if the message should be sent even if the specified replied-to message is not found.",
     )
     reply_markup: Union[
         tg_types.InlineKeyboardMarkup,
@@ -220,7 +227,10 @@ class SendMessageRequest(BaseTgRequest):
         tg_types.ForceReply,
     ] | None = Field(
         default=None,
-        description="",
+        description=dedent("""\
+            Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard,
+            instructions to remove reply keyboard or to force a reply from the user.
+        """),
     )
 
     class Config:
@@ -252,10 +262,17 @@ class SendBytesPhotoRequest(BaseTgRequest):
     """
 
     chat_id: int = Field(
-        description="",
+        description=dedent("""\
+            Unique identifier for the target chat or username of the target channel (in the format @channelusername).
+        """),
     )
     photo: bytes = Field(
-        description="",
+        description=dedent("""\
+            Photo to send. Pass a file_id as String to send a photo that exists on the Telegram servers (recommended),
+            pass an HTTP URL as a String for Telegram to get a photo from the Internet, or upload a new photo using
+            multipart/form-data. The photo must be at most 10 MB in size. The photo's width and height must not exceed
+            10000 in total. Width and height ratio must be at most 20.
+        """),
     )
     filename: str | None = Field(
         default=None,
@@ -263,36 +280,48 @@ class SendBytesPhotoRequest(BaseTgRequest):
     )
     message_thread_id: int | None = Field(
         default=None,
-        description="",
+        description=dedent("""\
+            Unique identifier for the target message thread (topic) of the forum; for forum supergroups only.
+        """),
     )
-    caption: str | None = Field(None, max_length=1024)
+    caption: str | None = Field(
+        default=None,
+        max_length=1024,
+        description=dedent("""\
+            Photo caption (may also be used when resending photos by file_id),
+            0-1024 characters after entities parsing.
+        """),
+    )
     parse_mode: str | None = Field(
         default=None,
-        description="",
+        description="Mode for parsing entities in the photo caption. See formatting options for more details.",
     )
     caption_entities: list[tg_types.MessageEntity] | None = Field(
         default=None,
-        description="",
+        description=dedent("""\
+            A JSON-serialized list of special entities that appear in the caption,
+            which can be specified instead of parse_mode.
+        """),
     )
     has_spoiler: bool | None = Field(
         default=None,
-        description="",
+        description="Pass True if the photo needs to be covered with a spoiler animation.",
     )
     disable_notification: bool | None = Field(
         default=None,
-        description="",
+        description="Sends the message silently. Users will receive a notification with no sound.",
     )
     protect_content: bool | None = Field(
         default=None,
-        description="",
+        description="Protects the contents of the sent message from forwarding and saving.",
     )
     reply_to_message_id: int | None = Field(
         default=None,
-        description="",
+        description="If the message is a reply, ID of the original message.",
     )
     allow_sending_without_reply: bool | None = Field(
         default=None,
-        description="",
+        description="Pass True if the message should be sent even if the specified replied-to message is not found.",
     )
     reply_markup: Union[
         tg_types.InlineKeyboardMarkup,
@@ -301,7 +330,10 @@ class SendBytesPhotoRequest(BaseTgRequest):
         tg_types.ForceReply,
     ] | None = Field(
         default=None,
-        description="",
+        description=dedent("""\
+            Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard,
+            instructions to remove reply keyboard or to force a reply from the user.
+        """),
     )
 
     async def asend(self) -> SendPhotoResponse:
@@ -332,10 +364,17 @@ class SendUrlPhotoRequest(BaseTgRequest):
     """
 
     chat_id: int = Field(
-        description="",
+        description=dedent("""\
+            Unique identifier for the target chat or username of the target channel (in the format @channelusername).
+        """),
     )
     photo: str = Field(
-        description="",
+        description=dedent("""\
+            Photo to send. Pass a file_id as String to send a photo that exists on the Telegram servers (recommended),
+            pass an HTTP URL as a String for Telegram to get a photo from the Internet, or upload a new photo
+            using multipart/form-data. The photo must be at most 10 MB in size. The photo's width and height
+            must not exceed 10000 in total. Width and height ratio must be at most 20.
+        """),
     )
     filename: str | None = Field(
         default=None,
@@ -343,36 +382,48 @@ class SendUrlPhotoRequest(BaseTgRequest):
     )
     message_thread_id: int | None = Field(
         default=None,
-        description="",
+        description=dedent("""\
+            Unique identifier for the target message thread (topic) of the forum; for forum supergroups only.
+        """),
     )
-    caption: str | None = Field(None, max_length=1024)
+    caption: str | None = Field(
+        default=None,
+        max_length=1024,
+        description=dedent("""\
+            Photo caption (may also be used when resending photos by file_id),
+            0-1024 characters after entities parsing.
+        """),
+    )
     parse_mode: str | None = Field(
         default=None,
-        description="",
+        description="Mode for parsing entities in the photo caption. See formatting options for more details.",
     )
     caption_entities: list[tg_types.MessageEntity] | None = Field(
         default=None,
-        description="",
+        description=dedent("""\
+            A JSON-serialized list of special entities that appear in the caption,
+            which can be specified instead of parse_mode.
+        """),
     )
     has_spoiler: bool | None = Field(
         default=None,
-        description="",
+        description="Pass True if the photo needs to be covered with a spoiler animation.",
     )
     disable_notification: bool | None = Field(
         default=None,
-        description="",
+        description="Sends the message silently. Users will receive a notification with no sound.",
     )
     protect_content: bool | None = Field(
         default=None,
-        description="",
+        description="Protects the contents of the sent message from forwarding and saving.",
     )
     reply_to_message_id: int | None = Field(
         default=None,
-        description="",
+        description="If the message is a reply, ID of the original message.",
     )
     allow_sending_without_reply: bool | None = Field(
         default=None,
-        description="",
+        description="Pass True if the message should be sent even if the specified replied-to message is not found.",
     )
     reply_markup: Union[
         tg_types.InlineKeyboardMarkup,
@@ -381,7 +432,10 @@ class SendUrlPhotoRequest(BaseTgRequest):
         tg_types.ForceReply,
     ] | None = Field(
         default=None,
-        description="",
+        description=dedent("""\
+            Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard,
+            instructions to remove reply keyboard or to force a reply from the user.
+        """),
     )
 
     async def asend(self) -> SendPhotoResponse:
@@ -410,10 +464,16 @@ class SendBytesDocumentRequest(BaseTgRequest):
     """
 
     chat_id: int = Field(
-        description="",
+        description=dedent("""\
+            Unique identifier for the target chat or username of the target channel (in the format @channelusername).
+        """),
     )
     document: bytes = Field(
-        description="",
+        description=dedent("""\
+            File to send. Pass a file_id as String to send a file that exists on the Telegram servers (recommended),
+            pass an HTTP URL as a String for Telegram to get a file from the Internet,
+            or upload a new one using multipart/form-data.
+        """),
     )
     filename: str | None = Field(
         default=None,
@@ -421,40 +481,60 @@ class SendBytesDocumentRequest(BaseTgRequest):
     )
     message_thread_id: int | None = Field(
         default=None,
-        description="",
+        description=dedent("""\
+            Unique identifier for the target message thread (topic) of the forum; for forum supergroups only.
+        """),
     )
     thumbnail: bytes | str | None = Field(
         default=None,
-        description="",
+        description=dedent("""\
+            Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side.
+            The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail's width and height should
+            not exceed 320. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can't be reused
+            and can be only uploaded as a new file, so you can pass “attach://<file_attach_name>” if the thumbnail was
+            uploaded using multipart/form-data under <file_attach_name>.
+        """),
     )
-    caption: str | None = Field(None, max_length=1024)
+    caption: str | None = Field(
+        default=None,
+        max_length=1024,
+        description=dedent("""\
+            Document caption (may also be used when resending documents by file_id),
+            0-1024 characters after entities parsing.
+        """),
+    )
     parse_mode: str | None = Field(
         default=None,
-        description="",
+        description="Mode for parsing entities in the document caption. See formatting options for more details.",
     )
     caption_entities: list[tg_types.MessageEntity] | None = Field(
         default=None,
-        description="",
+        description=dedent("""\
+            A JSON-serialized list of special entities that appear in the caption,
+            which can be specified instead of parse_mode.
+        """),
     )
     disable_content_type_detection: bool | None = Field(
         default=None,
-        description="",
+        description=dedent("""\
+            Disables automatic server-side content type detection for files uploaded using multipart/form-data.
+        """),
     )
     disable_notification: bool | None = Field(
         default=None,
-        description="",
+        description="Sends the message silently. Users will receive a notification with no sound.",
     )
     protect_content: bool | None = Field(
         default=None,
-        description="",
+        description="Protects the contents of the sent message from forwarding and saving.",
     )
     reply_to_message_id: int | None = Field(
         default=None,
-        description="",
+        description="If the message is a reply, ID of the original message.",
     )
     allow_sending_without_reply: bool | None = Field(
         default=None,
-        description="",
+        description="Pass True if the message should be sent even if the specified replied-to message is not found.",
     )
     reply_markup: Union[
         tg_types.InlineKeyboardMarkup,
@@ -463,7 +543,10 @@ class SendBytesDocumentRequest(BaseTgRequest):
         tg_types.ForceReply,
     ] | None = Field(
         default=None,
-        description="",
+        description=dedent("""\
+            Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard,
+            instructions to remove reply keyboard or to force a reply from the user.
+        """),
     )
 
     async def asend(self) -> SendDocumentResponse:
@@ -494,10 +577,16 @@ class SendUrlDocumentRequest(BaseTgRequest):
     """
 
     chat_id: int = Field(
-        description="",
+        description=dedent("""\
+            Unique identifier for the target chat or username of the target channel (in the format @channelusername).
+        """),
     )
     document: str = Field(
-        description="",
+        description=dedent("""\
+            File to send. Pass a file_id as String to send a file that exists on the Telegram servers (recommended),
+            pass an HTTP URL as a String for Telegram to get a file from the Internet, or upload
+            a new one using multipart/form-data.
+        """),
     )
     filename: str | None = Field(
         default=None,
@@ -505,40 +594,60 @@ class SendUrlDocumentRequest(BaseTgRequest):
     )
     message_thread_id: int | None = Field(
         default=None,
-        description="",
+        description=dedent("""\
+            Unique identifier for the target message thread (topic) of the forum; for forum supergroups only.
+        """),
     )
     thumbnail: bytes | str | None = Field(
         default=None,
-        description="",
+        description=dedent("""\
+            Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side.
+            The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail's width and height
+            should not exceed 320. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can't
+            be reused and can be only uploaded as a new file, so you can pass “attach://<file_attach_name>” if the
+            thumbnail was uploaded using multipart/form-data under <file_attach_name>.
+        """),
     )
-    caption: str | None = Field(None, max_length=1024)
+    caption: str | None = Field(
+        default=None,
+        max_length=1024,
+        description=dedent("""\
+            Document caption (may also be used when resending documents by file_id),
+            0-1024 characters after entities parsing.
+        """),
+    )
     parse_mode: str | None = Field(
         default=None,
-        description="",
+        description="Mode for parsing entities in the document caption. See formatting options for more details.",
     )
     caption_entities: list[tg_types.MessageEntity] | None = Field(
         default=None,
-        description="",
+        description=dedent("""\
+            A JSON-serialized list of special entities that appear in the caption,
+            which can be specified instead of parse_mode.
+        """),
     )
     disable_content_type_detection: bool | None = Field(
         default=None,
-        description="",
+        description=dedent("""\
+            Disables automatic server-side content type detection for files uploaded using multipart/form-data.
+        """),
     )
     disable_notification: bool | None = Field(
         default=None,
-        description="",
+        description="Sends the message silently. Users will receive a notification with no sound.",
     )
     protect_content: bool | None = Field(
         default=None,
-        description="",
+        description="Protects the contents of the sent message from forwarding and saving.",
     )
     reply_to_message_id: int | None = Field(
         default=None,
-        description="",
+        description="If the message is a reply, ID of the original message.",
     )
     allow_sending_without_reply: bool | None = Field(
         default=None,
-        description="",
+        description="Pass True if the message should be sent even if the specified replied-to message is not found.",
     )
     reply_markup: Union[
         tg_types.InlineKeyboardMarkup,
@@ -547,7 +656,10 @@ class SendUrlDocumentRequest(BaseTgRequest):
         tg_types.ForceReply,
     ] | None = Field(
         default=None,
-        description="",
+        description=dedent("""\
+            Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard,
+            instructions to remove reply keyboard or to force a reply from the user.
+        """),
     )
 
     async def asend(self) -> SendDocumentResponse:
@@ -576,10 +688,12 @@ class DeleteMessageRequest(BaseTgRequest):
     """
 
     chat_id: int = Field(
-        description="",
+        description=dedent("""\
+            Unique identifier for the target chat or username of the target channel (in the format @channelusername).
+        """),
     )
     message_id: int = Field(
-        description="",
+        description="Identifier of the message to delete.",
     )
 
     async def asend(self) -> DeleteMessageResponse:
@@ -609,32 +723,42 @@ class EditMessageTextRequest(BaseTgRequest):
 
     chat_id: int | None = Field(
         default=None,
-        description="",
+        description=dedent("""\
+            Required if inline_message_id is not specified. Unique identifier for the target chat or
+            username of the target channel (in the format @channelusername).
+        """),
     )
     message_id: int | None = Field(
         default=None,
-        description="",
+        description="Required if inline_message_id is not specified. Identifier of the message to edit.",
     )
     inline_message_id: str | None = Field(
         default=None,
-        description="",
+        description="Required if chat_id and message_id are not specified. Identifier of the inline message.",
     )
-    text: str = Field(min_length=1, max_length=4096)
+    text: str = Field(
+        min_length=1,
+        max_length=4096,
+        description="New text of the message, 1-4096 characters after entities parsing.",
+    )
     parse_mode: str | None = Field(
         default=None,
-        description="",
+        description="Mode for parsing entities in the message text. See formatting options for more details.",
     )
     entities: list[tg_types.MessageEntity] | None = Field(
         default=None,
-        description="",
+        description=dedent("""
+            A JSON-serialized list of special entities that appear in message text,
+            which can be specified instead of parse_mode.
+        """),
     )
     disable_web_page_preview: bool | None = Field(
         default=None,
-        description="",
+        description="Disables link previews for links in this message.",
     )
     reply_markup: tg_types.InlineKeyboardMarkup | None = Field(
         default=None,
-        description="",
+        description="A JSON-serialized object for an inline keyboard.",
     )
 
     async def asend(self) -> EditMessageTextResponse:
@@ -664,19 +788,22 @@ class EditMessageReplyMarkupRequest(BaseTgRequest):
 
     chat_id: int | None = Field(
         default=None,
-        description="",
+        description=dedent("""\
+            Required if inline_message_id is not specified. Unique identifier for the target chat or username
+            of the target channel (in the format @channelusername).
+        """),
     )
     message_id: int | None = Field(
         default=None,
-        description="",
+        description="Required if inline_message_id is not specified. Identifier of the message to edit.",
     )
     inline_message_id: str | None = Field(
         default=None,
-        description="",
+        description="Required if chat_id and message_id are not specified. Identifier of the inline message.",
     )
     reply_markup: tg_types.InlineKeyboardMarkup | None = Field(
         default=None,
-        description="",
+        description="A JSON-serialized object for an inline keyboard.",
     )
 
     async def asend(self) -> EditMessageReplyMarkupResponse:
@@ -706,28 +833,38 @@ class EditMessageCaptionRequest(BaseTgRequest):
 
     chat_id: int | None = Field(
         default=None,
-        description="",
+        description=dedent("""\
+            Required if inline_message_id is not specified. Unique identifier for the target chat or username
+            of the target channel (in the format @channelusername).
+        """),
     )
     message_id: int | None = Field(
         default=None,
-        description="",
+        description="Required if inline_message_id is not specified. Identifier of the message to edit.",
     )
     inline_message_id: str | None = Field(
         default=None,
-        description="",
+        description="Required if chat_id and message_id are not specified. Identifier of the inline message.",
     )
-    caption: str | None = Field(None, max_length=1024)
+    caption: str | None = Field(
+        default=None,
+        max_length=1024,
+        description="New caption of the message, 0-1024 characters after entities parsing.",
+    )
     parse_mode: str | None = Field(
         default=None,
-        description="",
+        description="Mode for parsing entities in the message caption. See formatting options for more details.",
     )
     caption_entities: list[tg_types.MessageEntity] | None = Field(
         default=None,
-        description="",
+        description=dedent("""\
+            A JSON-serialized list of special entities that appear in the caption,
+            which can be specified instead of parse_mode.
+        """),
     )
     reply_markup: tg_types.InlineKeyboardMarkup | None = Field(
         default=None,
-        description="",
+        description="A JSON-serialized object for an inline keyboard.",
     )
 
     async def asend(self) -> EditMessageCaptionResponse:
@@ -757,20 +894,25 @@ class EditBytesMessageMediaRequest(BaseTgRequest):
 
     chat_id: int | None = Field(
         default=None,
-        description="",
+        description=dedent("""\
+            Required if inline_message_id is not specified. Unique identifier for the target chat or username
+            of the target channel (in the format @channelusername).
+        """),
     )
     message_id: int | None = Field(
         default=None,
-        description="",
+        description="Required if inline_message_id is not specified. Identifier of the message to edit.",
     )
     inline_message_id: str | None = Field(
         default=None,
-        description="",
+        description="Required if chat_id and message_id are not specified. Identifier of the inline message.",
     )
-    media: Union[tg_types.InputMediaBytesDocument, tg_types.InputMediaBytesPhoto]
+    media: Union[tg_types.InputMediaBytesDocument, tg_types.InputMediaBytesPhoto] = Field(
+        description="A JSON-serialized object for a new media content of the message.",
+    )
     reply_markup: tg_types.InlineKeyboardMarkup | None = Field(
         default=None,
-        description="",
+        description="A JSON-serialized object for a new inline keyboard.",
     )
 
     async def asend(self) -> EditMessageMediaResponse:
@@ -830,20 +972,25 @@ class EditUrlMessageMediaRequest(BaseTgRequest):
 
     chat_id: int | None = Field(
         default=None,
-        description="",
+        description=dedent("""\
+            Required if inline_message_id is not specified. Unique identifier for the target chat or
+            username of the target channel (in the format @channelusername).
+        """),
     )
     message_id: int | None = Field(
         default=None,
-        description="",
+        description="Required if inline_message_id is not specified. Identifier of the message to edit.",
     )
     inline_message_id: str | None = Field(
         default=None,
-        description="",
+        description="Required if chat_id and message_id are not specified. Identifier of the inline message.",
     )
-    media: Union[tg_types.InputMediaUrlDocument, tg_types.InputMediaUrlPhoto]
+    media: Union[tg_types.InputMediaUrlDocument, tg_types.InputMediaUrlPhoto] = Field(
+        description="A JSON-serialized object for a new media content of the message.",
+    )
     reply_markup: tg_types.InlineKeyboardMarkup | None = Field(
         default=None,
-        description="",
+        description="A JSON-serialized object for a new inline keyboard.",
     )
 
     async def asend(self) -> EditMessageMediaResponse:
