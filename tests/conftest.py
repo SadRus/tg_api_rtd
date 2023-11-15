@@ -30,6 +30,10 @@ def get_message_response() -> dict[str, typing.Any]:
                 'message_id': 12345,
                 'text': 'Hello World!',
             }),
+            'parameters': tg_types.ResponseParameters.parse_obj({
+                'migrate_to_chat_id': 123,
+                'retry_after': None,
+            }),
         },
     ).dict()
 

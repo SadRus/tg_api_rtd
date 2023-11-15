@@ -1,5 +1,7 @@
 import io
 import json
+
+from textwrap import dedent
 from typing import Any, Union
 
 from pydantic import BaseModel, Field
@@ -140,22 +142,46 @@ class BaseTgResponse(BaseModel):
     in this base model. Specific response types might extend this base structure.
     """
 
-    ok: bool
-    error_code: int | None = None
-    description: str = ''
-
-    result: Any = None
+    ok: bool = Field(
+        description="A Boolean value indicating the success of the operation.",
+    )
+    error_code: int | None = Field(
+        default=None,
+        description=dedent("""\
+            An integer or `None` value that contains the error code if the operation fails.
+            If the operation was successful, the value will be `None`.
+        """),
+    )
+    description: str = Field(
+        default="",
+        description=dedent("""\
+            A string value that can contain additional description of the result of the operation or the cause of
+            the error. If the operation was successful, the value will be empty.
+        """),
+    )
+    result: Any = Field(
+        default=None,
+        description=dedent("""\
+            Any value that represents the specific result of an operation. The value type may depend on
+            the specific Telegram Bot API response type.
+        """),
+    )
+    parameters: tg_types.ResponseParameters | None = Field(
+        default=None,
+        description="An optional field that represents additional parameters associated with the response.",
+    )
 
     class Config:
         extra = 'ignore'
         allow_mutation = False
 
-    # TODO Some errors may also have an optional field 'parameters' of the type ResponseParameters, which can
-    # help to automatically handle the error.
-
 
 class SendMessageResponse(BaseTgResponse):
-    result: tg_types.Message
+    """Represents an extended response structure from the Telegram Bot API."""
+
+    result: tg_types.Message = Field(
+        description="Result of sending a message.",
+    )
 
 
 class SendMessageRequest(BaseTgRequest):
@@ -164,21 +190,61 @@ class SendMessageRequest(BaseTgRequest):
     See here https://core.telegram.org/bots/api#sendmessage
     """
 
-    chat_id: int
-    text: str = Field(min_length=1, max_length=4096)
-    parse_mode: tg_types.ParseMode | None = None
-    entities: list[tg_types.MessageEntity] | None = None
-    disable_web_page_preview: bool | None = None
-    disable_notification: bool | None = None
-    protect_content: bool | None = None
-    message_thread_id: bool | None = None
-    allow_sending_without_reply: bool | None = None
+    chat_id: int = Field(
+        description=dedent("""\
+            Unique identifier for the target chat or username of the target channel (in the format @channelusername).
+        """),
+    )
+    text: str = Field(
+        min_length=1,
+        max_length=4096,
+        description="Text of the message to be sent, 1-4096 characters after entities parsing.",
+    )
+    parse_mode: tg_types.ParseMode | None = Field(
+        default=None,
+        description="Mode for parsing entities in the message text. See formatting options for more details.",
+    )
+    entities: list[tg_types.MessageEntity] | None = Field(
+        default=None,
+        description=dedent("""\
+            A JSON-serialized list of special entities that appear in message text,
+            which can be specified instead of parse_mode.
+        """),
+    )
+    disable_web_page_preview: bool | None = Field(
+        default=None,
+        description="Disables link previews for links in this message.",
+    )
+    disable_notification: bool | None = Field(
+        default=None,
+        description="Sends the message silently. Users will receive a notification with no sound.",
+    )
+    protect_content: bool | None = Field(
+        default=None,
+        description="Protects the contents of the sent message from forwarding and saving.",
+    )
+    message_thread_id: bool | None = Field(
+        default=None,
+        description=dedent("""\
+            Unique identifier for the target message thread (topic) of the forum; for forum supergroups only.
+        """),
+    )
+    allow_sending_without_reply: bool | None = Field(
+        default=None,
+        description="Pass True if the message should be sent even if the specified replied-to message is not found.",
+    )
     reply_markup: Union[
         tg_types.InlineKeyboardMarkup,
         tg_types.ReplyKeyboardMarkup,
         tg_types.ReplyKeyboardRemove,
         tg_types.ForceReply,
-    ] | None = None
+    ] | None = Field(
+        default=None,
+        description=dedent("""\
+            Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard,
+            instructions to remove reply keyboard or to force a reply from the user.
+        """),
+    )
 
     class Config:
         anystr_strip_whitespace = True
@@ -197,7 +263,11 @@ class SendMessageRequest(BaseTgRequest):
 
 
 class SendPhotoResponse(BaseTgResponse):
-    result: tg_types.Message
+    """Represents an extended response structure from the Telegram Bot API."""
+
+    result: tg_types.Message = Field(
+        description="Result of sending a photo.",
+    )
 
 
 class SendBytesPhotoRequest(BaseTgRequest):
@@ -206,24 +276,80 @@ class SendBytesPhotoRequest(BaseTgRequest):
     See here https://core.telegram.org/bots/api#sendphoto
     """
 
-    chat_id: int
-    photo: bytes
-    filename: str | None = None
-    message_thread_id: int | None = None
-    caption: str | None = Field(None, max_length=1024)
-    parse_mode: str | None = None
-    caption_entities: list[tg_types.MessageEntity] | None = None
-    has_spoiler: bool | None = None
-    disable_notification: bool | None = None
-    protect_content: bool | None = None
-    reply_to_message_id: int | None = None
-    allow_sending_without_reply: bool | None = None
+    chat_id: int = Field(
+        description=dedent("""\
+            Unique identifier for the target chat or username of the target channel (in the format @channelusername).
+        """),
+    )
+    photo: bytes = Field(
+        description=dedent("""\
+            Photo to send. Pass a file_id as String to send a photo that exists on the Telegram servers (recommended),
+            pass an HTTP URL as a String for Telegram to get a photo from the Internet, or upload a new photo using
+            multipart/form-data. The photo must be at most 10 MB in size. The photo's width and height must not exceed
+            10000 in total. Width and height ratio must be at most 20.
+        """),
+    )
+    filename: str | None = Field(
+        default=None,
+        description="",
+    )
+    message_thread_id: int | None = Field(
+        default=None,
+        description=dedent("""\
+            Unique identifier for the target message thread (topic) of the forum; for forum supergroups only.
+        """),
+    )
+    caption: str | None = Field(
+        default=None,
+        max_length=1024,
+        description=dedent("""\
+            Photo caption (may also be used when resending photos by file_id),
+            0-1024 characters after entities parsing.
+        """),
+    )
+    parse_mode: str | None = Field(
+        default=None,
+        description="Mode for parsing entities in the photo caption. See formatting options for more details.",
+    )
+    caption_entities: list[tg_types.MessageEntity] | None = Field(
+        default=None,
+        description=dedent("""\
+            A JSON-serialized list of special entities that appear in the caption,
+            which can be specified instead of parse_mode.
+        """),
+    )
+    has_spoiler: bool | None = Field(
+        default=None,
+        description="Pass True if the photo needs to be covered with a spoiler animation.",
+    )
+    disable_notification: bool | None = Field(
+        default=None,
+        description="Sends the message silently. Users will receive a notification with no sound.",
+    )
+    protect_content: bool | None = Field(
+        default=None,
+        description="Protects the contents of the sent message from forwarding and saving.",
+    )
+    reply_to_message_id: int | None = Field(
+        default=None,
+        description="If the message is a reply, ID of the original message.",
+    )
+    allow_sending_without_reply: bool | None = Field(
+        default=None,
+        description="Pass True if the message should be sent even if the specified replied-to message is not found.",
+    )
     reply_markup: Union[
         tg_types.InlineKeyboardMarkup,
         tg_types.ReplyKeyboardMarkup,
         tg_types.ReplyKeyboardRemove,
         tg_types.ForceReply,
-    ] | None = None
+    ] | None = Field(
+        default=None,
+        description=dedent("""\
+            Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard,
+            instructions to remove reply keyboard or to force a reply from the user.
+        """),
+    )
 
     async def asend(self) -> SendPhotoResponse:
         """Send HTTP request to `sendPhoto` Telegram Bot API endpoint asynchronously and parse response."""
@@ -252,24 +378,80 @@ class SendUrlPhotoRequest(BaseTgRequest):
     See here https://core.telegram.org/bots/api#sendphoto
     """
 
-    chat_id: int
-    photo: str
-    filename: str | None = None
-    message_thread_id: int | None = None
-    caption: str | None = Field(None, max_length=1024)
-    parse_mode: str | None = None
-    caption_entities: list[tg_types.MessageEntity] | None = None
-    has_spoiler: bool | None = None
-    disable_notification: bool | None = None
-    protect_content: bool | None = None
-    reply_to_message_id: int | None = None
-    allow_sending_without_reply: bool | None = None
+    chat_id: int = Field(
+        description=dedent("""\
+            Unique identifier for the target chat or username of the target channel (in the format @channelusername).
+        """),
+    )
+    photo: str = Field(
+        description=dedent("""\
+            Photo to send. Pass a file_id as String to send a photo that exists on the Telegram servers (recommended),
+            pass an HTTP URL as a String for Telegram to get a photo from the Internet, or upload a new photo
+            using multipart/form-data. The photo must be at most 10 MB in size. The photo's width and height
+            must not exceed 10000 in total. Width and height ratio must be at most 20.
+        """),
+    )
+    filename: str | None = Field(
+        default=None,
+        description="",
+    )
+    message_thread_id: int | None = Field(
+        default=None,
+        description=dedent("""\
+            Unique identifier for the target message thread (topic) of the forum; for forum supergroups only.
+        """),
+    )
+    caption: str | None = Field(
+        default=None,
+        max_length=1024,
+        description=dedent("""\
+            Photo caption (may also be used when resending photos by file_id),
+            0-1024 characters after entities parsing.
+        """),
+    )
+    parse_mode: str | None = Field(
+        default=None,
+        description="Mode for parsing entities in the photo caption. See formatting options for more details.",
+    )
+    caption_entities: list[tg_types.MessageEntity] | None = Field(
+        default=None,
+        description=dedent("""\
+            A JSON-serialized list of special entities that appear in the caption,
+            which can be specified instead of parse_mode.
+        """),
+    )
+    has_spoiler: bool | None = Field(
+        default=None,
+        description="Pass True if the photo needs to be covered with a spoiler animation.",
+    )
+    disable_notification: bool | None = Field(
+        default=None,
+        description="Sends the message silently. Users will receive a notification with no sound.",
+    )
+    protect_content: bool | None = Field(
+        default=None,
+        description="Protects the contents of the sent message from forwarding and saving.",
+    )
+    reply_to_message_id: int | None = Field(
+        default=None,
+        description="If the message is a reply, ID of the original message.",
+    )
+    allow_sending_without_reply: bool | None = Field(
+        default=None,
+        description="Pass True if the message should be sent even if the specified replied-to message is not found.",
+    )
     reply_markup: Union[
         tg_types.InlineKeyboardMarkup,
         tg_types.ReplyKeyboardMarkup,
         tg_types.ReplyKeyboardRemove,
         tg_types.ForceReply,
-    ] | None = None
+    ] | None = Field(
+        default=None,
+        description=dedent("""\
+            Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard,
+            instructions to remove reply keyboard or to force a reply from the user.
+        """),
+    )
 
     async def asend(self) -> SendPhotoResponse:
         """Send HTTP request to `sendPhoto` Telegram Bot API endpoint asynchronously and parse response."""
@@ -285,7 +467,11 @@ class SendUrlPhotoRequest(BaseTgRequest):
 
 
 class SendDocumentResponse(BaseTgResponse):
-    result: tg_types.Message
+    """Represents an extended response structure from the Telegram Bot API."""
+
+    result: tg_types.Message = Field(
+        description="Result of sending a document.",
+    )
 
 
 class SendBytesDocumentRequest(BaseTgRequest):
@@ -294,25 +480,91 @@ class SendBytesDocumentRequest(BaseTgRequest):
     See here https://core.telegram.org/bots/api#senddocument
     """
 
-    chat_id: int
-    document: bytes
-    filename: str | None = None
-    message_thread_id: int | None = None
-    thumbnail: bytes | str | None = None
-    caption: str | None = Field(None, max_length=1024)
-    parse_mode: str | None = None
-    caption_entities: list[tg_types.MessageEntity] | None = None
-    disable_content_type_detection: bool | None = None
-    disable_notification: bool | None = None
-    protect_content: bool | None = None
-    reply_to_message_id: int | None = None
-    allow_sending_without_reply: bool | None = None
+    chat_id: int = Field(
+        description=dedent("""\
+            Unique identifier for the target chat or username of the target channel (in the format @channelusername).
+        """),
+    )
+    document: bytes = Field(
+        description=dedent("""\
+            File to send. Pass a file_id as String to send a file that exists on the Telegram servers (recommended),
+            pass an HTTP URL as a String for Telegram to get a file from the Internet,
+            or upload a new one using multipart/form-data.
+        """),
+    )
+    filename: str | None = Field(
+        default=None,
+        description="",
+    )
+    message_thread_id: int | None = Field(
+        default=None,
+        description=dedent("""\
+            Unique identifier for the target message thread (topic) of the forum; for forum supergroups only.
+        """),
+    )
+    thumbnail: bytes | str | None = Field(
+        default=None,
+        description=dedent("""\
+            Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side.
+            The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail's width and height should
+            not exceed 320. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can't be reused
+            and can be only uploaded as a new file, so you can pass “attach://<file_attach_name>” if the thumbnail was
+            uploaded using multipart/form-data under <file_attach_name>.
+        """),
+    )
+    caption: str | None = Field(
+        default=None,
+        max_length=1024,
+        description=dedent("""\
+            Document caption (may also be used when resending documents by file_id),
+            0-1024 characters after entities parsing.
+        """),
+    )
+    parse_mode: str | None = Field(
+        default=None,
+        description="Mode for parsing entities in the document caption. See formatting options for more details.",
+    )
+    caption_entities: list[tg_types.MessageEntity] | None = Field(
+        default=None,
+        description=dedent("""\
+            A JSON-serialized list of special entities that appear in the caption,
+            which can be specified instead of parse_mode.
+        """),
+    )
+    disable_content_type_detection: bool | None = Field(
+        default=None,
+        description=dedent("""\
+            Disables automatic server-side content type detection for files uploaded using multipart/form-data.
+        """),
+    )
+    disable_notification: bool | None = Field(
+        default=None,
+        description="Sends the message silently. Users will receive a notification with no sound.",
+    )
+    protect_content: bool | None = Field(
+        default=None,
+        description="Protects the contents of the sent message from forwarding and saving.",
+    )
+    reply_to_message_id: int | None = Field(
+        default=None,
+        description="If the message is a reply, ID of the original message.",
+    )
+    allow_sending_without_reply: bool | None = Field(
+        default=None,
+        description="Pass True if the message should be sent even if the specified replied-to message is not found.",
+    )
     reply_markup: Union[
         tg_types.InlineKeyboardMarkup,
         tg_types.ReplyKeyboardMarkup,
         tg_types.ReplyKeyboardRemove,
         tg_types.ForceReply,
-    ] | None = None
+    ] | None = Field(
+        default=None,
+        description=dedent("""\
+            Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard,
+            instructions to remove reply keyboard or to force a reply from the user.
+        """),
+    )
 
     async def asend(self) -> SendDocumentResponse:
         """Send HTTP request to `sendDocument` Telegram Bot API endpoint asynchronously and parse response."""
@@ -341,25 +593,91 @@ class SendUrlDocumentRequest(BaseTgRequest):
     See here https://core.telegram.org/bots/api#senddocument
     """
 
-    chat_id: int
-    document: str
-    filename: str | None = None
-    message_thread_id: int | None = None
-    thumbnail: bytes | str | None = None
-    caption: str | None = Field(None, max_length=1024)
-    parse_mode: str | None = None
-    caption_entities: list[tg_types.MessageEntity] | None = None
-    disable_content_type_detection: bool | None = None
-    disable_notification: bool | None = None
-    protect_content: bool | None = None
-    reply_to_message_id: int | None = None
-    allow_sending_without_reply: bool | None = None
+    chat_id: int = Field(
+        description=dedent("""\
+            Unique identifier for the target chat or username of the target channel (in the format @channelusername).
+        """),
+    )
+    document: str = Field(
+        description=dedent("""\
+            File to send. Pass a file_id as String to send a file that exists on the Telegram servers (recommended),
+            pass an HTTP URL as a String for Telegram to get a file from the Internet, or upload
+            a new one using multipart/form-data.
+        """),
+    )
+    filename: str | None = Field(
+        default=None,
+        description="",
+    )
+    message_thread_id: int | None = Field(
+        default=None,
+        description=dedent("""\
+            Unique identifier for the target message thread (topic) of the forum; for forum supergroups only.
+        """),
+    )
+    thumbnail: bytes | str | None = Field(
+        default=None,
+        description=dedent("""\
+            Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side.
+            The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail's width and height
+            should not exceed 320. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can't
+            be reused and can be only uploaded as a new file, so you can pass “attach://<file_attach_name>” if the
+            thumbnail was uploaded using multipart/form-data under <file_attach_name>.
+        """),
+    )
+    caption: str | None = Field(
+        default=None,
+        max_length=1024,
+        description=dedent("""\
+            Document caption (may also be used when resending documents by file_id),
+            0-1024 characters after entities parsing.
+        """),
+    )
+    parse_mode: str | None = Field(
+        default=None,
+        description="Mode for parsing entities in the document caption. See formatting options for more details.",
+    )
+    caption_entities: list[tg_types.MessageEntity] | None = Field(
+        default=None,
+        description=dedent("""\
+            A JSON-serialized list of special entities that appear in the caption,
+            which can be specified instead of parse_mode.
+        """),
+    )
+    disable_content_type_detection: bool | None = Field(
+        default=None,
+        description=dedent("""\
+            Disables automatic server-side content type detection for files uploaded using multipart/form-data.
+        """),
+    )
+    disable_notification: bool | None = Field(
+        default=None,
+        description="Sends the message silently. Users will receive a notification with no sound.",
+    )
+    protect_content: bool | None = Field(
+        default=None,
+        description="Protects the contents of the sent message from forwarding and saving.",
+    )
+    reply_to_message_id: int | None = Field(
+        default=None,
+        description="If the message is a reply, ID of the original message.",
+    )
+    allow_sending_without_reply: bool | None = Field(
+        default=None,
+        description="Pass True if the message should be sent even if the specified replied-to message is not found.",
+    )
     reply_markup: Union[
         tg_types.InlineKeyboardMarkup,
         tg_types.ReplyKeyboardMarkup,
         tg_types.ReplyKeyboardRemove,
         tg_types.ForceReply,
-    ] | None = None
+    ] | None = Field(
+        default=None,
+        description=dedent("""\
+            Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard,
+            instructions to remove reply keyboard or to force a reply from the user.
+        """),
+    )
 
     async def asend(self) -> SendDocumentResponse:
         """Send HTTP request to `sendDocument` Telegram Bot API endpoint asynchronously and parse response."""
@@ -375,7 +693,11 @@ class SendUrlDocumentRequest(BaseTgRequest):
 
 
 class DeleteMessageResponse(BaseTgResponse):
-    result: bool
+    """Represents an extended response structure from the Telegram Bot API."""
+
+    result: bool = Field(
+        description="Message deletion result.",
+    )
 
 
 class DeleteMessageRequest(BaseTgRequest):
@@ -384,8 +706,14 @@ class DeleteMessageRequest(BaseTgRequest):
     See here https://core.telegram.org/bots/api#deletemessage
     """
 
-    chat_id: int
-    message_id: int
+    chat_id: int = Field(
+        description=dedent("""\
+            Unique identifier for the target chat or username of the target channel (in the format @channelusername).
+        """),
+    )
+    message_id: int = Field(
+        description="Identifier of the message to delete.",
+    )
 
     async def asend(self) -> DeleteMessageResponse:
         """Send HTTP request to `deleteMessage` Telegram Bot API endpoint asynchronously and parse response."""
@@ -401,7 +729,11 @@ class DeleteMessageRequest(BaseTgRequest):
 
 
 class EditMessageTextResponse(BaseTgResponse):
-    result: tg_types.Message | bool
+    """Represents an extended response structure from the Telegram Bot API."""
+
+    result: tg_types.Message | bool = Field(
+        description="Message editing result.",
+    )
 
 
 class EditMessageTextRequest(BaseTgRequest):
@@ -410,14 +742,45 @@ class EditMessageTextRequest(BaseTgRequest):
     See here https://core.telegram.org/bots/api#editmessagetext
     """
 
-    chat_id: int | None = None
-    message_id: int | None = None
-    inline_message_id: str | None = None
-    text: str = Field(min_length=1, max_length=4096)
-    parse_mode: str | None = None
-    entities: list[tg_types.MessageEntity] | None = None
-    disable_web_page_preview: bool | None = None
-    reply_markup: tg_types.InlineKeyboardMarkup | None = None
+    chat_id: int | None = Field(
+        default=None,
+        description=dedent("""\
+            Required if inline_message_id is not specified. Unique identifier for the target chat or
+            username of the target channel (in the format @channelusername).
+        """),
+    )
+    message_id: int | None = Field(
+        default=None,
+        description="Required if inline_message_id is not specified. Identifier of the message to edit.",
+    )
+    inline_message_id: str | None = Field(
+        default=None,
+        description="Required if chat_id and message_id are not specified. Identifier of the inline message.",
+    )
+    text: str = Field(
+        min_length=1,
+        max_length=4096,
+        description="New text of the message, 1-4096 characters after entities parsing.",
+    )
+    parse_mode: str | None = Field(
+        default=None,
+        description="Mode for parsing entities in the message text. See formatting options for more details.",
+    )
+    entities: list[tg_types.MessageEntity] | None = Field(
+        default=None,
+        description=dedent("""
+            A JSON-serialized list of special entities that appear in message text,
+            which can be specified instead of parse_mode.
+        """),
+    )
+    disable_web_page_preview: bool | None = Field(
+        default=None,
+        description="Disables link previews for links in this message.",
+    )
+    reply_markup: tg_types.InlineKeyboardMarkup | None = Field(
+        default=None,
+        description="A JSON-serialized object for an inline keyboard.",
+    )
 
     async def asend(self) -> EditMessageTextResponse:
         """Send HTTP request to `editmessagetext` Telegram Bot API endpoint asynchronously and parse response."""
@@ -433,7 +796,11 @@ class EditMessageTextRequest(BaseTgRequest):
 
 
 class EditMessageReplyMarkupResponse(BaseTgResponse):
-    result: tg_types.Message | bool
+    """Represents an extended response structure from the Telegram Bot API."""
+
+    result: tg_types.Message | bool = Field(
+        description="The result of editing a ReplyMarkup message.",
+    )
 
 
 class EditMessageReplyMarkupRequest(BaseTgRequest):
@@ -442,10 +809,25 @@ class EditMessageReplyMarkupRequest(BaseTgRequest):
     See here https://core.telegram.org/bots/api#editmessagereplymarkup
     """
 
-    chat_id: int | None = None
-    message_id: int | None = None
-    inline_message_id: str | None = None
-    reply_markup: tg_types.InlineKeyboardMarkup | None = None
+    chat_id: int | None = Field(
+        default=None,
+        description=dedent("""\
+            Required if inline_message_id is not specified. Unique identifier for the target chat or username
+            of the target channel (in the format @channelusername).
+        """),
+    )
+    message_id: int | None = Field(
+        default=None,
+        description="Required if inline_message_id is not specified. Identifier of the message to edit.",
+    )
+    inline_message_id: str | None = Field(
+        default=None,
+        description="Required if chat_id and message_id are not specified. Identifier of the inline message.",
+    )
+    reply_markup: tg_types.InlineKeyboardMarkup | None = Field(
+        default=None,
+        description="A JSON-serialized object for an inline keyboard.",
+    )
 
     async def asend(self) -> EditMessageReplyMarkupResponse:
         """Send HTTP request to `editmessagereplymarkup` Telegram Bot API endpoint asynchronously and parse response."""
@@ -461,7 +843,11 @@ class EditMessageReplyMarkupRequest(BaseTgRequest):
 
 
 class EditMessageCaptionResponse(BaseTgResponse):
-    result: tg_types.Message | bool
+    """Represents an extended response structure from the Telegram Bot API."""
+
+    result: tg_types.Message | bool = Field(
+        description="The result of editing a caption.",
+    )
 
 
 class EditMessageCaptionRequest(BaseTgRequest):
@@ -470,13 +856,41 @@ class EditMessageCaptionRequest(BaseTgRequest):
     See here https://core.telegram.org/bots/api#editmessagecaption
     """
 
-    chat_id: int | None = None
-    message_id: int | None = None
-    inline_message_id: str | None = None
-    caption: str | None = Field(None, max_length=1024)
-    parse_mode: str | None = None
-    caption_entities: list[tg_types.MessageEntity] | None = None
-    reply_markup: tg_types.InlineKeyboardMarkup | None = None
+    chat_id: int | None = Field(
+        default=None,
+        description=dedent("""\
+            Required if inline_message_id is not specified. Unique identifier for the target chat or username
+            of the target channel (in the format @channelusername).
+        """),
+    )
+    message_id: int | None = Field(
+        default=None,
+        description="Required if inline_message_id is not specified. Identifier of the message to edit.",
+    )
+    inline_message_id: str | None = Field(
+        default=None,
+        description="Required if chat_id and message_id are not specified. Identifier of the inline message.",
+    )
+    caption: str | None = Field(
+        default=None,
+        max_length=1024,
+        description="New caption of the message, 0-1024 characters after entities parsing.",
+    )
+    parse_mode: str | None = Field(
+        default=None,
+        description="Mode for parsing entities in the message caption. See formatting options for more details.",
+    )
+    caption_entities: list[tg_types.MessageEntity] | None = Field(
+        default=None,
+        description=dedent("""\
+            A JSON-serialized list of special entities that appear in the caption,
+            which can be specified instead of parse_mode.
+        """),
+    )
+    reply_markup: tg_types.InlineKeyboardMarkup | None = Field(
+        default=None,
+        description="A JSON-serialized object for an inline keyboard.",
+    )
 
     async def asend(self) -> EditMessageCaptionResponse:
         """Send HTTP request to `editmessagecaption` Telegram Bot API endpoint asynchronously and parse response."""
@@ -492,7 +906,11 @@ class EditMessageCaptionRequest(BaseTgRequest):
 
 
 class EditMessageMediaResponse(BaseTgResponse):
-    result: tg_types.Message | bool
+    """Represents an extended response structure from the Telegram Bot API."""
+
+    result: tg_types.Message | bool = Field(
+        description="The result of editing a media message.",
+    )
 
 
 class EditBytesMessageMediaRequest(BaseTgRequest):
@@ -501,11 +919,28 @@ class EditBytesMessageMediaRequest(BaseTgRequest):
     See here https://core.telegram.org/bots/api#editmessagemedia
     """
 
-    chat_id: int | None = None
-    message_id: int | None = None
-    inline_message_id: str | None = None
-    media: Union[tg_types.InputMediaBytesDocument, tg_types.InputMediaBytesPhoto]
-    reply_markup: tg_types.InlineKeyboardMarkup | None = None
+    chat_id: int | None = Field(
+        default=None,
+        description=dedent("""\
+            Required if inline_message_id is not specified. Unique identifier for the target chat or username
+            of the target channel (in the format @channelusername).
+        """),
+    )
+    message_id: int | None = Field(
+        default=None,
+        description="Required if inline_message_id is not specified. Identifier of the message to edit.",
+    )
+    inline_message_id: str | None = Field(
+        default=None,
+        description="Required if chat_id and message_id are not specified. Identifier of the inline message.",
+    )
+    media: Union[tg_types.InputMediaBytesDocument, tg_types.InputMediaBytesPhoto] = Field(
+        description="A JSON-serialized object for a new media content of the message.",
+    )
+    reply_markup: tg_types.InlineKeyboardMarkup | None = Field(
+        default=None,
+        description="A JSON-serialized object for a new inline keyboard.",
+    )
 
     async def asend(self) -> EditMessageMediaResponse:
         """Send HTTP request to `editmessagemedia` Telegram Bot API endpoint asynchronously and parse response."""
@@ -562,11 +997,28 @@ class EditUrlMessageMediaRequest(BaseTgRequest):
     See here https://core.telegram.org/bots/api#editmessagemedia
     """
 
-    chat_id: int | None = None
-    message_id: int | None = None
-    inline_message_id: str | None = None
-    media: Union[tg_types.InputMediaUrlDocument, tg_types.InputMediaUrlPhoto]
-    reply_markup: tg_types.InlineKeyboardMarkup | None = None
+    chat_id: int | None = Field(
+        default=None,
+        description=dedent("""\
+            Required if inline_message_id is not specified. Unique identifier for the target chat or
+            username of the target channel (in the format @channelusername).
+        """),
+    )
+    message_id: int | None = Field(
+        default=None,
+        description="Required if inline_message_id is not specified. Identifier of the message to edit.",
+    )
+    inline_message_id: str | None = Field(
+        default=None,
+        description="Required if chat_id and message_id are not specified. Identifier of the inline message.",
+    )
+    media: Union[tg_types.InputMediaUrlDocument, tg_types.InputMediaUrlPhoto] = Field(
+        description="A JSON-serialized object for a new media content of the message.",
+    )
+    reply_markup: tg_types.InlineKeyboardMarkup | None = Field(
+        default=None,
+        description="A JSON-serialized object for a new inline keyboard.",
+    )
 
     async def asend(self) -> EditMessageMediaResponse:
         """Send HTTP request to `editmessagemedia` Telegram Bot API endpoint asynchronously and parse response."""
