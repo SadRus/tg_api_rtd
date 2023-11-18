@@ -1282,6 +1282,10 @@ class CallbackQuery(BaseModel, ValidableMixin):
             query can contain no callback buttons with this data.
         """),
     )
+    game_short_name: str | None = Field(
+        default=None,
+        description="Optional. Short name of a Game to be returned, serves as the unique identifier for the game",
+    )
 
 
 class Location(BaseModel, ValidableMixin):
