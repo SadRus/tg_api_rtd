@@ -1,4 +1,4 @@
-Добро пожаловать в документацию Tg API!
+Tg API
 =====================================================
 
 |PyPI - Downloads| |PyPI - License|
@@ -28,7 +28,7 @@ HTTP-запросов.
 
 
    with SyncTgClient.setup(token):
-       tg_request = SendMessageRequest(chat_id=tg_chat_id, text='Hello user!')
+       tg_request = SendMessageRequest(chat_id=tg_chat_id, text='Hello User!')
        tg_request.send()
 
 
