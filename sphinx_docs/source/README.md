@@ -24,7 +24,6 @@
     1. [Синхронное API](#usage-examples-sync)
     1. [Асинхронное API](#usage-examples-async)
     1. [Низкоуровневое API](#usage-examples-low-level)
-1. [Документация по API](#docs)
 1. [Как развернуть local-окружение](#local-setup)
 1. [Как вести разработку](#development)
     1. [Как обновить local-окружение](#update-local-env)
@@ -470,13 +469,6 @@ async def main(token: str, chat_id: int) -> None:
         tg_response = SendMessageResponse.parse_raw(http_response.content)
         print('Id нового сообщения:', tg_response.result.message_id)
 ```
-
-<a name="docs"></a>
-## Документация по API
-
-- [tg_methods.py](./tg_methods.py) -- схемы запросов к API и ответов
-- [tg_types.py](./tg_methods.py) -- библиотека типов данных, с которыми работает Tg API
-
 
 <a name="local-setup"></a>
 ## Как развернуть local-окружение
