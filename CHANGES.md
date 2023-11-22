@@ -13,6 +13,8 @@
 - Добавлены описания полей в моделях tg_methods
 - Добавлена модель ResponseParameters в tg_types
 - Добавлено поле parameters в классе BaseTgResponse
+- Добавлен валидатор для CallbackQuery для проверки наличия одного из полей (data/game_short_name)
+- Добавлен автотест для проверки наличия одного из полей в CallbackQuery(data/game_short_name)
 
 
 1.2.0 (2023-02-14)
