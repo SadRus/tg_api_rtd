@@ -4,7 +4,7 @@ from textwrap import dedent
 from enum import Enum
 from typing import Any, Union, Optional
 
-from pydantic import BaseModel, AnyHttpUrl, Field
+from pydantic import BaseModel, AnyHttpUrl, Field, root_validator
 
 
 class ParseMode(str, Enum):
@@ -1270,6 +1270,7 @@ class CallbackQuery(BaseModel, ValidableMixin):
         description="Optional. Identifier of the message sent via the bot in inline mode, that originated the query.",
     )
     chat_instance: str | None = Field(
+        default=None,
         description=dedent("""\
             Global identifier, uniquely corresponding to the chat to which the message with the callback
             button was sent. Useful for high scores in games.
@@ -1284,8 +1285,17 @@ class CallbackQuery(BaseModel, ValidableMixin):
     )
     game_short_name: str | None = Field(
         default=None,
-        description="Optional. Short name of a Game to be returned, serves as the unique identifier for the game",
+        description="Optional. Short name of a Game to be returned, serves as the unique identifier for the game.",
     )
+
+    @root_validator
+    def check_callback_query(cls, tg_request: dict) -> dict: # noqa N805
+        data = tg_request["data"]
+        game_short_name = tg_request["game_short_name"]
+        if not data and not game_short_name:
+            raise ValueError("data and game_short_name fields is missing")
+
+        return data
 
 
 class Location(BaseModel, ValidableMixin):
