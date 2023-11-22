@@ -1,3 +1,5 @@
+import pytest
+
 from tg_api import tg_types
 
 
@@ -303,6 +305,7 @@ def test_update_btn() -> None:
             "inline_message_id": "12345",
             "chat_instance": "-9009133691020524056",
             "data": "test",
+            "game_short_name": "",
         },
     }
     update_obj = tg_types.Update.parse_obj(payload)
@@ -315,3 +318,57 @@ def test_update_btn() -> None:
     assert isinstance(update_obj.callback_query.message.reply_markup, tg_types.InlineKeyboardMarkup)
     assert update_obj.callback_query.message.reply_markup.inline_keyboard[0][0].text == 'button_1'
     assert update_obj.callback_query.inline_message_id == "12345"
+
+
+def test_empty_callback_query() -> None:
+    """Программист - Узнать о пустых полях в CallbaclQuery: !func
+        Получить ValueError с информацией об ошибке: !story
+            сделано: yes
+            старт: Получить невалидный запрос
+            успех: Сработало исключение до отправки сообщения к серверу
+    """ # noqa D205 D400
+
+    payload = {
+        "update_id": 815922533,
+        "callback_query": {
+            "id": "1310616028335436612",
+            "from": {
+                "id": 305151544,
+                "is_bot": False,
+                "first_name": "\\u041d\\u0438\\u043a\\u0438\\u0442\\u0430",
+                "username": "UsernameTest",
+                "language_code": "ru",
+            },
+            "message": {
+                "message_id": 202,
+                "from": {
+                    "id": 6235267584,
+                    "is_bot": True,
+                    "first_name": "tgapi zusmanone",
+                    "username": "tgapizusman_bot",
+                },
+                "chat": {
+                    "id": 305151544,
+                    "first_name": "\\u041d\\u0438\\u043a\\u0438\\u0442\\u0430",
+                    "username": "UsernameTest",
+                    "type": "private",
+                },
+                "date": 1687437107,
+                "text": "Message proofs keyboard support.",
+                "reply_markup": {
+                    "inline_keyboard": [
+                        [
+                            {"text": "button_1", "callback_data": "test"},
+                            {"text": "button_2", "callback_data": "test"},
+                        ],
+                    ],
+                },
+            },
+            "inline_message_id": "12345",
+            "chat_instance": "-9009133691020524056",
+            "data": "",
+            "game_short_name": "",
+        },
+    }
+    with pytest.raises(ValueError):
+        tg_types.Update.parse_obj(payload)
