@@ -1289,13 +1289,13 @@ class CallbackQuery(BaseModel, ValidableMixin):
     )
 
     @root_validator
-    def check_callback_query(cls, tg_request: dict) -> dict: # noqa N805
+    def check_callback_query(cls, tg_request: dict) -> dict | None: # noqa N805
         data = tg_request["data"]
         game_short_name = tg_request["game_short_name"]
         if not data and not game_short_name:
             raise ValueError("data and game_short_name fields is missing")
 
-        return data
+        return tg_request
 
 
 class Location(BaseModel, ValidableMixin):
