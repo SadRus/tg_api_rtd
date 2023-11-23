@@ -321,11 +321,18 @@ def test_update_btn() -> None:
 
 
 def test_empty_callback_query() -> None:
-    """Программист - Узнать о пустых полях в CallbaclQuery: !func
-        Получить ValueError с информацией об ошибке: !story
-            сделано: yes
-            старт: Получить невалидный запрос
-            успех: Сработало исключение до отправки сообщения к серверу
+    """Программист - создать объект запроса с CallbackQuery: !func
+         Получен невалидный запрос от telegram с CallbackQuery: !story
+           ситуация:
+           - В запросе отсутсвуют оба поля data и game_short_name
+           отказ:
+           - Вижу: возникшее исключение
+           - Вижу: описание исключения, что поле data или game_short_name должно присутствовать
+         Получен валидный запрос от telegram с CallbackQuery: !story
+           ситуация:
+           - В запросе присутсвует поле data или game_short_name
+           успех:
+           - Вижу: Код отработал без ошибок
     """ # noqa D205 D400
 
     payload = {
@@ -366,8 +373,6 @@ def test_empty_callback_query() -> None:
             },
             "inline_message_id": "12345",
             "chat_instance": "-9009133691020524056",
-            "data": "",
-            "game_short_name": "",
         },
     }
     with pytest.raises(ValueError):
