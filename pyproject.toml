@@ -20,13 +20,8 @@ keywords = [
 
 [tool.poetry.dependencies]
 python = "^3.10"
-httpx = "0.24.1"
-pydantic = "1.10.8"
-pytest = {version = "7.3.*", extras = ["anyio"]}
-anyio = "3.7.0"
-pytest-httpx = "0.22.0"
-trio = "^0.22.0"
-exceptiongroup = "^1.1.1"
+httpx = "^0.24.1"
+pydantic = "^1.10.8"
 
 [tool.poetry.group.docs]
 optional = true
@@ -37,6 +32,13 @@ sphinx-autodoc-typehints = "1.24.0"
 sphinx-rtd-theme = "1.3.0"
 autodoc-pydantic = "1.9.0"
 myst-parser = "^2.0.0"
+
+
+[tool.poetry.group.dev.dependencies]
+pytest = {version = "7.4.3", extras = ["anyio"]}
+trio = "0.23.1"
+anyio = "4.1.0"
+pytest-httpx = "0.24.0"
 
 [tool.pytest.ini_options]
 python_files = "tests.py test_*.py *_tests.py"

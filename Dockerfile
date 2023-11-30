@@ -22,7 +22,7 @@ ENV PATH="/root/.local/bin:${PATH}"
 
 WORKDIR ${BASE_DIR}
 COPY ./pyproject.toml ./poetry.lock README.md ./
-RUN poetry install --no-ansi --with docs
+RUN poetry install --no-ansi --with docs --with dev
 
 WORKDIR ${BASE_DIR}/src
 ENV PYTHONPATH "$PYTHONPATH:${BASE_DIR}/src/"
