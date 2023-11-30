@@ -11,7 +11,7 @@ clean: ## Очищает все volume в соответствии с docker-com
 
 
 
-linter: ## Запускает python линтеры
+lint: ## Запускает python линтеры
 	docker compose run --rm py-linters flake8 /tg_api/ /tests/
 	docker compose run --rm py-linters mypy /tg_api/ /tests/
 
@@ -27,7 +27,7 @@ build-docs: ## Запускает сборку документации Sphinx
 
 publish-on-pypi: ## Публикует библиотеку на PyPI
 	docker compose build
-	make linter
+	make lint
 	make test
 	rm -f dist/*  # ignore error if folder not exist
 	python3 -m build

@@ -53,7 +53,7 @@ Available targets:
 build                          Собирает докер-образ
 up                             Запускает докер-контейнер
 clean                          Очищает все volume в соответствии с docker-compose
-linter                         Запускает python линтеры
+lint                           Запускает python линтеры
 test                           Запускает python-тесты
 help                           Отображает список доступных целей и их описания
 build-docs                     Запускает сборку документации Sphinx
@@ -124,7 +124,7 @@ Success: no issues found in 11 source files
 Того же результата -- запустить и pytest, и mypy вмеcте -- можно добиться с помощью make:
 
 ```shell
-$ make linter
+$ make lint
 flake8 /tg_api/ /tests/
 0
 mypy /tg_api/ /tests/
